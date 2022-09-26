@@ -1,0 +1,34 @@
+import { RouteRecordRaw } from 'vue-router';
+
+const routes: RouteRecordRaw[] = [
+  {
+    path: '/',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [{ path: '', component: () => import('pages/IndexPage.vue') }],
+  },
+
+  {
+    path: '/',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [{ path: 'album/:albumId', component: () => import('pages/AlbumPage.vue') }]
+  },
+  {
+    path: '/',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [{ path: 'track/:trackId', component: () => import('pages/TrackPage.vue') }]
+  },
+  {
+    path: '/',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [{ path: 'search/:searchQuery', component: () => import('pages/SearchPage.vue') }]
+  },
+
+  // Always leave this as last one,
+  // but you can also remove it
+  {
+    path: '/:catchAll(.*)*',
+    component: () => import('pages/ErrorNotFound.vue'),
+  },
+];
+
+export default routes;
