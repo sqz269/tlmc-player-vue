@@ -51,11 +51,11 @@
 
     </q-header>
 
-    <q-drawer show-if-above side="left" bordered>
+    <q-drawer show-if-above side="left">
       <drawer-navigation></drawer-navigation>
     </q-drawer>
 
-<!--    <q-drawer show-if-above v-model="rightDrawerOpen" side="right" bordered mini>-->
+<!--    <q-drawer show-if-above v-model="rightDrawerOpen" :width="230" side="right" bordered>-->
 <!--    </q-drawer>-->
 
     <q-page-container>
@@ -92,6 +92,8 @@ import {
 import {ref} from 'vue';
 import { useQuasar, setCssVar } from 'quasar';
 import PlayerControl from 'components/PlayerControl.vue';
+
+const rightDrawerOpen = ref(false);
 
 const q = useQuasar();
 q.dark.set(true)

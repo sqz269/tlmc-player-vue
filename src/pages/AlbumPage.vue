@@ -62,7 +62,7 @@
           <template v-slot:body-cell-index="props">
             <q-td :props="props">
               <div>
-                <q-btn flat round
+                <q-btn flat
                        @mouseover="hoveringWhich = props.value" @mouseleave="hoveringWhich = undefined"
                        @click="playTrack(props.value)"
                        :label="hoveringWhich !== props.value ? props.value : undefined"
@@ -94,14 +94,14 @@ import {
   outlinedStarBorder
 } from '@quasar/extras/material-icons-outlined';
 
-import {computed, onMounted, onUpdated, ref, watch} from 'vue';
+import {computed, onMounted, onUpdated, ref} from 'vue';
 import { apiConfig } from 'boot/backend-api';
 import { AlbumApi } from 'app/music-data-service-api';
 import { AlbumReadDto, TrackReadDto } from 'app/music-data-service-api';
 import { useRouter } from 'vue-router';
 import { formatDuration, sumDurations } from 'src/utils/durationUtils';
-import {useSongQueueStore} from 'stores/songQueue';
-import {useQuasar} from "quasar";
+import {useQuasar} from 'quasar';
+import {queueController} from 'boot/songQueue';
 
 const router = useRouter();
 const q = useQuasar();
@@ -112,19 +112,29 @@ const albumApi = new AlbumApi(apiConfig);
 const albumInfo = ref<AlbumReadDto>();
 const trackList = ref<TrackReadDto[]>();
 
-const songQueue = useSongQueueStore();
+const songQueue = queueController;
 
 function playTrack(trackIndex: string) {
   const trackIndexNum = parseInt(trackIndex);
   trackList.value?.forEach(track => {
     if (track.index === trackIndexNum) {
       if (track.trackFile?.url !== null) {
-        songQueue.addTrackToQueue(<string>track.id);
-        q.notify({
-          position: 'top',
-          type: 'info',
-          message: 'Added to Queue'
-        })
+        try {
+          songQueue.addTrackToQueueById(<string>track.id);
+          q.notify({
+            position: 'top',
+            type: 'secondary',
+            message: 'Added to Queue'
+          })
+        } catch (e) {
+         q.notify({
+           position: 'top',
+           type: 'secondary',
+           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+           // @ts-ignore
+           message: e.toString()
+         })
+        }
       }
     }
   })
@@ -138,6 +148,7 @@ async function setAlbumPage() {
   albumInfo.value = await fetchAlbum(<string>router.currentRoute.value.params.albumId);
   if (albumInfo.value?.tracks) {
     albumInfo.value?.tracks.sort((ta, tb) => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return ta.index! - tb.index!
     })
     console.log(albumInfo.value)

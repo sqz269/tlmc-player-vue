@@ -1,8 +1,6 @@
 import { Howl } from 'howler';
-import {reactive, ref, watch} from 'vue';
-
-type Action = () => void;
-type Func = (i: number) => void;
+import {ref, watch} from 'vue';
+import {Action, Func} from 'src/utils/HelperType';
 
 class AudioController {
   private howl: Howl | null = null;
@@ -66,7 +64,7 @@ class AudioController {
     }
   }
 
-  private unloadHowl() {
+  public unload() {
     if (this.howl !== null) {
       this.howl.unload();
       this.paused.value = false
@@ -78,7 +76,7 @@ class AudioController {
 
   public playTrack(src: string) {
     console.log(`Playing track : ${src}`)
-    this.unloadHowl()
+    this.unload()
 
     this.howl = new Howl({
       src: src,

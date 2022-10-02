@@ -14,7 +14,7 @@
 
     <q-list padding>
       <q-item v-for="link in navigations" :key="link.text"
-              v-ripple clickable inset-level=0.3>
+              v-ripple clickable :inset-level=0.3>
         <q-item-section avatar>
           <q-icon :name="link.icon" size="32px"/>
         </q-item-section>
@@ -29,7 +29,7 @@
 
       <q-separator class="q-my-md" />
 
-      <q-item v-ripple clickable inset-level=0.3>
+      <q-item v-ripple clickable :inset-level=0.3>
         <q-item-section avatar>
           <q-icon :name="outlinedPlaylistAdd" size="32px"/>
         </q-item-section>
@@ -43,7 +43,7 @@
       </q-item>
 
       <q-item v-for="item in playlistItems" :key="item"
-              v-ripple clickable inset-level=0.3>
+              v-ripple clickable :inset-level=0.3>
         <q-item-section avatar>
           <q-icon :name="outlinedPlaylistPlay" size="32px"/>
         </q-item-section>
@@ -78,10 +78,6 @@ import {
   outlinedLibraryMusic,
   outlinedRadio
 } from '@quasar/extras/material-icons-outlined'
-import {useQuasar} from 'quasar';
-import {useRoute} from 'vue-router';
-
-const route = useRoute();
 
 const navigations = [
   {
