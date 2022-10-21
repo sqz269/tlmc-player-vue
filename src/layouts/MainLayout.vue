@@ -14,7 +14,7 @@
         <q-space />
 
         <div class="q-gutter-sm row items-center no-wrap">
-          <q-btn round dense flat :icon="outlinedInfo" v-if="$q.screen.gt.sm">
+          <q-btn round dense flat :icon="outlinedInfo" v-if="$q.screen.gt.sm" @click="queueDisplayStore.toggle()">
             <q-tooltip>About This Site</q-tooltip>
           </q-btn>
           <q-btn round dense flat
@@ -51,15 +51,20 @@
 
     </q-header>
 
-    <q-drawer show-if-above side="left">
+    <q-drawer show-if-above side="left" :width="270">
       <drawer-navigation></drawer-navigation>
     </q-drawer>
 
-<!--    <q-drawer show-if-above v-model="rightDrawerOpen" :width="230" side="right" bordered>-->
-<!--    </q-drawer>-->
+    <q-drawer v-model="showQueue" side="right" :width="270">
+      <drawer-queue></drawer-queue>
+    </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <router-view v-slot="{ Component }">
+        <keep-alive>
+          <component :is="Component"></component>
+        </keep-alive>
+      </router-view>
     </q-page-container>
 
     <q-footer>
@@ -89,11 +94,16 @@ import {
   outlinedDarkMode
 } from '@quasar/extras/material-icons-outlined';
 
-import {ref} from 'vue';
+import {computed, ref} from 'vue';
 import { useQuasar, setCssVar } from 'quasar';
 import PlayerControl from 'components/PlayerControl.vue';
+import {MediaSessionController} from 'src/utils/MediaSessionController';
+import {useQueueDisplayStore} from 'stores/showQueue';
+import DrawerQueue from "components/DrawerQueue.vue";
 
-const rightDrawerOpen = ref(false);
+const queueDisplayStore = useQueueDisplayStore();
+
+const showQueue = computed(() => queueDisplayStore.show)
 
 const q = useQuasar();
 q.dark.set(true)

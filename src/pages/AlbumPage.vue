@@ -3,7 +3,7 @@
     <div class="row full-width" v-if="albumInfo">
       <div class="col-4 q-px-md" style="max-width: 230px">
         <q-img
-          :src=albumInfo.albumImage.url
+          :src=getAlbumImage
           ratio="1">
         </q-img>
       </div>
@@ -36,7 +36,7 @@
         </div>
       </div>
       <div class="col-12 q-pt-md">
-        <q-btn fab class="q-mx-md" round :icon="outlinedPlayArrow" color="black" text-color="white">
+        <q-btn fab class="q-mx-md" round :icon="outlinedPlayArrow" color="black" text-color="white" @click="playAlbum">
           <q-tooltip>Play</q-tooltip>
         </q-btn>
 
@@ -45,11 +45,26 @@
         </q-btn>
 
         <q-btn fab flat class="q-mx-md" round :icon="outlinedMoreHoriz">
-          <q-tooltip>More</q-tooltip>
+          <q-menu fit anchor="center middle" self="top middle">
+            <q-list>
+              <q-item clickable v-close-popup class="bg-dark" @click="viewMetadata">
+                <q-item-section avatar>
+                  <q-avatar :icon="outlinedDescription" />
+                </q-item-section>
+                <q-item-section>View Full Metadata</q-item-section>
+              </q-item>
+              <q-item clickable v-close-popup class="bg-dark">
+                <q-item-section avatar>
+                  <q-avatar :icon="outlinedTipsAndUpdates" />
+                </q-item-section>
+                <q-item-section>Suggest an Edit</q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
         </q-btn>
       </div>
 
-      <div class="col-12 q-pt-md">
+      <div class="col-12 q-pt-md q-px-md">
         <q-table :rows="trackList"
                  :columns="columns"
                  :pagination="pagination"
@@ -91,12 +106,14 @@ export default defineComponent({
 import {
   outlinedPlayArrow,
   outlinedMoreHoriz,
-  outlinedStarBorder
+  outlinedStarBorder,
+  outlinedDescription,
+  outlinedTipsAndUpdates
 } from '@quasar/extras/material-icons-outlined';
 
 import {computed, onMounted, onUpdated, ref} from 'vue';
 import { apiConfig } from 'boot/backend-api';
-import { AlbumApi } from 'app/music-data-service-api';
+import {AlbumApi, OriginalTrackReadDto} from 'app/music-data-service-api';
 import { AlbumReadDto, TrackReadDto } from 'app/music-data-service-api';
 import { useRouter } from 'vue-router';
 import { formatDuration, sumDurations } from 'src/utils/durationUtils';
@@ -114,6 +131,33 @@ const trackList = ref<TrackReadDto[]>();
 
 const songQueue = queueController;
 
+const getAlbumImage = computed(() => {
+  return albumInfo?.value?.albumImage?.url === null ?
+      'http://via.placeholder.com/640x360' : albumInfo?.value?.albumImage?.url
+})
+
+function viewMetadata() {
+  router.push({ name: 'albumMetadata', params: { albumId: albumInfo.value?.id } })
+}
+
+function playAlbum() {
+  trackList.value?.sort((e1, e2) => {
+    return <number>e2.index - <number>e1.index;
+  });
+
+  console.log(trackList.value)
+
+  console.log(<string[]>trackList.value?.reverse()?.map(t => t.index))
+
+  // songQueue.addTrackToQueueByIdBatch();
+
+  q.notify({
+    position: 'top',
+    type: 'secondary',
+    message: `Added ${trackList.value?.length} tracks to Queue`
+  })
+}
+
 function playTrack(trackIndex: string) {
   const trackIndexNum = parseInt(trackIndex);
   trackList.value?.forEach(track => {
@@ -125,7 +169,7 @@ function playTrack(trackIndex: string) {
             position: 'top',
             type: 'secondary',
             message: 'Added to Queue'
-          })
+          });
         } catch (e) {
          q.notify({
            position: 'top',
@@ -151,7 +195,6 @@ async function setAlbumPage() {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return ta.index! - tb.index!
     })
-    console.log(albumInfo.value)
     trackList.value = albumInfo.value?.tracks;
   }
 }
@@ -173,7 +216,7 @@ const columns = [
     field: (row: TrackReadDto) => row.index,
     format: (val: number) => `${val}`,
     style: 'width: 100px',
-    sortable: true
+    sortable: false
   },
   {
     name: 'title',
@@ -182,6 +225,16 @@ const columns = [
     align: 'left',
     field: (row: TrackReadDto) => row.name?._default,
     format: (val: number) => `${val}`,
+    classes: 'text-bold',
+    sortable: false
+  },
+  {
+    name: 'original',
+    required: false,
+    label: 'ORIGINAL',
+    align: 'left',
+    field: (row: TrackReadDto) => row.original,
+    format: (val: OriginalTrackReadDto[]) => val.map(e => e.title?._default).join(' │ '),
     classes: 'text-bold',
     sortable: false
   },

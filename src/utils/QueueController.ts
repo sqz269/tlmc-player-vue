@@ -63,8 +63,8 @@ class QueueController {
   }
 
   private onTrackAdd() {
+    console.log('Current Queue')
     console.log(this._queue.value)
-    console.log('On track add')
     if (this.currentlyPlaying === undefined) {
       this.playNext();
     }
@@ -88,7 +88,6 @@ class QueueController {
     this._songHistory.value.push(song);
     this._audioController.playTrack(<string>song.trackFile?.url);
     this._currentlyPlaying.value = song;
-    console.log(this._currentlyPlaying)
   }
 
   public playPrevious() {
@@ -98,10 +97,31 @@ class QueueController {
     this.playNext();
   }
 
-  public async addTrackToQueueById(trackId: string) {
+  /**
+   * Add a single track to the queue given the track id
+   *
+   * NOTE: If you want to add multiple track at once, consider use the addTrackToQueueByIdBatch method
+   * as race condition will happen in this method and the final order of the tracks added are not
+   * guaranteed
+   *
+   * @param trackId The track id to add to the queue
+   * @param addToFront
+   */
+  public async addTrackToQueueById(trackId: string, addToFront: boolean) {
     const trackData = await this._albumApi.getTrack({ id : trackId });
     this._queue.value.push(trackData);
-    console.log(this._queue.value)
+  }
+
+  /**
+   * Add multiple tracks to the queue given a list of track ids
+   * @param trackIds the track ids to add to the queue
+   * @param addToFront
+   */
+  public async addTrackToQueueByIdBatch(trackIds: string[], addToFront: boolean) {
+    for (const trackId of trackIds) {
+      const trackData = await this._albumApi.getTrack({id: trackId});
+      this._queue.value.push(trackData);
+    }
   }
 
   public addTrackToQueueByObj(track: TrackReadDto) {

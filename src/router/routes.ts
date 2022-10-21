@@ -4,13 +4,18 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', component: () => import('pages/HomePage.vue') }],
+    children: [{ path: '', name: 'home', component: () => import('pages/HomePage.vue') }],
   },
 
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [{ path: 'album/:albumId', name: 'album', component: () => import('pages/AlbumPage.vue') }]
+  },
+  {
+    path: '/',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [{ path: 'album/:albumId/metadata', name: 'albumMetadata', component: () => import('pages/AlbumData.vue')}]
   },
   {
     path: '/',

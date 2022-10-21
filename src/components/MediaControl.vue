@@ -11,7 +11,6 @@
     <q-btn flat fab size="md" :icon="outlinedSkipNext" @click="queueController.playNext()">
       <q-tooltip>Next</q-tooltip>
     </q-btn>
-    <q>{{ audioController.paused ? "Play" : "Pause" }}</q>
   </div>
 
   <div class="row full-width q-pt-lg" v-if="songQueue.currentlyPlaying !== undefined">
@@ -54,8 +53,7 @@ const songQueue = queueController;
 const isPanningProgress = ref(false);
 
 queueController.watchCurrentlyPlaying(() => {
-  console.log('Currently playing changed')
-  console.log(queueController.currentlyPlaying?.trackFile)
+  return;
 })
 
 const onPan = (phase: string) => {

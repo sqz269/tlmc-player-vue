@@ -14,7 +14,10 @@
 
     <q-list padding>
       <q-item v-for="link in navigations" :key="link.text"
-              v-ripple clickable :inset-level=0.3>
+              v-ripple clickable :inset-level=0.3
+              :to="link.route" exact
+              :active="currentPath === link.route.name"
+              active-class="text-white bg-grey-8 text-weight-bolder">
         <q-item-section avatar>
           <q-icon :name="link.icon" size="32px"/>
         </q-item-section>
@@ -78,27 +81,35 @@ import {
   outlinedLibraryMusic,
   outlinedRadio
 } from '@quasar/extras/material-icons-outlined'
+import {useRouter} from 'vue-router';
+import {computed} from 'vue';
+
+const router = useRouter();
+
+const currentPath = computed(() => {
+  return router.currentRoute.value.name;
+})
 
 const navigations = [
   {
     text: 'Home',
     icon: outlinedHome,
-    route: ''
+    route: { name: 'home' }
   },
   {
     text: 'Search',
     icon: outlinedSearch,
-    route: ''
+    route: { name: 'search' }
   },
   {
     text: 'Library',
     icon: outlinedLibraryMusic,
-    route: ''
+    route: { name: 'library' }
   },
   {
     text: 'Radio',
     icon: outlinedRadio,
-    route: ''
+    route: { name: 'radio' }
   }
 ]
 
