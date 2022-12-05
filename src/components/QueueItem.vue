@@ -2,19 +2,19 @@
   <q-item clickable v-ripple v-if="props.trackInfo">
     <q-item-section avatar>
       <q-avatar square>
-        <img :src="this.props.trackInfo.album.albumImage.url">
+        <img :src="props.trackInfo.album.albumImage.url">
       </q-avatar>
     </q-item-section>
     <q-item-section>
-      <q-item-label :class="{ 'text-gt' : currentlyPlaying }">{{ this.props.trackInfo.name._default }}</q-item-label>
-      <q-item-label :class="{ 'text-gt' : currentlyPlaying }" caption lines="2">{{ this.props.trackInfo.album.albumName._default }}</q-item-label>
+      <q-item-label :class="{ 'text-gt' : currentlyPlaying }">{{ props.trackInfo.name._default }}</q-item-label>
+      <q-item-label :class="{ 'text-gt' : currentlyPlaying }" caption lines="2">{{ props.trackInfo.album.albumName._default }}</q-item-label>
     </q-item-section>
     <q-item-section side v-if="currentlyPlaying">
       <q-spinner-audio v-if="!paused" size="2em" color="gt" />
       <q-icon size="2em" v-if="paused" :name="outlinedPause"></q-icon>
     </q-item-section>
     <q-item-section side v-if="!currentlyPlaying">
-      <q-item-label caption>{{ formatDuration(this.props.trackInfo.duration) }}</q-item-label>
+      <q-item-label caption>{{ formatDuration(props.trackInfo.duration) }}</q-item-label>
     </q-item-section>
   </q-item>
 </template>
