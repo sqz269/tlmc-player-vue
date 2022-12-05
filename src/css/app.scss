@@ -2,3 +2,34 @@
 .disabled, .disabled *{
   cursor: auto !important;
 }
+
+.text-gt {
+  color: #A4925A !important;
+}
+
+.bg-gt {
+  color: #A4925A !important;
+}
+
+::-webkit-scrollbar {
+  height: 12px;
+  width: 12px;
+  background: transparent;
+  z-index: 12;
+  overflow: visible;
+}
+
+::-webkit-scrollbar-thumb {
+  width: 10px;
+  background-color: #c1c1c1;
+  z-index: 12;
+  border: 6px solid rgba(0, 0, 0, 0);
+  background-clip: padding-box;
+  transition: background-color .32s ease-in-out;
+  min-height: 2px;
+  min-width: 16px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #c1c1c1;
+}

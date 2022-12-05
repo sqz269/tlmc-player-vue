@@ -9,7 +9,7 @@
         <q-tooltip>Shuffle</q-tooltip>
       </q-btn>
 
-      <q-btn round dense flat :icon="outlinedQueueMusic">
+      <q-btn round dense flat :icon="outlinedQueueMusic" @click="queueShowStatusStore.toggle()">
         <q-tooltip>Queue</q-tooltip>
       </q-btn>
     </div>
@@ -51,7 +51,10 @@ import {
 } from '@quasar/extras/material-icons-outlined';
 
 import {audioController} from 'boot/audioController';
-import {ref, watch} from 'vue';
+import {computed, ref, watch} from 'vue';
+import {useQueueDisplayStore} from 'stores/showQueue';
+
+const queueShowStatusStore = useQueueDisplayStore();
 
 const volume = ref(audioController.volume.value * 100);
 watch(volume, () => {

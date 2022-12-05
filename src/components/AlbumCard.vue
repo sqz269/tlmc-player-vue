@@ -1,6 +1,6 @@
 <template>
   <!--TODO: don't hardcode card width or sum, idk-->
-  <q-card v-ripple class="cursor-pointer" style="width: 245px;" @mouseover="hovering"  @click="navToAlbum">
+  <q-card v-ripple class="album-card cursor-pointer" style="width: 245px;"  @click="navToAlbum">
     <div class="q-focus-helper cursor-pointer relative-position">
     </div>
     <q-img
@@ -16,7 +16,7 @@
     <q-card-section>
 
       <div class="text-subtitle1">{{ props.albumInfo.albumName._default }}</div>
-      <div class="text-subtitle2">{{ props.albumInfo.albumArtist[0] }}</div>
+      <div class="text-subtitle2">{{ props.albumInfo.albumArtist[0].name }}</div>
     </q-card-section>
 <!--    </div>-->
   </q-card>
@@ -29,11 +29,15 @@ export default {
 </script>
 
 <script setup lang="ts">
-import {defineProps, ref} from 'vue';
+import {defineProps, ref, watch} from 'vue';
 import { AlbumReadDto } from 'app/music-data-service-api';
 import {useRouter} from 'vue-router';
 
 const hovering = ref(false);
+
+watch(hovering, () => {
+  console.log('hovering changed');
+})
 
 const router = useRouter();
 
@@ -46,3 +50,11 @@ var props = defineProps<{
   albumInfo: AlbumReadDto
 }>();
 </script>
+
+<style>
+.album-card:hover {
+  box-shadow: 0px 0px 15px rgba(33,33,33,.2) !important;
+  background-color: rgba(240, 240, 240, .2);
+  transition: background-color 250ms linear;
+}
+</style>

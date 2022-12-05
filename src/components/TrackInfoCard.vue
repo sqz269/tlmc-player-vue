@@ -9,7 +9,7 @@
       <q-card-section class="justify-around q-py-none">
         <div class="text-h6">{{ songQueue.currentlyPlaying.name._default }}</div>
         <div class="text-subtitle2">{{ songQueue.currentlyPlaying.album.albumName._default }}</div>
-        <div class="text-subtitle1 text-grey q-py-sm">{{ songQueue.currentlyPlaying.album.albumArtist[0] }}</div>
+        <div class="text-subtitle1 text-grey q-py-sm">{{ songQueue.currentlyPlaying.album.albumArtist[0].name }}</div>
       </q-card-section>
       <q-card-actions vertical class="justify-around q-px-md">
         <q-btn flat round size="md" color="red" :icon="outlinedFavoriteBorder" />

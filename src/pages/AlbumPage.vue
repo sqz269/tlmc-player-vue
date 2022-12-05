@@ -17,7 +17,7 @@
           <div class="col-12">
             <div class="row full-width">
               <div class="text-subtitle1 text-bold">
-                {{ albumInfo.albumArtist[0] }}
+                {{ albumInfo.albumArtist[0].name }}
               </div>
 
               <q-separator vertical spaced v-if="albumInfo.releaseDate"></q-separator>
@@ -76,17 +76,12 @@
                  hide-pagination>
           <template v-slot:body-cell-index="props">
             <q-td :props="props">
-              <div>
-                <q-btn flat
-                       @mouseover="hoveringWhich = props.value" @mouseleave="hoveringWhich = undefined"
-                       @click="playTrack(props.value)"
-                       :label="hoveringWhich !== props.value ? props.value : undefined"
-                       :icon="hoveringWhich === props.value ? outlinedPlayArrow : undefined">
-                </q-btn>
-              </div>
-              <div class="my-table-details">
-                {{ props.row.details }}
-              </div>
+              <q-btn flat
+                     @mouseover="hoveringWhich = props.value" @mouseleave="hoveringWhich = undefined"
+                     @click="playTrack(props.value)"
+                     :label="hoveringWhich !== props.value ? props.value : undefined"
+                     :icon="hoveringWhich === props.value ? outlinedPlayArrow : undefined">
+              </q-btn>
             </q-td>
           </template>
         </q-table>
@@ -147,41 +142,45 @@ function playAlbum() {
 
   console.log(trackList.value)
 
-  console.log(<string[]>trackList.value?.reverse()?.map(t => t.index))
-
-  // songQueue.addTrackToQueueByIdBatch();
-
   q.notify({
     position: 'top',
     type: 'secondary',
     message: `Added ${trackList.value?.length} tracks to Queue`
   })
+
+  const toadd = <string[]>trackList.value?.map(e => e?.id).reverse();
+  console.log(toadd);
+  songQueue.addTrackToQueueByIdBatch(toadd, true, true);
 }
 
-function playTrack(trackIndex: string) {
+async function playTrack(trackIndex: string) {
+  console.log(trackIndex);
   const trackIndexNum = parseInt(trackIndex);
-  trackList.value?.forEach(track => {
+
+  let trackToPlay = null;
+  if (!trackList.value) {
+    alert('Empty Tracklist');
+    return;
+  }
+
+  for (let track of trackList.value) {
     if (track.index === trackIndexNum) {
-      if (track.trackFile?.url !== null) {
-        try {
-          songQueue.addTrackToQueueById(<string>track.id);
-          q.notify({
-            position: 'top',
-            type: 'secondary',
-            message: 'Added to Queue'
-          });
-        } catch (e) {
-         q.notify({
-           position: 'top',
-           type: 'secondary',
-           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-           // @ts-ignore
-           message: e.toString()
-         })
-        }
-      }
+      trackToPlay = track;
+      break
     }
-  })
+  }
+
+  if (trackToPlay === null) {
+    console.log('Invalid Index. No Index: ' + trackIndex + '. in track list.');
+    return;
+  }
+
+  await songQueue.addTrackToQueueById(<string> trackToPlay.id, true, true);
+  q.notify({
+    position: 'top',
+    type: 'secondary',
+    message: 'Added to Queue'
+  });
 }
 
 async function fetchAlbum(albumId: string): Promise<AlbumReadDto> {

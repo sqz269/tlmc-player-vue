@@ -101,6 +101,8 @@ import {MediaSessionController} from 'src/utils/MediaSessionController';
 import {useQueueDisplayStore} from 'stores/showQueue';
 import DrawerQueue from "components/DrawerQueue.vue";
 
+const abc = new MediaSessionController();
+
 const queueDisplayStore = useQueueDisplayStore();
 
 const showQueue = computed(() => queueDisplayStore.show)

@@ -2,6 +2,7 @@ import {QueueController} from 'src/utils/QueueController';
 import {queueController} from 'boot/songQueue';
 import {AudioController} from 'src/utils/AudioController';
 import {audioController} from 'boot/audioController';
+import {watch} from 'vue';
 
 class MediaSessionController {
   private readonly supportMediaSession: boolean;
@@ -85,10 +86,23 @@ class MediaSessionController {
     this.queueController.watchCurrentlyPlaying(() => {
       this.onCurrentPlayChanged();
     });
+
+    watch(this.audioController.paused, (curr, prev) => {
+      if (curr) {
+        this.setMediaMetadata();
+        // this.audioTag?.();
+      } else {
+        this.setMediaMetadata();
+        this.audioTag?.pause();
+      }
+    })
   }
 
   private setMediaMetadata() {
     const currentlyPlaying = this.queueController.currentlyPlaying;
+    if (currentlyPlaying === undefined) {
+      return;
+    }
     navigator.mediaSession.metadata = new window.MediaMetadata({
       title: currentlyPlaying?.name?._default,
       artist: currentlyPlaying?.album?.albumArtist?.[0],

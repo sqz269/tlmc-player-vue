@@ -4,7 +4,7 @@
       <q-tooltip>Previous</q-tooltip>
     </q-btn>
 
-    <q-btn fab class="q-mx-md" round size="md" :icon="audioController.paused ? outlinedPlayArrow : outlinedPause" @click="audioController.togglePause()">
+    <q-btn fab class="q-mx-md" round size="md" :icon="paused ? outlinedPlayArrow : outlinedPause" @click="audioController.togglePause()">
       <q-tooltip>{{ audioController.paused ? "Play" : "Pause" }}</q-tooltip>
     </q-btn>
 
@@ -54,6 +54,10 @@ const isPanningProgress = ref(false);
 
 queueController.watchCurrentlyPlaying(() => {
   return;
+})
+
+const paused = computed(() => {
+  return audioController.paused.value;
 })
 
 const onPan = (phase: string) => {
