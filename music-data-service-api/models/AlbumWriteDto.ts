@@ -58,10 +58,10 @@ export interface AlbumWriteDto {
     numberOfDiscs?: number | null;
     /**
      * 
-     * @type {string}
+     * @type {Array<string>}
      * @memberof AlbumWriteDto
      */
-    website?: string | null;
+    website?: Array<string> | null;
     /**
      * 
      * @type {Array<string>}
@@ -91,7 +91,7 @@ export interface AlbumWriteDto {
      * @type {Array<string>}
      * @memberof AlbumWriteDto
      */
-    otherImages?: Array<string> | null;
+    otherFiles?: Array<string> | null;
 }
 
 /**
@@ -124,7 +124,7 @@ export function AlbumWriteDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'genre': !exists(json, 'genre') ? undefined : json['genre'],
         'dataSource': !exists(json, 'dataSource') ? undefined : json['dataSource'],
         'albumImage': !exists(json, 'albumImage') ? undefined : json['albumImage'],
-        'otherImages': !exists(json, 'otherImages') ? undefined : json['otherImages'],
+        'otherFiles': !exists(json, 'otherFiles') ? undefined : json['otherFiles'],
     };
 }
 
@@ -147,7 +147,7 @@ export function AlbumWriteDtoToJSON(value?: AlbumWriteDto | null): any {
         'genre': value.genre,
         'dataSource': value.dataSource,
         'albumImage': value.albumImage,
-        'otherImages': value.otherImages,
+        'otherFiles': value.otherFiles,
     };
 }
 

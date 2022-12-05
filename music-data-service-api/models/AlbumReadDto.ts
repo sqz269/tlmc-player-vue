@@ -19,6 +19,12 @@ import {
     AssetReadDtoFromJSONTyped,
     AssetReadDtoToJSON,
 } from './AssetReadDto';
+import type { CircleReadDto } from './CircleReadDto';
+import {
+    CircleReadDtoFromJSON,
+    CircleReadDtoFromJSONTyped,
+    CircleReadDtoToJSON,
+} from './CircleReadDto';
 import type { LocalizedField } from './LocalizedField';
 import {
     LocalizedFieldFromJSON,
@@ -82,10 +88,10 @@ export interface AlbumReadDto {
     website?: Array<string> | null;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<CircleReadDto>}
      * @memberof AlbumReadDto
      */
-    albumArtist?: Array<string> | null;
+    albumArtist?: Array<CircleReadDto> | null;
     /**
      * 
      * @type {Array<string>}
@@ -109,7 +115,7 @@ export interface AlbumReadDto {
      * @type {Array<AssetReadDto>}
      * @memberof AlbumReadDto
      */
-    otherImages?: Array<AssetReadDto> | null;
+    otherFiles?: Array<AssetReadDto> | null;
 }
 
 /**
@@ -138,11 +144,11 @@ export function AlbumReadDtoFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'catalogNumber': !exists(json, 'catalogNumber') ? undefined : json['catalogNumber'],
         'numberOfDiscs': !exists(json, 'numberOfDiscs') ? undefined : json['numberOfDiscs'],
         'website': !exists(json, 'website') ? undefined : json['website'],
-        'albumArtist': !exists(json, 'albumArtist') ? undefined : json['albumArtist'],
+        'albumArtist': !exists(json, 'albumArtist') ? undefined : (json['albumArtist'] === null ? null : (json['albumArtist'] as Array<any>).map(CircleReadDtoFromJSON)),
         'dataSource': !exists(json, 'dataSource') ? undefined : json['dataSource'],
         'tracks': !exists(json, 'tracks') ? undefined : (json['tracks'] === null ? null : (json['tracks'] as Array<any>).map(TrackReadDtoFromJSON)),
         'albumImage': !exists(json, 'albumImage') ? undefined : AssetReadDtoFromJSON(json['albumImage']),
-        'otherImages': !exists(json, 'otherImages') ? undefined : (json['otherImages'] === null ? null : (json['otherImages'] as Array<any>).map(AssetReadDtoFromJSON)),
+        'otherFiles': !exists(json, 'otherFiles') ? undefined : (json['otherFiles'] === null ? null : (json['otherFiles'] as Array<any>).map(AssetReadDtoFromJSON)),
     };
 }
 
@@ -162,11 +168,11 @@ export function AlbumReadDtoToJSON(value?: AlbumReadDto | null): any {
         'catalogNumber': value.catalogNumber,
         'numberOfDiscs': value.numberOfDiscs,
         'website': value.website,
-        'albumArtist': value.albumArtist,
+        'albumArtist': value.albumArtist === undefined ? undefined : (value.albumArtist === null ? null : (value.albumArtist as Array<any>).map(CircleReadDtoToJSON)),
         'dataSource': value.dataSource,
         'tracks': value.tracks === undefined ? undefined : (value.tracks === null ? null : (value.tracks as Array<any>).map(TrackReadDtoToJSON)),
         'albumImage': AssetReadDtoToJSON(value.albumImage),
-        'otherImages': value.otherImages === undefined ? undefined : (value.otherImages === null ? null : (value.otherImages as Array<any>).map(AssetReadDtoToJSON)),
+        'otherFiles': value.otherFiles === undefined ? undefined : (value.otherFiles === null ? null : (value.otherFiles as Array<any>).map(AssetReadDtoToJSON)),
     };
 }
 

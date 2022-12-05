@@ -1,5 +1,6 @@
 apis/AlbumApi.ts
 apis/AssetApi.ts
+apis/CircleApi.ts
 apis/OriginalAlbumApi.ts
 apis/index.ts
 index.ts
@@ -7,6 +8,7 @@ models/AlbumReadDto.ts
 models/AlbumReadDtoActionResult.ts
 models/AlbumWriteDto.ts
 models/AssetReadDto.ts
+models/CircleReadDto.ts
 models/LocalizedField.ts
 models/OriginalAlbumReadDto.ts
 models/OriginalAlbumReadDtoActionResult.ts
