@@ -1,1 +1,0 @@
-import{Q as o}from"./QPage.3b2df487.js";import{a1 as e,a3 as s,a4 as r,a5 as n,ak as _,a8 as a}from"./index.f6b0e315.js";const c=e({methods:{a(){console.log(this.$route)}}}),m=e({...c,__name:"SearchPage",setup(i){return(t,p)=>(s(),r(o,{padding:""},{default:n(()=>[_(a(this.$route)+" "+a(t.a()),1)]),_:1}))}});export{m as default};
