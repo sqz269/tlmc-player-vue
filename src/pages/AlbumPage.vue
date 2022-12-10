@@ -127,8 +127,8 @@ const trackList = ref<TrackReadDto[]>();
 const songQueue = queueController;
 
 const getAlbumImage = computed(() => {
-  return albumInfo?.value?.albumImage?.url === null ?
-      'http://via.placeholder.com/640x360' : albumInfo?.value?.albumImage?.url
+  return albumInfo?.value?.thumbnail?.medium?.url === null ?
+      'http://via.placeholder.com/640x360' : albumInfo?.value?.thumbnail?.medium?.url
 })
 
 function viewMetadata() {

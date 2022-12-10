@@ -31,6 +31,12 @@ import {
     LocalizedFieldFromJSONTyped,
     LocalizedFieldToJSON,
 } from './LocalizedField';
+import type { ThumbnailReadDto } from './ThumbnailReadDto';
+import {
+    ThumbnailReadDtoFromJSON,
+    ThumbnailReadDtoFromJSONTyped,
+    ThumbnailReadDtoToJSON,
+} from './ThumbnailReadDto';
 import type { TrackReadDto } from './TrackReadDto';
 import {
     TrackReadDtoFromJSON,
@@ -106,10 +112,10 @@ export interface AlbumReadDto {
     tracks?: Array<TrackReadDto> | null;
     /**
      * 
-     * @type {AssetReadDto}
+     * @type {ThumbnailReadDto}
      * @memberof AlbumReadDto
      */
-    albumImage?: AssetReadDto;
+    thumbnail?: ThumbnailReadDto;
     /**
      * 
      * @type {Array<AssetReadDto>}
@@ -147,7 +153,7 @@ export function AlbumReadDtoFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'albumArtist': !exists(json, 'albumArtist') ? undefined : (json['albumArtist'] === null ? null : (json['albumArtist'] as Array<any>).map(CircleReadDtoFromJSON)),
         'dataSource': !exists(json, 'dataSource') ? undefined : json['dataSource'],
         'tracks': !exists(json, 'tracks') ? undefined : (json['tracks'] === null ? null : (json['tracks'] as Array<any>).map(TrackReadDtoFromJSON)),
-        'albumImage': !exists(json, 'albumImage') ? undefined : AssetReadDtoFromJSON(json['albumImage']),
+        'thumbnail': !exists(json, 'thumbnail') ? undefined : ThumbnailReadDtoFromJSON(json['thumbnail']),
         'otherFiles': !exists(json, 'otherFiles') ? undefined : (json['otherFiles'] === null ? null : (json['otherFiles'] as Array<any>).map(AssetReadDtoFromJSON)),
     };
 }
@@ -171,7 +177,7 @@ export function AlbumReadDtoToJSON(value?: AlbumReadDto | null): any {
         'albumArtist': value.albumArtist === undefined ? undefined : (value.albumArtist === null ? null : (value.albumArtist as Array<any>).map(CircleReadDtoToJSON)),
         'dataSource': value.dataSource,
         'tracks': value.tracks === undefined ? undefined : (value.tracks === null ? null : (value.tracks as Array<any>).map(TrackReadDtoToJSON)),
-        'albumImage': AssetReadDtoToJSON(value.albumImage),
+        'thumbnail': ThumbnailReadDtoToJSON(value.thumbnail),
         'otherFiles': value.otherFiles === undefined ? undefined : (value.otherFiles === null ? null : (value.otherFiles as Array<any>).map(AssetReadDtoToJSON)),
     };
 }

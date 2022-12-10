@@ -5,7 +5,7 @@ const apiConfig = new Configuration({
   // basePath: 'http://10.8.0.1:30007',
   // basePath: 'http://192.168.88.252:30162'
   basePath: 'https://music.marisad.me'
-  // basePath: 'http://localhost:1172'
+  // basePath: 'http://localhost:5217'
 })
 
 // "async" is optional;

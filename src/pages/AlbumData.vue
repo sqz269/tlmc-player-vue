@@ -121,7 +121,8 @@ const albumAssets = ref<AssetReadDto[]>([]);
 const albumMetadata = ref<Metadata[]>([]);
 
 const getAlbumImage = computed(() => {
-  return albumInfo?.value?.albumImage?.url === null ? 'http://via.placeholder.com/640x360' : albumInfo?.value?.albumImage?.url
+  return albumInfo?.value?.thumbnail?.medium?.url === null ? 'http://via.placeholder.com/640x360'
+    : albumInfo?.value?.thumbnail?.medium?.url
 })
 
 
@@ -156,12 +157,12 @@ function setAlbumMetadata(albumData: AlbumReadDto) {
 
 function setAlbumAsset() {
   // TODO: NEWEST UPDATE CHANGED OTHERIMAGES TO OTHERFILES
-  if (albumInfo.value?.albumImage) {
-    albumAssets.value?.push(albumInfo.value?.albumImage)
+  if (albumInfo.value?.thumbnail?.original) {
+    albumAssets.value?.push(albumInfo.value?.thumbnail.original)
   }
 
-  if (albumInfo.value?.otherImages) {
-    albumAssets.value?.push(...albumInfo.value?.otherImages);
+  if (albumInfo.value?.otherFiles) {
+    albumAssets.value?.push(...albumInfo.value?.otherFiles);
   }
 
   trackList.value?.forEach(e => {

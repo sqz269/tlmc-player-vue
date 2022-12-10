@@ -4,8 +4,8 @@
     <div class="q-focus-helper cursor-pointer relative-position">
     </div>
     <q-img
-      v-if="props.albumInfo.albumImage"
-      :src=props.albumInfo.albumImage.url
+      v-if="props.albumInfo.thumbnail?.medium?.url"
+      :src=props.albumInfo.thumbnail.medium.url
       style="width: 210px; height: 210px;"
       class="q-mx-md q-mt-md"
       img-class="rounded-borders"
@@ -46,7 +46,7 @@ function navToAlbum() {
   router.push({ name: 'album', params: { albumId: albumId } })
 }
 
-var props = defineProps<{
+const props = defineProps<{
   albumInfo: AlbumReadDto
 }>();
 </script>

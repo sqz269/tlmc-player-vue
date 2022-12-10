@@ -12,6 +12,7 @@ export * from './OriginalAlbumWriteDto';
 export * from './OriginalTrackReadDto';
 export * from './OriginalTrackReadDtoActionResult';
 export * from './OriginalTrackWriteDto';
+export * from './ThumbnailReadDto';
 export * from './TrackReadDto';
 export * from './TrackReadDtoActionResult';
 export * from './TrackWriteDto';

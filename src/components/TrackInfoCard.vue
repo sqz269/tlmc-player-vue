@@ -3,7 +3,7 @@
     <q-card-section horizontal>
       <q-img
         style="height: 125px; max-width: 125px"
-        :src="songQueue.currentlyPlaying.album.albumImage.url"
+        :src="songQueue.currentlyPlaying.album.thumbnail.small.url"
       />
 
       <q-card-section class="justify-around q-py-none">

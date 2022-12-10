@@ -16,6 +16,7 @@ models/OriginalAlbumWriteDto.ts
 models/OriginalTrackReadDto.ts
 models/OriginalTrackReadDtoActionResult.ts
 models/OriginalTrackWriteDto.ts
+models/ThumbnailReadDto.ts
 models/TrackReadDto.ts
 models/TrackReadDtoActionResult.ts
 models/TrackWriteDto.ts

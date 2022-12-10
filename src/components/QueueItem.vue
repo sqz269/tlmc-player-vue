@@ -2,7 +2,7 @@
   <q-item clickable v-ripple v-if="props.trackInfo">
     <q-item-section avatar>
       <q-avatar square>
-        <img :src="props.trackInfo.album.albumImage.url">
+        <img :src="props.trackInfo.album.thumbnail.tiny.url">
       </q-avatar>
     </q-item-section>
     <q-item-section>
