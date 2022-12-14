@@ -17,8 +17,15 @@ jobs:
       - name: git-checkout
         uses: actions/checkout@v2
         
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+        
       - name: Install all dependencies
         run: npm install
+        
+      - name: Install Quasar
+        run: npm i -g @quasar/cli
         
       - name: Build
         run: quasar build -d
