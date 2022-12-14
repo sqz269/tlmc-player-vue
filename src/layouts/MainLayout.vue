@@ -3,10 +3,10 @@
     <q-header bordered>
       <q-toolbar>
         <q-toolbar-title>
-          <q-btn round dense flat size="lg" color="grey-8" :icon="outlinedArrowBack">
+          <q-btn round dense flat size="lg" color="white" :icon="outlinedArrowBack" @click="back">
             <q-tooltip>Back</q-tooltip>
           </q-btn>
-          <q-btn round dense flat size="lg" color="grey-8" :icon="outlinedArrowForward">
+          <q-btn round dense flat size="lg" color="white" :icon="outlinedArrowForward" @click="forward">
             <q-tooltip>Forward</q-tooltip>
           </q-btn>
         </q-toolbar-title>
@@ -100,6 +100,17 @@ import PlayerControl from 'components/PlayerControl.vue';
 import {MediaSessionController} from 'src/utils/MediaSessionController';
 import {useQueueDisplayStore} from 'stores/showQueue';
 import DrawerQueue from "components/DrawerQueue.vue";
+import {useRouter} from "vue-router";
+
+const router = useRouter();
+
+const back = () => {
+  router.back();
+}
+
+const forward = () => {
+  router.forward();
+}
 
 const queueDisplayStore = useQueueDisplayStore();
 
