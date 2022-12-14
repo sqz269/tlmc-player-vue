@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <q-infinite-scroll class="row items-start q-gutter-md flex" @load="onLoad" :offset="300">
+    <q-infinite-scroll class="row items-start q-gutter-md flex" @load="onLoad" :offset="300" ref="infScroll">
       <div class="q-gutter-md row">
         <AlbumCard v-for="(album, index) in displayAlbums" :key="index"
                    :album-info="album">
@@ -26,8 +26,11 @@ export default defineComponent({
 <script setup lang="ts">
 import {AlbumApi, AlbumReadDto} from 'app/music-data-service-api';
 import {apiConfig} from 'boot/backend-api';
-import {onMounted, onUnmounted, ref} from 'vue';
+import {onActivated, onDeactivated, onMounted, onUnmounted, ref} from 'vue';
 import AlbumCard from 'components/AlbumCard.vue';
+import {QInfiniteScroll} from 'quasar';
+
+const infScroll = ref<QInfiniteScroll>();
 
 const albumApi = new AlbumApi(apiConfig);
 
@@ -49,5 +52,13 @@ onMounted(async () => {
 
 onUnmounted(() => {
   console.log('Unmounted')
+})
+
+onDeactivated(() => {
+  infScroll.value?.stop();
+})
+
+onActivated(() => {
+  infScroll.value?.resume();
 })
 </script>

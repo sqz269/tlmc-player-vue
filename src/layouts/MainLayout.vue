@@ -61,7 +61,7 @@
 
     <q-page-container>
       <router-view v-slot="{ Component }">
-        <keep-alive>
+        <keep-alive include="HomePage">
           <component :is="Component"></component>
         </keep-alive>
       </router-view>
@@ -100,8 +100,6 @@ import PlayerControl from 'components/PlayerControl.vue';
 import {MediaSessionController} from 'src/utils/MediaSessionController';
 import {useQueueDisplayStore} from 'stores/showQueue';
 import DrawerQueue from "components/DrawerQueue.vue";
-
-const abc = new MediaSessionController();
 
 const queueDisplayStore = useQueueDisplayStore();
 
