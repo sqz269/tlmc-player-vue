@@ -69,7 +69,7 @@
                  :columns="columns"
                  :pagination="pagination"
                  separator="none"
-                 row-key="index"
+                 row-key="id"
                  flat
                  hide-bottom
                  virtual-scroll
@@ -77,10 +77,10 @@
           <template v-slot:body-cell-index="props">
             <q-td :props="props">
               <q-btn flat
-                     @mouseover="hoveringWhich = props.value" @mouseleave="hoveringWhich = undefined"
-                     @click="playTrack(props.value)"
-                     :label="hoveringWhich !== props.value ? props.value : undefined"
-                     :icon="hoveringWhich === props.value ? outlinedPlayArrow : undefined">
+                     @mouseover="hoveringWhich = props.key" @mouseleave="hoveringWhich = undefined"
+                     @click="playTrack(props.key)"
+                     :label="hoveringWhich !== props.key ? props.value : undefined"
+                     :icon="hoveringWhich === props.key ? outlinedPlayArrow : undefined">
               </q-btn>
             </q-td>
           </template>
@@ -153,10 +153,7 @@ function playAlbum() {
   songQueue.addTrackToQueueByIdBatch(toadd, true, true);
 }
 
-async function playTrack(trackIndex: string) {
-  console.log(trackIndex);
-  const trackIndexNum = parseInt(trackIndex);
-
+async function playTrack(trackId: string) {
   let trackToPlay = null;
   if (!trackList.value) {
     alert('Empty Tracklist');
@@ -164,14 +161,14 @@ async function playTrack(trackIndex: string) {
   }
 
   for (let track of trackList.value) {
-    if (track.index === trackIndexNum) {
+    if (track.id == trackId) {
       trackToPlay = track;
       break
     }
   }
 
   if (trackToPlay === null) {
-    console.log('Invalid Index. No Index: ' + trackIndex + '. in track list.');
+    console.log('Invalid Index. No Index: ' + trackId + '. in track list.');
     return;
   }
 
