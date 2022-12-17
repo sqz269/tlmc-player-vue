@@ -1,6 +1,6 @@
 <template>
-  <q-page padding>
-    <div class="row full-width" v-if="albumInfo">
+  <q-page>
+    <div class="row full-width q-px-none q-pt-lg" v-if="albumInfo">
       <div class="col-4 q-px-md" style="max-width: 230px">
         <q-img
           :src=getAlbumImage
@@ -35,57 +35,106 @@
           </div>
         </div>
       </div>
-      <div class="col-12 q-pt-md">
-        <q-btn fab class="q-mx-md" round :icon="outlinedPlayArrow" color="black" text-color="white" @click="playAlbum">
-          <q-tooltip>Play</q-tooltip>
-        </q-btn>
 
-        <q-btn fab flat class="q-mx-md" round :icon="outlinedStarBorder">
-          <q-tooltip>Save</q-tooltip>
-        </q-btn>
+      <div class="page-section-blur col-all q-mt-lg row">
 
-        <q-btn fab flat class="q-mx-md" round :icon="outlinedMoreHoriz">
-          <q-menu fit anchor="center middle" self="top middle">
-            <q-list>
-              <q-item clickable v-close-popup class="bg-dark" @click="viewMetadata">
-                <q-item-section avatar>
-                  <q-avatar :icon="outlinedDescription" />
-                </q-item-section>
-                <q-item-section>View Full Metadata</q-item-section>
-              </q-item>
-              <q-item clickable v-close-popup class="bg-dark">
-                <q-item-section avatar>
-                  <q-avatar :icon="outlinedTipsAndUpdates" />
-                </q-item-section>
-                <q-item-section>Suggest an Edit</q-item-section>
-              </q-item>
-            </q-list>
-          </q-menu>
-        </q-btn>
+        <div class="col-12 q-pt-md">
+          <q-btn fab class="q-mx-md" round :icon="outlinedPlayArrow" color="black" text-color="white" @click="playAlbum">
+            <q-tooltip>Play</q-tooltip>
+          </q-btn>
+
+          <q-btn fab flat class="q-mx-md" round :icon="outlinedStarBorder">
+            <q-tooltip>Save</q-tooltip>
+          </q-btn>
+
+          <q-btn fab flat class="q-mx-md" round :icon="outlinedMoreHoriz">
+            <q-menu fit anchor="center middle" self="top middle">
+              <q-list>
+                <q-item clickable v-close-popup class="bg-dark" @click="viewMetadata">
+                  <q-item-section avatar>
+                    <q-avatar :icon="outlinedDescription" />
+                  </q-item-section>
+                  <q-item-section>View Full Metadata</q-item-section>
+                </q-item>
+                <q-item clickable v-close-popup class="bg-dark">
+                  <q-item-section avatar>
+                    <q-avatar :icon="outlinedTipsAndUpdates" />
+                  </q-item-section>
+                  <q-item-section>Suggest an Edit</q-item-section>
+                </q-item>
+              </q-list>
+            </q-menu>
+          </q-btn>
+        </div>
+        <div class="col-12 q-pt-md q-px-md">
+          <q-table :rows="trackList"
+                   class="transparent"
+                   :columns="columns"
+                   :pagination="pagination"
+                   separator="none"
+                   row-key="id"
+                   flat
+                   hide-bottom
+                   virtual-scroll
+                   hide-pagination>
+            <template v-slot:header="props">
+              <q-tr :props="props">
+                <q-th v-for="col in props.cols" :key="col.name" :props="props"
+                  class="text-grey border-bottom-thin">
+                  {{ col.label }}
+                </q-th>
+              </q-tr>
+            </template>
+
+            <template v-slot:body-cell-index="props">
+              <q-td :props="props" class="q-pa-sm">
+                <q-btn flat round
+                       class="text-grey-5"
+                       size="13px"
+                       @mouseover="hoveringWhich = props.key" @mouseleave="hoveringWhich = undefined"
+                       @click="playTrack(props.key)"
+                       :label="hoveringWhich !== props.key ? props.value : undefined"
+                       :icon="hoveringWhich === props.key ? outlinedPlayArrow : undefined"
+                >
+                </q-btn>
+              </q-td>
+            </template>
+
+            <template v-slot:body-cell-title="props">
+              <q-td :props="props">
+                <div class="flex row items-center text-subtitle1 text-bold">
+                  {{ props.value }}
+                </div>
+              </q-td>
+            </template>
+
+            <template v-slot:body-cell="props">
+              <q-td :props="props">
+                {{props.value}}
+              </q-td>
+              <q-menu
+                touch-position
+                context-menu
+              >
+                <q-list style="min-width: 100px">
+                  <q-item clickable v-close-popup>
+                    <q-item-section>Add to Queue</q-item-section>
+                  </q-item>
+                  <q-item clickable v-close-popup>
+                    <q-item-section>Add to Playlist</q-item-section>
+                  </q-item>
+                  <q-item clickable v-close-popup>
+                    <q-item-section>View Metadata</q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu>
+            </template>
+
+          </q-table>
+        </div>
+
       </div>
 
-      <div class="col-12 q-pt-md q-px-md">
-        <q-table :rows="trackList"
-                 :columns="columns"
-                 :pagination="pagination"
-                 separator="none"
-                 row-key="id"
-                 flat
-                 hide-bottom
-                 virtual-scroll
-                 hide-pagination>
-          <template v-slot:body-cell-index="props">
-            <q-td :props="props">
-              <q-btn flat
-                     @mouseover="hoveringWhich = props.key" @mouseleave="hoveringWhich = undefined"
-                     @click="playTrack(props.key)"
-                     :label="hoveringWhich !== props.key ? props.value : undefined"
-                     :icon="hoveringWhich === props.key ? outlinedPlayArrow : undefined">
-              </q-btn>
-            </q-td>
-          </template>
-        </q-table>
-      </div>
     </div>
   </q-page>
 </template>
@@ -114,9 +163,11 @@ import { useRouter } from 'vue-router';
 import { formatDuration, sumDurations } from 'src/utils/durationUtils';
 import {useQuasar} from 'quasar';
 import {queueController} from 'boot/songQueue';
+import {usePageContainerBgStyleStore} from "stores/pageContainerBg";
 
 const router = useRouter();
 const q = useQuasar();
+const { setColors } = usePageContainerBgStyleStore();
 
 const hoveringWhich = ref<number>();
 
@@ -193,6 +244,7 @@ async function setAlbumPage() {
     })
     trackList.value = albumInfo.value?.tracks;
   }
+  setColors(<string[]>albumInfo.value?.thumbnail?.colors);
 }
 
 onMounted(async () => {
@@ -211,7 +263,7 @@ const columns = [
     align: 'center',
     field: (row: TrackReadDto) => row.index,
     format: (val: number) => `${val}`,
-    style: 'width: 100px',
+    style: 'width: 24px',
     sortable: false
   },
   {
@@ -221,7 +273,7 @@ const columns = [
     align: 'left',
     field: (row: TrackReadDto) => row.name?._default,
     format: (val: number) => `${val}`,
-    classes: 'text-bold',
+    classes: 'text-h4',
     sortable: false
   },
   {
@@ -241,7 +293,7 @@ const columns = [
     align: 'right',
     field: (row: TrackReadDto) => row.duration,
     format: (val: string) => `${formatDuration(val)}`,
-    classes: 'text-bold',
+    classes: 'text-grey-4',
     sortable: false
   }
 ]

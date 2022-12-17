@@ -52,9 +52,16 @@ const props = defineProps<{
 </script>
 
 <style>
+.album-card {
+  background-color: rgba(0, 0, 0, 0.53) !important;
+  backdrop-filter: blur(300px);
+}
+
 .album-card:hover {
   box-shadow: 0px 0px 15px rgba(33,33,33,.2) !important;
-  background-color: rgba(240, 240, 240, .2);
-  transition: background-color 250ms linear;
+  background-color: rgba(197, 193, 193, 0.4) !important;
+  backdrop-filter: blur(200px) !important;
+  color: #ffffff !important;
+  transition: background-color, color, backdrop-filter, 250ms linear !important;
 }
 </style>

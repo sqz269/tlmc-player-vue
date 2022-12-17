@@ -1,6 +1,6 @@
 <template>
-  <q-page padding>
-    <div class="row full-width" v-if="albumInfo">
+  <q-page>
+    <div class="row full-width q-px-none q-pt-lg" v-if="albumInfo">
       <div class="col-4 q-px-md" style="max-width: 230px">
         <q-img
           :src="getAlbumImage"
@@ -17,7 +17,7 @@
           <div class="col-12">
             <div class="row full-width">
               <div class="text-subtitle1 text-bold">
-                {{ albumInfo.albumArtist[0] }}
+                {{ albumInfo.albumArtist[0].name }}
               </div>
 
               <q-separator vertical spaced v-if="albumInfo.releaseDate"></q-separator>
@@ -42,53 +42,87 @@
 <!--      </div>-->
     </div>
 
-    <div class="q-pa-md">
-      <q-table
-        title="ALBUM METADATA"
-        :rows="albumMetadata"
-        :columns="albumMetadataColumns"
-        row-key="field"
-        virtual-scroll
-        hide-pagination
-        :pagination="pagination"
-      />
-    </div>
+    <div class="page-section-blur col-all q-mt-lg row q-pb-lg">
+      <div class="col-all q-pt-md q-px-md">
+        <q-table
+          title="ALBUM METADATA"
+          :rows="albumMetadata"
+          :columns="albumMetadataColumns"
+          row-key="field"
+          hide-pagination
+          :pagination="pagination"
+          class="transparent"
+          separator="none"
+          flat
+        >
+          <template v-slot:header="props">
+            <q-tr :props="props">
+              <q-th v-for="col in props.cols" :key="col.name" :props="props"
+                    class="text-grey border-bottom-thin">
+                {{ col.label }}
+              </q-th>
+            </q-tr>
+          </template>
+        </q-table>
+      </div>
 
-    <div class="q-pa-md">
-      <q-table
-        title="ALBUM ASSETS"
-        :rows="albumAssets"
-        :columns="albumAssetColumn"
-        row-key="name"
-        virtual-scroll
-        hide-pagination
-        :pagination="pagination"
-      >
-        <template v-slot:body-cell-id="props">
-          <q-td :props="props">
-            <div>
-              <q-btn :label="props.value.assetId"
-                     :href="props.value.url" target="_blank"
-                     unelevated></q-btn>
-            </div>
-            <div class="my-table-details">
-              {{ props.row.details }}
-            </div>
-          </q-td>
-        </template>
-      </q-table>
-    </div>
+      <div class="col-all q-pt-md q-px-md">
+        <q-table
+          title="ALBUM ASSETS"
+          :rows="albumAssets"
+          :columns="albumAssetColumn"
+          row-key="name"
+          hide-pagination
+          :pagination="pagination"
+          class="transparent"
+          separator="none"
+          flat
+        >
+          <template v-slot:header="props">
+            <q-tr :props="props">
+              <q-th v-for="col in props.cols" :key="col.name" :props="props"
+                    class="text-grey border-bottom-thin">
+                {{ col.label }}
+              </q-th>
+            </q-tr>
+          </template>
+          <template v-slot:body-cell-id="props">
+            <q-td :props="props">
+              <div>
+                <q-btn :label="props.value.assetId"
+                       :href="props.value.url" target="_blank"
+                       unelevated></q-btn>
+              </div>
+              <div class="my-table-details">
+                {{ props.row.details }}
+              </div>
+            </q-td>
+          </template>
+        </q-table>
+      </div>
 
-    <div class="q-pa-md">
-      <q-table
-        title="TRACKS"
-        :rows="trackList"
-        :columns="tracksColumn"
-        row-key="name"
-        virtual-scroll
-        hide-pagination
-        :pagination="pagination"
-      />
+      <div class="col-all q-pt-md q-px-md">
+        <q-table
+          title="TRACKS"
+          :rows="trackList"
+          :columns="tracksColumn"
+          row-key="name"
+          hide-pagination
+          :pagination="pagination"
+          class="transparent"
+          separator="none"
+          flat
+        >
+          <template v-slot:header="props">
+            <q-tr :props="props">
+              <q-th v-for="col in props.cols" :key="col.name" :props="props"
+                    class="text-grey border-bottom-thin">
+                {{ col.label }}
+              </q-th>
+            </q-tr>
+          </template>
+        </q-table>
+      </div>
     </div>
   </q-page>
 </template>
@@ -102,7 +136,8 @@ export default defineComponent({
 
 <script setup lang="ts">
 import {
-  outlinedOpenInNew
+  outlinedOpenInNew,
+  outlinedEdit
 } from '@quasar/extras/material-icons-outlined';
 
 import {computed, onMounted, onUpdated, ref} from 'vue';
@@ -111,8 +146,11 @@ import { AlbumApi } from 'app/music-data-service-api';
 import { AlbumReadDto, TrackReadDto, AssetReadDto } from 'app/music-data-service-api';
 import { useRouter } from 'vue-router';
 import { formatDuration, sumDurations } from 'src/utils/durationUtils';
+import {usePageContainerBgStyleStore} from "stores/pageContainerBg";
 
 const router = useRouter();
+
+const { setColors } = usePageContainerBgStyleStore();
 
 const albumApi = new AlbumApi(apiConfig);
 const albumInfo = ref<AlbumReadDto>();
@@ -125,7 +163,6 @@ const getAlbumImage = computed(() => {
     : albumInfo?.value?.thumbnail?.medium?.url
 })
 
-
 async function fetchAlbum(albumId: string): Promise<AlbumReadDto> {
   return albumApi.getAlbum({id: albumId});
 }
@@ -137,9 +174,10 @@ function setAlbumMetadata(albumData: AlbumReadDto) {
     'releaseConvention',
     'catalogNumber',
     'numberOfDiscs',
-    'website',
-    'albumArtist',
-    'dataSource'
+    /* TODO */
+    // 'website',
+    // 'albumArtist',
+    // 'dataSource'
   ]
 
   const albumDict = albumData as { [key: string]: string }
@@ -178,6 +216,7 @@ async function setAlbumPage() {
   albumMetadata.value =[];
 
   const albumData = await fetchAlbum(<string>router.currentRoute.value.params.albumId);
+  setColors(<string[]>albumData?.thumbnail?.colors);
   albumInfo.value = albumData;
   if (albumInfo.value?.tracks) {
     albumInfo.value?.tracks.sort((ta, tb) => {
@@ -196,9 +235,9 @@ onMounted(async () => {
   await setAlbumPage();
 })
 
-onUpdated(async () => {
-  await setAlbumPage();
-})
+// onUpdated(async () => {
+//   await setAlbumPage();
+// })
 
 const tracksColumn = [
   {

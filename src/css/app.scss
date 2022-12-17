@@ -33,3 +33,12 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #c1c1c1;
 }
+
+.border-bottom-thin {
+  border-bottom: gray 1px solid !important;
+}
+
+.page-section-blur {
+  backdrop-filter: blur(100px) !important;
+  background-color: rgba(0,0,0,0.25) !important;
+}
