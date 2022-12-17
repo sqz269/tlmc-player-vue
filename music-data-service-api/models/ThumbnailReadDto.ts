@@ -56,6 +56,12 @@ export interface ThumbnailReadDto {
      * @memberof ThumbnailReadDto
      */
     tiny?: AssetReadDto;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof ThumbnailReadDto
+     */
+    colors?: Array<string> | null;
 }
 
 /**
@@ -82,6 +88,7 @@ export function ThumbnailReadDtoFromJSONTyped(json: any, ignoreDiscriminator: bo
         'medium': !exists(json, 'medium') ? undefined : AssetReadDtoFromJSON(json['medium']),
         'small': !exists(json, 'small') ? undefined : AssetReadDtoFromJSON(json['small']),
         'tiny': !exists(json, 'tiny') ? undefined : AssetReadDtoFromJSON(json['tiny']),
+        'colors': !exists(json, 'colors') ? undefined : json['colors'],
     };
 }
 
@@ -99,6 +106,7 @@ export function ThumbnailReadDtoToJSON(value?: ThumbnailReadDto | null): any {
         'medium': AssetReadDtoToJSON(value.medium),
         'small': AssetReadDtoToJSON(value.small),
         'tiny': AssetReadDtoToJSON(value.tiny),
+        'colors': value.colors,
     };
 }
 
