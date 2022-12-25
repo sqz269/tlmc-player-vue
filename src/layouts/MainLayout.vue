@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh LpR fFf">
-    <q-header class="transparent" bordered>
+    <q-header id="header" bordered>
       <q-toolbar>
         <q-toolbar-title>
           <q-btn round dense flat size="lg" color="white" :icon="outlinedArrowBack" @click="back">
@@ -56,10 +56,10 @@
     </q-drawer>
 
     <q-drawer v-model="showQueue" side="right" :width="270">
-      <drawer-queue style="background: rgba(255,255,255,0.07)"></drawer-queue>
+      <drawer-queue id="queue-drawer"></drawer-queue>
     </q-drawer>
 
-    <q-page-container :style="{ backgroundImage: bgGradient }">
+    <q-page-container :style="{ background: bgGradient }" style="transition: background, 250ms, linear !important;">
       <router-view v-slot="{ Component }">
         <keep-alive include="HomePage">
           <component :is="Component"></component>
@@ -145,5 +145,16 @@ function toggleTheme() {
 #q-app > div > div:nth-child(3) > aside {
   background-color: rgba(0, 0, 0, 0.65);
   backdrop-filter: blur(500px);
+}
+
+#header {
+  background-color: rgba(56, 54, 54, 0.7);
+  backdrop-filter: blur(25px);
+}
+
+#queue-drawer {
+  /*background: rgba(255,255,255,0.07);*/
+  background-color: rgba(56, 54, 54, 0.7);
+  backdrop-filter: blur(25px);
 }
 </style>

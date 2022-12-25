@@ -1,5 +1,5 @@
 <template>
-  <q-item clickable v-ripple v-if="props.trackInfo">
+  <q-item class="transparent" clickable v-ripple v-if="props.trackInfo">
     <q-item-section avatar>
       <q-avatar square>
         <img :src="props.trackInfo.album.thumbnail.tiny.url">

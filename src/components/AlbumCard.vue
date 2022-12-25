@@ -62,6 +62,6 @@ const props = defineProps<{
   background-color: rgba(197, 193, 193, 0.4) !important;
   backdrop-filter: blur(200px) !important;
   color: #ffffff !important;
-  transition: background-color, color, backdrop-filter, 250ms linear !important;
+  transition: background-color, color, backdrop-filter, 200ms linear !important;
 }
 </style>

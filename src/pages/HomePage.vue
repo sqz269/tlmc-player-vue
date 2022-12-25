@@ -29,12 +29,16 @@ import {apiConfig} from 'boot/backend-api';
 import {onActivated, onDeactivated, onMounted, onUnmounted, ref} from 'vue';
 import AlbumCard from 'components/AlbumCard.vue';
 import {QInfiniteScroll} from 'quasar';
+import {queueController} from "boot/songQueue";
+import {usePageContainerBgStyleStore} from "stores/pageContainerBg";
 
 const infScroll = ref<QInfiniteScroll>();
 
 const albumApi = new AlbumApi(apiConfig);
 
 const displayAlbums = ref<AlbumReadDto[]>([])
+
+const { setColors } = usePageContainerBgStyleStore();
 
 function onLoad(index: number, done: (stop?: boolean) => void) {
   console.log(index)
@@ -60,5 +64,12 @@ onDeactivated(() => {
 
 onActivated(() => {
   infScroll.value?.resume();
+
+  if (queueController.currentlyPlaying !== undefined) {
+    const color = queueController.currentlyPlaying.album?.thumbnail?.colors;
+    if (color) {
+      setColors(color);
+    }
+  }
 })
 </script>
