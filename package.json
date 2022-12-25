@@ -9,7 +9,8 @@
     "lint": "eslint --ext .js,.ts,.vue ./",
     "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
     "test": "echo \"No test specified\" && exit 0",
-    "gen-client": "openapi-generator-cli.cmd generate -i http://staging.internal.com:31168/swagger/v1/swagger.json -o music-data-service-api -g typescript-fetch"
+    "gen-client-musicdata": "openapi-generator-cli.cmd generate -i http://staging.internal.com:31168/swagger/v1/swagger.json -o music-data-service-api -g typescript-fetch",
+    "gen-client-auth": "openapi-generator-cli.cmd generate -i http://staging.internal.com:31168/swagger/v1/swagger.json -o auth-service-api -g typescript-fetch"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",

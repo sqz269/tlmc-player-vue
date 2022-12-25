@@ -141,7 +141,7 @@ import {
 } from '@quasar/extras/material-icons-outlined';
 
 import {computed, onMounted, onUpdated, ref} from 'vue';
-import { apiConfig } from 'boot/backend-api';
+import { musicApiConfig } from 'boot/backend-api';
 import { AlbumApi } from 'app/music-data-service-api';
 import { AlbumReadDto, TrackReadDto, AssetReadDto } from 'app/music-data-service-api';
 import { useRouter } from 'vue-router';

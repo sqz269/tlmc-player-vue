@@ -25,7 +25,7 @@ export default defineComponent({
 
 <script setup lang="ts">
 import {AlbumApi, AlbumReadDto} from 'app/music-data-service-api';
-import {apiConfig} from 'boot/backend-api';
+import {musicApiConfig} from 'boot/backend-api';
 import {onActivated, onDeactivated, onMounted, onUnmounted, ref} from 'vue';
 import AlbumCard from 'components/AlbumCard.vue';
 import {QInfiniteScroll} from 'quasar';
@@ -34,7 +34,7 @@ import {usePageContainerBgStyleStore} from "stores/pageContainerBg";
 
 const infScroll = ref<QInfiniteScroll>();
 
-const albumApi = new AlbumApi(apiConfig);
+const albumApi = new AlbumApi(musicApiConfig);
 
 const displayAlbums = ref<AlbumReadDto[]>([])
 
