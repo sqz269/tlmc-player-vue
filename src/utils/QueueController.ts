@@ -1,10 +1,9 @@
 import {ref, WatchCallback} from 'vue';
-import {AlbumApi, TrackReadDto} from 'app/music-data-service-api';
+import {AlbumApi, TrackReadDto} from 'app/backend-service-api';
 import {watch} from 'vue';
-import {musicApiConfig} from 'boot/backend-api';
+import {apiConfig} from 'boot/backend-api';
 import {AudioController} from 'src/utils/AudioController';
 import {audioController} from 'boot/audioController';
-import {Track} from "app/music-data-service-api/models/Track";
 
 class QueueController {
   private _prevSongHistoryLen: number;
@@ -18,7 +17,7 @@ class QueueController {
   private _audioController: AudioController;
 
   constructor() {
-    this._albumApi = new AlbumApi(musicApiConfig);
+    this._albumApi = new AlbumApi(apiConfig);
     this._audioController = audioController;
 
     this._prevQueueLen = this._queue.value.length;

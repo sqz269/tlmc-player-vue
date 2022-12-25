@@ -141,9 +141,9 @@ import {
 } from '@quasar/extras/material-icons-outlined';
 
 import {computed, onMounted, onUpdated, ref} from 'vue';
-import { musicApiConfig } from 'boot/backend-api';
-import { AlbumApi } from 'app/music-data-service-api';
-import { AlbumReadDto, TrackReadDto, AssetReadDto } from 'app/music-data-service-api';
+import { apiConfig } from 'boot/backend-api';
+import { AlbumApi } from "app/backend-service-api";
+import { AlbumReadDto, TrackReadDto, AssetReadDto } from "app/backend-service-api";
 import { useRouter } from 'vue-router';
 import { formatDuration, sumDurations } from 'src/utils/durationUtils';
 import {usePageContainerBgStyleStore} from "stores/pageContainerBg";

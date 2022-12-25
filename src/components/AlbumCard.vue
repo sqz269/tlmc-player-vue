@@ -30,7 +30,7 @@ export default {
 
 <script setup lang="ts">
 import {defineProps, ref, watch} from 'vue';
-import { AlbumReadDto } from 'app/music-data-service-api';
+import { AlbumReadDto } from "app/backend-service-api";
 import {useRouter} from 'vue-router';
 
 const hovering = ref(false);

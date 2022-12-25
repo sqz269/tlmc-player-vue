@@ -1,18 +1,14 @@
 import { boot } from 'quasar/wrappers'
-import { Configuration as MusicApiConfiguration } from 'app/music-data-service-api';
-import { Configuration as AuthApiConfiguration } from "app/auth-service-api";
+
+import {Configuration} from "app/backend-service-api";
 
 const BASE_PATH = 'http://192.168.29.117:31168';
 
-const musicApiConfig = new MusicApiConfiguration({
+const apiConfig = new Configuration({
   // basePath: 'http://10.8.0.1:30007',
   basePath: BASE_PATH
   // basePath: 'https://music.marisad.me'
   // basePath: 'http://localhost:5217'
-});
-
-const authApiConfig = new AuthApiConfiguration({
-  basePath: BASE_PATH
 });
 
 // "async" is optional;
@@ -22,4 +18,4 @@ export default boot(async ({ app}) => {
   // app.config.globalProperties.$musicApi = apiConfig
 })
 
-export { musicApiConfig, authApiConfig }
+export { apiConfig }

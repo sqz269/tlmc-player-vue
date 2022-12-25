@@ -156,9 +156,9 @@ import {
 } from '@quasar/extras/material-icons-outlined';
 
 import {computed, onMounted, onUpdated, ref} from 'vue';
-import { musicApiConfig } from 'boot/backend-api';
-import {AlbumApi, OriginalTrackReadDto} from 'app/music-data-service-api';
-import { AlbumReadDto, TrackReadDto } from 'app/music-data-service-api';
+import { apiConfig } from 'boot/backend-api';
+import {AlbumApi, OriginalTrackReadDto} from "app/backend-service-api";
+import { AlbumReadDto, TrackReadDto } from "app/backend-service-api";
 import { useRouter } from 'vue-router';
 import { formatDuration, sumDurations } from 'src/utils/durationUtils';
 import {useQuasar} from 'quasar';
@@ -170,7 +170,7 @@ const q = useQuasar();
 const { setColors } = usePageContainerBgStyleStore();
 
 const hoveringWhich = ref<number>();
-const albumApi = new AlbumApi(musicApiConfig);
+const albumApi = new AlbumApi(apiConfig);
 const albumInfo = ref<AlbumReadDto>();
 const trackList = ref<TrackReadDto[]>();
 
