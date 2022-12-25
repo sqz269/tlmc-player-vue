@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh LpR fFf">
-    <q-header bordered>
+    <q-header id="header" bordered>
       <q-toolbar>
         <q-toolbar-title>
           <q-btn round dense flat size="lg" color="white" :icon="outlinedArrowBack" @click="back">
@@ -56,10 +56,10 @@
     </q-drawer>
 
     <q-drawer v-model="showQueue" side="right" :width="270">
-      <drawer-queue></drawer-queue>
+      <drawer-queue id="queue-drawer"></drawer-queue>
     </q-drawer>
 
-    <q-page-container>
+    <q-page-container :style="{ background: bgGradient }" style="transition: background, 250ms, linear !important;">
       <router-view v-slot="{ Component }">
         <keep-alive include="HomePage">
           <component :is="Component"></component>
@@ -97,12 +97,15 @@ import {
 import {computed, ref} from 'vue';
 import { useQuasar, setCssVar } from 'quasar';
 import PlayerControl from 'components/PlayerControl.vue';
-import {MediaSessionController} from 'src/utils/MediaSessionController';
 import {useQueueDisplayStore} from 'stores/showQueue';
 import DrawerQueue from "components/DrawerQueue.vue";
 import {useRouter} from "vue-router";
+import {usePageContainerBgStyleStore} from "stores/pageContainerBg";
+import {storeToRefs} from "pinia";
 
 const router = useRouter();
+
+const containerBg = usePageContainerBgStyleStore();
 
 const back = () => {
   router.back();
@@ -111,6 +114,10 @@ const back = () => {
 const forward = () => {
   router.forward();
 }
+
+const bgGradient = computed(() => {
+  return `linear-gradient(180deg, ${containerBg.getGradient1} 0%, ${containerBg.getGradient2} 30%, rgba(0,0,0,1) 50%)`;
+});
 
 const queueDisplayStore = useQueueDisplayStore();
 
@@ -133,3 +140,21 @@ function toggleTheme() {
 }
 
 </script>
+
+<style>
+#q-app > div > div:nth-child(3) > aside {
+  background-color: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(500px);
+}
+
+#header {
+  background-color: rgba(56, 54, 54, 0.7);
+  backdrop-filter: blur(25px);
+}
+
+#queue-drawer {
+  /*background: rgba(255,255,255,0.07);*/
+  background-color: rgba(56, 54, 54, 0.7);
+  backdrop-filter: blur(25px);
+}
+</style>
