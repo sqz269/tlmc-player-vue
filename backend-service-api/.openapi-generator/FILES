@@ -10,6 +10,7 @@ models/AlbumReadDto.ts
 models/AlbumReadDtoActionResult.ts
 models/AlbumWriteDto.ts
 models/AssetReadDto.ts
+models/AuthToken.ts
 models/CircleReadDto.ts
 models/JwtKeyResponse.ts
 models/JwtRenewResult.ts

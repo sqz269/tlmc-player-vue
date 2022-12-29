@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AuthToken } from './AuthToken';
+import {
+    AuthTokenFromJSON,
+    AuthTokenFromJSONTyped,
+    AuthTokenToJSON,
+} from './AuthToken';
+
 /**
  * 
  * @export
@@ -33,10 +40,10 @@ export interface LoginResult {
     refreshToken?: string | null;
     /**
      * 
-     * @type {Array<string>}
+     * @type {AuthToken}
      * @memberof LoginResult
      */
-    roles?: Array<string> | null;
+    authInfo?: AuthToken;
 }
 
 /**
@@ -60,7 +67,7 @@ export function LoginResultFromJSONTyped(json: any, ignoreDiscriminator: boolean
         
         'jwtToken': !exists(json, 'jwtToken') ? undefined : json['jwtToken'],
         'refreshToken': !exists(json, 'refreshToken') ? undefined : json['refreshToken'],
-        'roles': !exists(json, 'roles') ? undefined : json['roles'],
+        'authInfo': !exists(json, 'authInfo') ? undefined : AuthTokenFromJSON(json['authInfo']),
     };
 }
 
@@ -75,7 +82,7 @@ export function LoginResultToJSON(value?: LoginResult | null): any {
         
         'jwtToken': value.jwtToken,
         'refreshToken': value.refreshToken,
-        'roles': value.roles,
+        'authInfo': AuthTokenToJSON(value.authInfo),
     };
 }
 

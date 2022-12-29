@@ -4,6 +4,7 @@ export * from './AlbumReadDto';
 export * from './AlbumReadDtoActionResult';
 export * from './AlbumWriteDto';
 export * from './AssetReadDto';
+export * from './AuthToken';
 export * from './CircleReadDto';
 export * from './JwtKeyResponse';
 export * from './JwtRenewResult';

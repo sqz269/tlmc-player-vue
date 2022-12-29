@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AuthToken } from './AuthToken';
+import {
+    AuthTokenFromJSON,
+    AuthTokenFromJSONTyped,
+    AuthTokenToJSON,
+} from './AuthToken';
+
 /**
  * 
  * @export
@@ -25,6 +32,12 @@ export interface JwtRenewResult {
      * @memberof JwtRenewResult
      */
     token?: string | null;
+    /**
+     * 
+     * @type {AuthToken}
+     * @memberof JwtRenewResult
+     */
+    authInfo?: AuthToken;
 }
 
 /**
@@ -47,6 +60,7 @@ export function JwtRenewResultFromJSONTyped(json: any, ignoreDiscriminator: bool
     return {
         
         'token': !exists(json, 'token') ? undefined : json['token'],
+        'authInfo': !exists(json, 'authInfo') ? undefined : AuthTokenFromJSON(json['authInfo']),
     };
 }
 
@@ -60,6 +74,7 @@ export function JwtRenewResultToJSON(value?: JwtRenewResult | null): any {
     return {
         
         'token': value.token,
+        'authInfo': AuthTokenToJSON(value.authInfo),
     };
 }
 

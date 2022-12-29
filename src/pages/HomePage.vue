@@ -50,6 +50,7 @@ function onLoad(index: number, done: (stop?: boolean) => void) {
 }
 
 onMounted(async () => {
+  infScroll.value?.stop();
   console.log(`Fetch (Exist ${displayAlbums.value.length})`);
   displayAlbums.value.push(...await albumApi.getAlbums({limit: 50}))
 })
@@ -63,7 +64,7 @@ onDeactivated(() => {
 })
 
 onActivated(() => {
-  infScroll.value?.resume();
+  // infScroll.value?.resume();
 
   if (queueController.currentlyPlaying !== undefined) {
     const color = queueController.currentlyPlaying.album?.thumbnail?.colors;
