@@ -1,12 +1,13 @@
 import {ref, WatchCallback} from 'vue';
-import {AlbumApi, TrackReadDto} from 'app/music-data-service-api';
+import {AlbumApi, TrackReadDto} from 'app/backend-service-api';
 import {watch} from 'vue';
-import {apiConfig} from 'boot/backend-api';
 import {AudioController} from 'src/utils/AudioController';
 import {audioController} from 'boot/audioController';
-import {Track} from "app/music-data-service-api/models/Track";
+import {ApiConfigProvider} from "src/utils/ApiConfigProvider";
 
 class QueueController {
+  private static _instance: QueueController | null = null;
+
   private _prevSongHistoryLen: number;
   private _songHistory = ref<TrackReadDto[]>([]);
   private _prevQueueLen: number;
@@ -17,7 +18,9 @@ class QueueController {
 
   private _audioController: AudioController;
 
-  constructor() {
+  private constructor() {
+     const apiConfig = ApiConfigProvider.getInstance().getApiConfig();
+
     this._albumApi = new AlbumApi(apiConfig);
     this._audioController = audioController;
 
@@ -164,6 +167,14 @@ class QueueController {
     }
 
     this._queue.value.push(track);
+  }
+
+  public static getInstance() : QueueController {
+    if (this._instance === null) {
+      this._instance = new QueueController();
+    }
+
+    return this._instance;
   }
 }
 

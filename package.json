@@ -9,8 +9,7 @@
     "lint": "eslint --ext .js,.ts,.vue ./",
     "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
     "test": "echo \"No test specified\" && exit 0",
-    "gen-client-musicdata": "openapi-generator-cli.cmd generate -i http://staging.internal.com:31168/swagger/v1/swagger.json -o music-data-service-api -g typescript-fetch",
-    "gen-client-auth": "openapi-generator-cli.cmd generate -i http://staging.internal.com:31168/swagger/v1/swagger.json -o auth-service-api -g typescript-fetch"
+    "gen-client": "openapi-merge-cli && openapi-generator-cli.cmd generate -i .output.swagger.json -o backend-service-api -g typescript-fetch"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
@@ -34,6 +33,7 @@
     "eslint": "8.22.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-vue": "^9.0.0",
+    "openapi-merge-cli": "^1.3.1",
     "prettier": "^2.5.1",
     "typescript": "^4.5.4"
   },

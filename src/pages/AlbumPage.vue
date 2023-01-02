@@ -113,12 +113,17 @@
                 {{props.value}}
               </q-td>
               <q-menu
+                class="bg-black border border-white"
+
                 touch-position
                 context-menu
               >
-                <q-list style="min-width: 100px">
+                <q-list style="min-width: 150px;">
                   <q-item clickable v-close-popup>
-                    <q-item-section>Add to Queue</q-item-section>
+                    <q-item-section @click="playTrack(props.key, true, false)">Play Next</q-item-section>
+                  </q-item>
+                  <q-item clickable v-close-popup>
+                    <q-item-section @click="playTrack(props.key, false, false)">Add to Queue</q-item-section>
                   </q-item>
                   <q-item clickable v-close-popup>
                     <q-item-section>Add to Playlist</q-item-section>
@@ -156,25 +161,27 @@ import {
 } from '@quasar/extras/material-icons-outlined';
 
 import {computed, onMounted, onUpdated, ref} from 'vue';
-import { musicApiConfig } from 'boot/backend-api';
-import {AlbumApi, OriginalTrackReadDto} from 'app/music-data-service-api';
-import { AlbumReadDto, TrackReadDto } from 'app/music-data-service-api';
+import {AlbumApi, OriginalTrackReadDto} from "app/backend-service-api";
+import { AlbumReadDto, TrackReadDto } from "app/backend-service-api";
 import { useRouter } from 'vue-router';
 import { formatDuration, sumDurations } from 'src/utils/durationUtils';
 import {useQuasar} from 'quasar';
-import {queueController} from 'boot/songQueue';
 import {usePageContainerBgStyleStore} from "stores/pageContainerBg";
+import {ApiConfigProvider} from "src/utils/ApiConfigProvider";
+import {QueueController} from "src/utils/QueueController";
 
 const router = useRouter();
 const q = useQuasar();
 const { setColors } = usePageContainerBgStyleStore();
 
 const hoveringWhich = ref<number>();
-const albumApi = new AlbumApi(musicApiConfig);
+
+const apiConfig = ApiConfigProvider.getInstance().getApiConfig();
+const albumApi = new AlbumApi(apiConfig);
 const albumInfo = ref<AlbumReadDto>();
 const trackList = ref<TrackReadDto[]>();
 
-const songQueue = queueController;
+const songQueue = QueueController.getInstance();
 
 const getAlbumImage = computed(() => {
   return albumInfo?.value?.thumbnail?.medium?.url === null ?
@@ -203,7 +210,7 @@ function playAlbum() {
   songQueue.addTrackToQueueByIdBatch(toadd, true, true);
 }
 
-async function playTrack(trackId: string) {
+async function playTrack(trackId: string, addToFront=true, playImmediately=true) {
   let trackToPlay = null;
   if (!trackList.value) {
     alert('Empty Tracklist');
@@ -222,7 +229,7 @@ async function playTrack(trackId: string) {
     return;
   }
 
-  await songQueue.addTrackToQueueById(<string> trackToPlay.id, true, true);
+  await songQueue.addTrackToQueueById(<string> trackToPlay.id, addToFront, playImmediately);
   q.notify({
     position: 'top',
     type: 'secondary',

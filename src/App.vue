@@ -12,9 +12,13 @@ export default defineComponent({
 
 <script setup lang="ts">
 import {onMounted} from 'vue';
-import {queueController} from 'boot/songQueue';
+import {useAuthStore} from "stores/authDataStore";
+import {QueueController} from "src/utils/QueueController";
 
 onMounted(() => {
-  queueController.init();
+  let authStore = useAuthStore();
+  authStore.loadAuthFromLocalStorage();
+
+  QueueController.getInstance().init();
 })
 </script>

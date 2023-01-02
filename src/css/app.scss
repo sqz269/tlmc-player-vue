@@ -1,4 +1,22 @@
 // app global css in SCSS form
+
+// -- Change input validation error color
+.q-input .text-negative
+{
+  color: #ff5c6c !important
+}
+.q-field--error .q-field__bottom
+{
+  color: #ff5c6c !important;
+}
+// --
+
+// -- Dialog backdrop blur
+.q-dialog__backdrop
+{
+  backdrop-filter: blur(7px);
+}
+
 .disabled, .disabled *{
   cursor: auto !important;
 }

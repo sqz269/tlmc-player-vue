@@ -24,17 +24,21 @@ export default defineComponent({
 </script>
 
 <script setup lang="ts">
-import {AlbumApi, AlbumReadDto} from 'app/music-data-service-api';
-import {musicApiConfig} from 'boot/backend-api';
+import {AlbumApi, AlbumReadDto} from "app/backend-service-api";
 import {onActivated, onDeactivated, onMounted, onUnmounted, ref} from 'vue';
 import AlbumCard from 'components/AlbumCard.vue';
 import {QInfiniteScroll} from 'quasar';
-import {queueController} from "boot/songQueue";
+
 import {usePageContainerBgStyleStore} from "stores/pageContainerBg";
+import {ApiConfigProvider} from "src/utils/ApiConfigProvider";
+import {QueueController} from "src/utils/QueueController";
 
 const infScroll = ref<QInfiniteScroll>();
 
-const albumApi = new AlbumApi(musicApiConfig);
+const queueController = QueueController.getInstance();
+
+const apiConfig = ApiConfigProvider.getInstance().getApiConfig();
+const albumApi = new AlbumApi(apiConfig);
 
 const displayAlbums = ref<AlbumReadDto[]>([])
 
@@ -64,7 +68,6 @@ onDeactivated(() => {
 
 onActivated(() => {
   infScroll.value?.resume();
-
   if (queueController.currentlyPlaying !== undefined) {
     const color = queueController.currentlyPlaying.album?.thumbnail?.colors;
     if (color) {

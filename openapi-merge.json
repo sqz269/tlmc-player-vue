@@ -1,0 +1,11 @@
+{
+  "inputs": [
+    {
+      "inputURL": "http://localhost:10956/swagger/v1/swagger.json"
+    },
+    {
+      "inputURL": "http://localhost:12392/swagger/v1/swagger.json"
+    }
+  ],
+  "output": "./.output.swagger.json"
+}

@@ -4,7 +4,7 @@ import {stat} from "fs";
 export const usePageContainerBgStyleStore = defineStore('pageContainerBgStyleStore', {
   state: () => ({
     gradient1: '000000FF',
-    gradient2: 'FFFFFFFF'
+    gradient2: '000000FF'
   }),
 
   actions: {

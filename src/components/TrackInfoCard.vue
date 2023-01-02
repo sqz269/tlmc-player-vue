@@ -30,9 +30,10 @@ import {
   outlinedPlaylistAddCircle,
   outlinedFavoriteBorder
 } from '@quasar/extras/material-icons-outlined';
-import {queueController} from 'boot/songQueue';
+import {QueueController} from "src/utils/QueueController";
 
-const songQueue = queueController;
+
+const songQueue = QueueController.getInstance();
 
 // songQueue.$subscribe((mutation, state) => {
 //   console.log(mutation.storeId)

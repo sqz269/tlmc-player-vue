@@ -4,10 +4,8 @@
       <q-toolbar>
         <q-toolbar-title>
           <q-btn round dense flat size="lg" color="white" :icon="outlinedArrowBack" @click="back">
-            <q-tooltip>Back</q-tooltip>
           </q-btn>
           <q-btn round dense flat size="lg" color="white" :icon="outlinedArrowForward" @click="forward">
-            <q-tooltip>Forward</q-tooltip>
           </q-btn>
         </q-toolbar-title>
 
@@ -22,30 +20,7 @@
                  v-if="$q.screen.gt.sm" @click="toggleTheme">
             <q-tooltip>Toggle</q-tooltip>
           </q-btn>
-          <q-btn-dropdown rounded label="sqz269" style="width: 150px">
-            <q-list>
-              <q-item clickable v-close-popup>
-                <q-item-section>
-                  <q-item-label>Account</q-item-label>
-                </q-item-section>
-              </q-item>
-
-              <q-item clickable v-close-popup>
-                <q-item-section>
-                  <q-item-label>Settings</q-item-label>
-                </q-item-section>
-              </q-item>
-
-              <q-separator class="q-my-md" />
-
-              <q-item clickable v-close-popup>
-                <q-item-section>
-                  <q-item-label>Logout</q-item-label>
-                </q-item-section>
-              </q-item>
-
-            </q-list>
-          </q-btn-dropdown>
+          <UserAccountButton></UserAccountButton>
         </div>
       </q-toolbar>
 
@@ -102,6 +77,7 @@ import DrawerQueue from "components/DrawerQueue.vue";
 import {useRouter} from "vue-router";
 import {usePageContainerBgStyleStore} from "stores/pageContainerBg";
 import {storeToRefs} from "pinia";
+import UserAccountButton from "components/UserAccountButton.vue";
 
 const router = useRouter();
 
@@ -144,7 +120,6 @@ function toggleTheme() {
 <style>
 #q-app > div > div:nth-child(3) > aside {
   background-color: rgba(0, 0, 0, 0.65);
-  backdrop-filter: blur(500px);
 }
 
 #header {
@@ -154,7 +129,7 @@ function toggleTheme() {
 
 #queue-drawer {
   /*background: rgba(255,255,255,0.07);*/
-  background-color: rgba(56, 54, 54, 0.7);
-  backdrop-filter: blur(25px);
+  background-color: rgba(56, 54, 54, 0.63);
+  /*backdrop-filter: blur(25px);*/
 }
 </style>

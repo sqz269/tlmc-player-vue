@@ -30,7 +30,7 @@ export default {
 
 <script setup lang="ts">
 import {defineProps, ref, watch} from 'vue';
-import { AlbumReadDto } from 'app/music-data-service-api';
+import { AlbumReadDto } from "app/backend-service-api";
 import {useRouter} from 'vue-router';
 
 const hovering = ref(false);
@@ -54,14 +54,12 @@ const props = defineProps<{
 <style>
 .album-card {
   background-color: rgba(0, 0, 0, 0.53) !important;
-  backdrop-filter: blur(300px);
 }
 
 .album-card:hover {
   box-shadow: 0px 0px 15px rgba(33,33,33,.2) !important;
   background-color: rgba(197, 193, 193, 0.4) !important;
-  backdrop-filter: blur(200px) !important;
   color: #ffffff !important;
-  transition: background-color, color, backdrop-filter, 200ms linear !important;
+  transition: background-color, color, 200ms linear !important;
 }
 </style>
