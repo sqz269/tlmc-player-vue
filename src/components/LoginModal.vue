@@ -1,5 +1,7 @@
 <template>
   <q-dialog
+    v-model="show"
+
     transition-show="fade"
     transition-hide="fade"
     position="top"
@@ -33,7 +35,7 @@
             />
 
             <div>
-              <q-btn label="Login" type="submit" class="full-width" size="lg" style="background-color: rgba(255,255,255,0.32)"/>
+              <q-btn label="Login" type="submit" class="full-width" size="lg" style="background-color: rgba(255,255,255,0.2)"/>
             </div>
             <q-separator></q-separator>
 
@@ -60,8 +62,50 @@ export default defineComponent({
 import {ref} from 'vue';
 import {useQuasar} from 'quasar';
 import RegistrationModal from 'components/RegistrationModal.vue';
+import {LoginRequest, LoginResult, ProblemDetails, UserApi} from "app/backend-service-api";
+import {useAuthStore} from "stores/authDataStore";
+import {ApiConfigProvider} from "src/utils/ApiConfigProvider";
 
-const onSubmit = ref();
+const { setAuthFromLoginResult } = useAuthStore();
+
+const show = ref(false);
+
+const apiConfig = ApiConfigProvider.getInstance().getApiConfig(false);
+const userApi = new UserApi(apiConfig);
+
+const onSubmit = (evt: SubmitEvent | Event) => {
+  evt.preventDefault();
+
+  const payload: LoginRequest = {
+    userCredentialsDto: {
+      userName: username.value,
+      password: password.value
+    }
+  };
+
+  userApi.login(payload)
+    .then((result: LoginResult) => {
+      $q.notify({
+        message: 'Logged in',
+        color: 'positive',
+        position: 'top',
+        timeout: 7000
+      });
+
+      setAuthFromLoginResult(result);
+
+      show.value = false;
+    })
+    .catch((result) => result.response.json().then((r: ProblemDetails) => {
+      $q.notify({
+        message: r.detail!,
+        color: 'negative',
+        position: 'top',
+        caption: 'Error when logging in',
+        timeout: 7000
+      });
+    }));
+};
 
 const username = ref();
 const password = ref();

@@ -1,10 +1,10 @@
 <template>
   <div class="q-mx-md">
     <div>
-      <q-btn v-if="!authController.isLoggedIn()" @click="showLoginDialog" outline text-color="white" label="Login" size="md" style="width: 100px" />
+      <q-btn v-if="!isLoggedInReactive" @click="showLoginDialog" outline text-color="white" label="Login" size="md" style="width: 100px" />
     </div>
 
-    <q-btn-dropdown v-if="authController.isLoggedIn()" rounded :label="authController.username" style="width: 150px">
+    <q-btn-dropdown v-if="isLoggedInReactive" rounded :label="getUsername" style="width: 150px">
       <q-list>
         <q-item clickable v-close-popup>
           <q-item-section>
@@ -33,8 +33,14 @@
 
 <script lang="ts" setup>
 import LoginModal from 'components/LoginModal.vue'
-import {authController} from "boot/authController";
 import {useQuasar} from "quasar";
+import {useAuthStore} from "stores/authDataStore";
+import {computed} from "vue";
+import {storeToRefs} from "pinia";
+
+const { isLoggedIn, getUsername } = useAuthStore();
+
+const isLoggedInReactive = computed(() => isLoggedIn);
 
 const $q = useQuasar();
 const showLoginDialog = () => {

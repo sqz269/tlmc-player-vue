@@ -46,11 +46,13 @@ import {
 import {computed, ref} from 'vue';
 import {audioController} from 'boot/audioController';
 import {durationToSeconds, formatDuration, secondsToDuration} from 'src/utils/durationUtils';
-import {queueController} from 'boot/songQueue';
+import {QueueController} from "src/utils/QueueController";
 
 const currentTime = ref(0);
-const songQueue = queueController;
+const songQueue = QueueController.getInstance();
 const isPanningProgress = ref(false);
+
+const queueController = QueueController.getInstance();
 
 queueController.watchCurrentlyPlaying(() => {
   return;

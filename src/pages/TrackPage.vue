@@ -100,11 +100,11 @@ import {
 
 
 import { useRouter } from 'vue-router';
-import { apiConfig } from 'boot/backend-api';
 import { AlbumApi } from "app/backend-service-api";
-import { AlbumReadDto, TrackReadDto, OriginalTrackReadDto } from 'app/music-data-service-api';
+import { AlbumReadDto, TrackReadDto, OriginalTrackReadDto } from 'app/backend-service-api';
 import { computed, onMounted, onUpdated, ref } from 'vue';
 import { formatDuration } from 'src/utils/durationUtils';
+import {ApiConfigProvider} from "src/utils/ApiConfigProvider";
 
 type Metadata = { name: string, value: string };
 
@@ -146,6 +146,7 @@ const pagination = {
 
 const router = useRouter();
 
+const apiConfig = ApiConfigProvider.getInstance().getApiConfig();
 const trackApi = new AlbumApi(apiConfig);
 const trackInfo = ref<TrackReadDto>();
 const albumInfo = ref<AlbumReadDto>();

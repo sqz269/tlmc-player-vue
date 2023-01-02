@@ -3,6 +3,8 @@
     transition-show="fade"
     transition-hide="fade"
     position="top"
+
+    v-model="show"
   >
     <q-card bordered class="q-mt-lg" style="width: 700px; max-width: 80vw; background-color: rgba(66,66,66,0.97); ">
       <q-card-section>
@@ -87,8 +89,47 @@ export default defineComponent({
 
 <script lang="ts" setup>
 import {ref} from "vue";
+import {UserApi, RegisterRequest, ProblemDetails} from "app/backend-service-api";
+import {QDialog, useQuasar} from "quasar";
+import {ApiConfigProvider} from "src/utils/ApiConfigProvider";
 
-const onSubmit = ref();
+const show = ref(false);
+
+const apiConfig = ApiConfigProvider.getInstance().getApiConfig(false);
+const userApi = new UserApi(apiConfig);
+const $q = useQuasar();
+
+const onSubmit = (evt: SubmitEvent) => {
+  evt.preventDefault();
+
+  const payload: RegisterRequest = {
+    userCredentialsDto: {
+      userName: username.value,
+      password: password.value
+    }
+  };
+
+  console.log('Submitting Register Request');
+  userApi.register(payload)
+    .then((result) => {
+      $q.notify({
+        message: 'Account Created',
+        color: 'positive',
+        position: 'top',
+        timeout: 7000
+      });
+      show.value = false;
+    })
+    .catch((result) => result.response.json().then((r: ProblemDetails) => {
+      $q.notify({
+        message: r.detail!,
+        color: 'negative',
+        position: 'top',
+        caption: 'Error when creating an account',
+        timeout: 7000
+      });
+    }));
+};
 
 const usernameValidator = new RegExp('^[A-Za-z\\d\\-_.]{4,16}$');
 const passwordValidator = new RegExp('^.{6,64}$');
