@@ -1,0 +1,32 @@
+.bg-gt {
+  color: #A4925A !important;
+}
+
+.bg-transparent {
+  background-color: transparent !important;
+}
+
+.bg-grey-2-a-40 {
+  background-color: rgba(117, 117, 117, 0.33) !important;
+  backdrop-filter: blur(10px);
+}
+
+.bg-black-a-50 {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.bg-black-a-75 {
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+.bg-black-a-90 {
+  background-color: rgba(0, 0, 0, 0.90);
+}
+
+.bg-filter-blur-10 {
+  backdrop-filter: blur(10px);
+}
+
+.text-gt {
+  color: #A4925A !important;
+}

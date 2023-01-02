@@ -19,7 +19,7 @@
               :active="currentPath === link.route.name"
               active-class="text-white bg-grey-8 text-weight-bolder">
         <q-item-section avatar>
-          <q-icon :name="link.icon" size="32px"/>
+          <q-icon :name="link.icon" size="24px"/>
         </q-item-section>
         <q-item-section>
           <q-item-label>
@@ -30,7 +30,24 @@
         </q-item-section>
       </q-item>
 
-      <q-separator class="q-my-md" />
+      <q-separator class="q-my-sm" />
+
+      <q-item v-for="link in collectionNavigations" :key="link.text"
+              v-ripple clickable :inset-level=0.3
+              :to="link.route" exact
+              :active="currentPath === link.route.name"
+              active-class="text-white bg-grey-8 text-weight-bolder">
+        <q-item-section avatar>
+          <q-icon :name="link.icon" size="24px"/>
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>
+            <span class="text-weight-medium">
+              {{link.text}}
+            </span>
+          </q-item-label>
+        </q-item-section>
+      </q-item>
 
       <q-item v-ripple clickable :inset-level=0.3>
         <q-item-section avatar>
@@ -79,7 +96,9 @@ import {
   outlinedPlaylistPlay,
   outlinedSearch,
   outlinedLibraryMusic,
-  outlinedRadio
+  outlinedRadio,
+  outlinedFavoriteBorder,
+  outlinedHistory
 } from '@quasar/extras/material-icons-outlined'
 import {useRouter} from 'vue-router';
 import {computed} from 'vue';
@@ -102,14 +121,27 @@ const navigations = [
     route: { name: 'search' }
   },
   {
+    text: 'Radio',
+    icon: outlinedRadio,
+    route: { name: 'radio' }
+  }
+]
+
+const collectionNavigations = [
+  {
     text: 'Library',
     icon: outlinedLibraryMusic,
     route: { name: 'library' }
   },
   {
-    text: 'Radio',
-    icon: outlinedRadio,
-    route: { name: 'radio' }
+    text: 'History',
+    icon: outlinedHistory,
+    route: { name: 'history' }
+  },
+  {
+    text: 'Favorite',
+    icon: outlinedFavoriteBorder,
+    route: { name: 'favorite' }
   }
 ]
 

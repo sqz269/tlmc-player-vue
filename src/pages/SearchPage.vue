@@ -20,15 +20,4 @@ export default defineComponent({
 </script>
 
 <script setup lang="ts">
-import {
-  outlinedPlayArrow,
-  outlinedMoreHoriz,
-  outlinedStarBorder
-} from '@quasar/extras/material-icons-outlined';
-
-import { onMounted, onUpdated, ref } from 'vue';
-import { apiConfig } from 'boot/backend-api';
-import { AlbumApi } from "app/backend-service-api";
-import { AlbumReadDto, TrackReadDto } from "app/backend-service-api";
-
 </script>

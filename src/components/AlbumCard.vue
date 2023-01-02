@@ -53,7 +53,7 @@ const props = defineProps<{
 
 <style>
 .album-card {
-  background-color: rgba(0, 0, 0, 0.53) !important;
+  background-color: rgba(0, 0, 0, 0.50) !important;
 }
 
 .album-card:hover {

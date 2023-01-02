@@ -12,14 +12,14 @@
         <q-space />
 
         <div class="q-gutter-sm row items-center no-wrap">
-          <q-btn round dense flat :icon="outlinedInfo" v-if="$q.screen.gt.sm" @click="queueDisplayStore.toggle()">
-            <q-tooltip>About This Site</q-tooltip>
+          <q-btn round dense flat :icon="outlinedInfo" v-if="$q.screen.gt.sm">
+            <q-tooltip>About</q-tooltip>
           </q-btn>
-          <q-btn round dense flat
-                 :icon="q.dark.isActive ? outlinedDarkMode : outlinedLightMode"
-                 v-if="$q.screen.gt.sm" @click="toggleTheme">
-            <q-tooltip>Toggle</q-tooltip>
+
+          <q-btn round dense flat :icon="outlinedSettings" v-if="$q.screen.gt.sm">
+            <q-tooltip>Settings</q-tooltip>
           </q-btn>
+
           <UserAccountButton></UserAccountButton>
         </div>
       </q-toolbar>
@@ -66,7 +66,8 @@ import {
   outlinedArrowForward,
   outlinedArrowBack,
   outlinedLightMode,
-  outlinedDarkMode
+  outlinedDarkMode,
+  outlinedSettings
 } from '@quasar/extras/material-icons-outlined';
 
 import {computed, ref} from 'vue';

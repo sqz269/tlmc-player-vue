@@ -141,17 +141,18 @@ import {
 } from '@quasar/extras/material-icons-outlined';
 
 import {computed, onMounted, onUpdated, ref} from 'vue';
-import { apiConfig } from 'boot/backend-api';
 import { AlbumApi } from "app/backend-service-api";
 import { AlbumReadDto, TrackReadDto, AssetReadDto } from "app/backend-service-api";
 import { useRouter } from 'vue-router';
 import { formatDuration, sumDurations } from 'src/utils/durationUtils';
 import {usePageContainerBgStyleStore} from "stores/pageContainerBg";
+import {ApiConfigProvider} from "src/utils/ApiConfigProvider";
 
 const router = useRouter();
 
 const { setColors } = usePageContainerBgStyleStore();
 
+const apiConfig = ApiConfigProvider.getInstance().getApiConfig();
 const albumApi = new AlbumApi(apiConfig);
 const albumInfo = ref<AlbumReadDto>();
 const trackList = ref<TrackReadDto[]>();

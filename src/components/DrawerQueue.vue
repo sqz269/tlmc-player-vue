@@ -25,8 +25,10 @@
 
 <script lang="ts" setup>
 import QueueItem from 'components/QueueItem.vue';
-import {queueController} from 'boot/songQueue';
 import {computed} from 'vue';
+import {QueueController} from "src/utils/QueueController";
+
+let queueController = QueueController.getInstance();
 
 const queuedHistory = computed(() => {
   return queueController.songHistory;
