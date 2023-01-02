@@ -16837,16 +16837,21 @@ body.body--dark {
     height: 100%;
     width: auto;
   }
-}.disabled, .disabled * {
+}.q-input .text-negative {
+  color: #ff5c6c !important;
+}
+
+.q-field--error .q-field__bottom {
+  color: #ff5c6c !important;
+}
+
+.q-dialog__backdrop {
+  -webkit-backdrop-filter: blur(7px);
+          backdrop-filter: blur(7px);
+}
+
+.disabled, .disabled * {
   cursor: auto !important;
-}
-
-.text-gt {
-  color: #A4925A !important;
-}
-
-.bg-gt {
-  color: #A4925A !important;
 }
 
 ::-webkit-scrollbar {
@@ -16871,4 +16876,55 @@ body.body--dark {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #c1c1c1;
+}
+
+.border-bottom-thin {
+  border-bottom: gray 1px solid !important;
+}
+
+.border {
+  border: 1px solid !important;
+}
+
+.border-white {
+  border-color: white;
+}
+
+.page-section-blur {
+  -webkit-backdrop-filter: blur(100px) !important;
+          backdrop-filter: blur(100px) !important;
+  background-color: rgba(0, 0, 0, 0.25) !important;
+}.bg-gt {
+  color: #A4925A !important;
+}
+
+.bg-transparent {
+  background-color: transparent !important;
+}
+
+.bg-grey-2-a-40 {
+  background-color: rgba(117, 117, 117, 0.33) !important;
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+}
+
+.bg-black-a-50 {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.bg-black-a-75 {
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+.bg-black-a-90 {
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.bg-filter-blur-10 {
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+}
+
+.text-gt {
+  color: #A4925A !important;
 }
