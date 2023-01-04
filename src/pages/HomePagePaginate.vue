@@ -21,7 +21,7 @@
           max-pages="7"
           direction-links
           gutter="20px"
-          size="14px"
+          size="18px"
           outline
 
           @update:model-value="onPageChange"
