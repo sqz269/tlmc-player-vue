@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 import DrawerNavigation from '../components/DrawerNavigation.vue'
 export default defineComponent({
   name: 'MainLayout',
@@ -65,22 +65,19 @@ import {
   outlinedInfo,
   outlinedArrowForward,
   outlinedArrowBack,
-  outlinedLightMode,
-  outlinedDarkMode,
   outlinedSettings
 } from '@quasar/extras/material-icons-outlined';
 
-import {computed, ref} from 'vue';
+import {computed} from 'vue';
 import { useQuasar, setCssVar } from 'quasar';
 import PlayerControl from 'components/PlayerControl.vue';
 import {useQueueDisplayStore} from 'stores/showQueue';
-import DrawerQueue from "components/DrawerQueue.vue";
-import {useRouter} from "vue-router";
-import {usePageContainerBgStyleStore} from "stores/pageContainerBg";
-import {storeToRefs} from "pinia";
-import UserAccountButton from "components/UserAccountButton.vue";
-import SettingsModal from "components/SettingsModal.vue";
-import AboutDialog from "components/AboutDialog.vue"
+import DrawerQueue from 'components/DrawerQueue.vue';
+import {useRouter} from 'vue-router';
+import {usePageContainerBgStyleStore} from 'stores/pageContainerBg';
+import UserAccountButton from 'components/UserAccountButton.vue';
+import SettingsModal from 'components/SettingsModal.vue';
+import AboutDialog from 'components/AboutDialog.vue'
 
 const router = useRouter();
 

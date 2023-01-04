@@ -65,11 +65,11 @@
               label="Password (Repeat)"
 
               lazy-rules
-              :rules="[ val => val === password || 'Password does no\'t match' ]"
+              :rules="[ val => val === password || 'Password does not match' ]"
             />
 
             <div>
-              <q-btn label="Create Account" type="submit" class="full-width" size="lg" style="background-color: rgba(255,255,255,0.32)"/>
+              <q-btn label="Create Account" type="submit" class="full-width bg-black-a-75" size="lg"/>
             </div>
           </q-form>
 
@@ -80,7 +80,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from "vue";
+import {defineComponent} from 'vue';
 
 export default defineComponent({
   name: 'RegistrationModal'
@@ -88,10 +88,10 @@ export default defineComponent({
 </script>
 
 <script lang="ts" setup>
-import {ref} from "vue";
-import {UserApi, RegisterRequest, ProblemDetails} from "app/backend-service-api";
-import {QDialog, useQuasar} from "quasar";
-import {ApiConfigProvider} from "src/utils/ApiConfigProvider";
+import {ref} from 'vue';
+import {UserApi, RegisterRequest, ProblemDetails} from 'app/backend-service-api';
+import {QDialog, useQuasar} from 'quasar';
+import {ApiConfigProvider} from 'src/utils/ApiConfigProvider';
 
 const show = ref(false);
 
@@ -109,7 +109,6 @@ const onSubmit = (evt: SubmitEvent) => {
     }
   };
 
-  console.log('Submitting Register Request');
   userApi.register(payload)
     .then((result) => {
       $q.notify({

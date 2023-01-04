@@ -177,14 +177,14 @@ import {
 } from '@quasar/extras/material-icons-outlined';
 
 import {computed, onMounted, onUpdated, ref} from 'vue';
-import {AlbumApi, OriginalTrackReadDto} from "app/backend-service-api";
-import { AlbumReadDto, TrackReadDto } from "app/backend-service-api";
+import {AlbumApi, OriginalTrackReadDto} from 'app/backend-service-api';
+import { AlbumReadDto, TrackReadDto } from 'app/backend-service-api';
 import { useRouter } from 'vue-router';
 import { formatDuration, sumDurations } from 'src/utils/durationUtils';
 import {useQuasar} from 'quasar';
-import {usePageContainerBgStyleStore} from "stores/pageContainerBg";
-import {ApiConfigProvider} from "src/utils/ApiConfigProvider";
-import {QueueController} from "src/utils/QueueController";
+import {usePageContainerBgStyleStore} from 'stores/pageContainerBg';
+import {ApiConfigProvider} from 'src/utils/ApiConfigProvider';
+import {QueueController} from 'src/utils/QueueController';
 
 const router = useRouter();
 const q = useQuasar();
@@ -213,8 +213,6 @@ function playAlbum(addToFront=true, playImmediately=true) {
     return <number>e2.index - <number>e1.index;
   });
 
-  console.log(trackList.value)
-
   q.notify({
     position: 'top',
     type: 'secondary',
@@ -222,7 +220,6 @@ function playAlbum(addToFront=true, playImmediately=true) {
   })
 
   const toadd = <string[]>trackList.value?.map(e => e?.id).reverse();
-  console.log(toadd);
   songQueue.addTrackToQueueByIdBatch(toadd, addToFront, playImmediately);
 }
 
@@ -241,7 +238,7 @@ async function playTrack(trackId: string, addToFront=true, playImmediately=true)
   }
 
   if (trackToPlay === null) {
-    console.log('Invalid Index. No Index: ' + trackId + '. in track list.');
+    alert('Invalid Index. No Index: ' + trackId + '. in track list.');
     return;
   }
 

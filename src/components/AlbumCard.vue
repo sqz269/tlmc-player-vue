@@ -29,15 +29,15 @@ export default {
 </script>
 
 <script setup lang="ts">
-import {defineProps, ref, watch} from 'vue';
-import { AlbumReadDto } from "app/backend-service-api";
+import {defineProps} from 'vue';
+import { AlbumReadDto } from 'app/backend-service-api';
 import {useRouter} from 'vue-router';
 
-const hovering = ref(false);
+// const hovering = ref(false);
 
-watch(hovering, () => {
-  console.log('hovering changed');
-})
+// watch(hovering, () => {
+//   console.log('hovering changed');
+// })
 
 const router = useRouter();
 
@@ -57,7 +57,7 @@ const props = defineProps<{
 }
 
 .album-card:hover {
-  box-shadow: 0px 0px 15px rgba(33,33,33,.2) !important;
+  box-shadow: 0 0 15px rgba(33,33,33,.2) !important;
   background-color: rgba(197, 193, 193, 0.4) !important;
   color: #ffffff !important;
   transition: background-color, color, 200ms linear !important;

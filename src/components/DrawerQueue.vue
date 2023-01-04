@@ -26,7 +26,7 @@
 <script lang="ts" setup>
 import QueueItem from 'components/QueueItem.vue';
 import {computed} from 'vue';
-import {QueueController} from "src/utils/QueueController";
+import {QueueController} from 'src/utils/QueueController';
 
 let queueController = QueueController.getInstance();
 

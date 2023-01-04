@@ -39,16 +39,13 @@
 </template>
 
 <script setup lang="ts">
-import {AlbumApi, AlbumReadDto} from "app/backend-service-api";
-import {onActivated, onDeactivated, onMounted, onUnmounted, onUpdated, ref} from 'vue';
+import {AlbumApi, AlbumReadDto} from 'app/backend-service-api';
+import {onMounted, onUnmounted, onUpdated, ref} from 'vue';
 import AlbumCard from 'components/AlbumCard.vue';
 
-import {usePageContainerBgStyleStore} from "stores/pageContainerBg";
-import {ApiConfigProvider} from "src/utils/ApiConfigProvider";
-import {QueueController} from "src/utils/QueueController";
-import {useRouter} from "vue-router";
-
-const queueController = QueueController.getInstance();
+import {usePageContainerBgStyleStore} from 'stores/pageContainerBg';
+import {ApiConfigProvider} from 'src/utils/ApiConfigProvider';
+import {useRouter} from 'vue-router';
 
 const apiConfig = ApiConfigProvider.getInstance().getApiConfig();
 const albumApi = new AlbumApi(apiConfig);
@@ -75,9 +72,7 @@ function loadPage(index: number) {
   router.push({ name: 'homePaginate', params: { page: current.value } })
 
   albumApi.getAlbums({start: index * 50, limit: 50}).then((resp) => {
-    console.log('Fetched ' + resp.length + ' items')
     displayAlbums.value = resp;
-    console.log('Scrolling to top')
     window.scroll({
       top: 0,
       left: 0,
@@ -88,18 +83,16 @@ function loadPage(index: number) {
 
 onMounted(async () => {
   const page = Number.parseInt(<string>router.currentRoute.value.params.page || '1');
-  console.log(`Page: ${page}`);
-
   current.value = page;
   loadPage(page);
 })
 
 onUnmounted(() => {
-  console.log('Unmounted')
+  {}
 })
 
 onUpdated(async () => {
   const page = Number.parseInt(<string>router.currentRoute.value.params.page || '1');
-  console.log(`updated page ${page}`);
+  current.value = page;
 })
 </script>

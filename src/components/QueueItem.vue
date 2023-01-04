@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import {TrackReadDto} from "app/backend-service-api";
+import {TrackReadDto} from 'app/backend-service-api';
 import {computed, defineProps} from 'vue';
 import {formatDuration} from 'src/utils/durationUtils';
 import {audioController} from 'boot/audioController';

@@ -33,10 +33,9 @@
 
 <script lang="ts" setup>
 import LoginModal from 'components/LoginModal.vue'
-import {useQuasar} from "quasar";
-import {useAuthStore} from "stores/authDataStore";
-import {computed} from "vue";
-import {storeToRefs} from "pinia";
+import {useQuasar} from 'quasar';
+import {useAuthStore} from 'stores/authDataStore';
+import {computed} from 'vue';
 
 const { isLoggedIn, getUsername } = useAuthStore();
 
