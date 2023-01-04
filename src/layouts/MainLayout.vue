@@ -12,11 +12,11 @@
         <q-space />
 
         <div class="q-gutter-sm row items-center no-wrap">
-          <q-btn round dense flat :icon="outlinedInfo" v-if="$q.screen.gt.sm">
+          <q-btn round dense flat :icon="outlinedInfo" v-if="$q.screen.gt.sm" @click="showAboutDialog">
             <q-tooltip>About</q-tooltip>
           </q-btn>
 
-          <q-btn round dense flat :icon="outlinedSettings" v-if="$q.screen.gt.sm">
+          <q-btn round dense flat :icon="outlinedSettings" v-if="$q.screen.gt.sm" @click="showSettingsDialog">
             <q-tooltip>Settings</q-tooltip>
           </q-btn>
 
@@ -36,7 +36,7 @@
 
     <q-page-container :style="{ background: bgGradient }" style="transition: background, 250ms, linear !important;">
       <router-view v-slot="{ Component }">
-        <keep-alive include="HomePage">
+        <keep-alive :include="['HomePagePaginate', 'HomePageInfScroll']">
           <component :is="Component"></component>
         </keep-alive>
       </router-view>
@@ -79,6 +79,8 @@ import {useRouter} from "vue-router";
 import {usePageContainerBgStyleStore} from "stores/pageContainerBg";
 import {storeToRefs} from "pinia";
 import UserAccountButton from "components/UserAccountButton.vue";
+import SettingsModal from "components/SettingsModal.vue";
+import AboutDialog from "components/AboutDialog.vue"
 
 const router = useRouter();
 
@@ -101,19 +103,19 @@ const queueDisplayStore = useQueueDisplayStore();
 const showQueue = computed(() => queueDisplayStore.show)
 
 const q = useQuasar();
-q.dark.set(true)
+q.dark.set(true);
 setCssVar('primary', '#000000')
 
-function toggleTheme() {
-  q.dark.toggle();
-  if (q.dark.isActive)
-  {
-    setCssVar('primary', '#000000')
-  }
-  else
-  {
-    setCssVar('primary', '#ffffff')
-  }
+const showSettingsDialog = () => {
+  q.dialog({
+    component: SettingsModal
+  });
+};
+
+const showAboutDialog = () => {
+  q.dialog({
+    component: AboutDialog
+  });
 }
 
 </script>

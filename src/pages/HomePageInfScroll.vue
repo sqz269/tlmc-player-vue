@@ -16,12 +16,12 @@
   </q-page>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-export default defineComponent({
-  // name: 'PageName'
-})
-</script>
+<!--<script lang="ts">-->
+<!--import { defineComponent } from 'vue'-->
+<!--export default defineComponent({-->
+<!--  // name: 'PageName'-->
+<!--})-->
+<!--</script>-->
 
 <script setup lang="ts">
 import {AlbumApi, AlbumReadDto} from "app/backend-service-api";
