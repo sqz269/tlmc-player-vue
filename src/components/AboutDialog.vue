@@ -93,14 +93,14 @@
               </div>
 
               <q-list bordered separator>
-                <q-item clickable v-ripple target="_blank" href="#">
+                <q-item clickable v-ripple target="_blank" :href="musicDataSwaggerUrl">
                   <q-item-section>
                     <q-item-label lines="1">Music Data API</q-item-label>
                     <q-item-label caption lines="2">ASP.NET Core + PostgreSQL</q-item-label>
                   </q-item-section>
                 </q-item>
 
-                <q-item clickable v-ripple target="_blank" href="#">
+                <q-item clickable v-ripple target="_blank" :href="authSwaggerUrl">
                   <q-item-section>
                     <q-item-label lines="1">Authentication API</q-item-label>
                     <q-item-label caption lines="2">ASP.NET Core + PostgreSQL</q-item-label>
@@ -117,8 +117,13 @@
 
 <script setup lang="ts">
 import {ref} from 'vue';
+import {ApiConfigProvider} from "src/utils/ApiConfigProvider";
 
 const tab = ref('media');
+
+const apiConfigProvider = ApiConfigProvider.getInstance();
+const authSwaggerUrl = `${apiConfigProvider.basePath}/swagger/auth`;
+const musicDataSwaggerUrl = `${apiConfigProvider.basePath}/swagger/music-data`
 
 </script>
 

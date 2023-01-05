@@ -13,6 +13,10 @@ class ApiConfigProvider {
   private constructor() {
   }
 
+  public get basePath() {
+    return this._basePath;
+  }
+
   public getApiConfig(withAuthMiddleware=true) {
     if (withAuthMiddleware) {
       if (this._middleware === null) {
