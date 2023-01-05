@@ -124,6 +124,15 @@
               </q-td>
             </template>
 
+            <template v-slot:body-cell-original="props">
+              <q-td :props="props">
+                <q-chip square class="bg-white-a-5" v-for="prop in props.value" :key="prop.id">
+                  {{ prop.title.en }}
+                </q-chip>
+              </q-td>
+            </template>
+
+
             <template v-slot:body-cell="props">
               <q-td :props="props">
                 {{props.value}}
@@ -301,7 +310,7 @@ const columns = [
     label: 'ORIGINAL',
     align: 'left',
     field: (row: TrackReadDto) => row.original,
-    format: (val: OriginalTrackReadDto[]) => val.map(e => e.title?._default).join(' │ '),
+    // format: (val: OriginalTrackReadDto[]) => val.map(e => e.title?.en).join(' │ '),
     classes: 'text-bold',
     sortable: false
   },
