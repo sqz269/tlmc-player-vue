@@ -4,13 +4,13 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', name: 'home', component: () => import('pages/HomePageInfScroll.vue') }],
+    children: [{ path: 'home/inf', name: 'home', component: () => import('pages/HomePageInfScroll.vue') }],
   },
 
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: 'hp/:page?', name: 'homePaginate', component: () => import('pages/HomePagePaginate.vue') }]
+    children: [{ path: 'home/:page?', name: 'homePaginate', component: () => import('pages/HomePagePaginate.vue') }]
   },
 
   {
@@ -28,11 +28,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('layouts/MainLayout.vue'),
     children: [{ path: 'track/:trackId', name: 'track', component: () => import('pages/TrackPage.vue') }]
   },
-  {
-    path: '/',
-    component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: 'search/:searchQuery', component: () => import('pages/SearchPage.vue') }]
-  },
+  // {
+  //   path: '/',
+  //   component: () => import('layouts/MainLayout.vue'),
+  //   children: [{ path: 'search/:searchQuery', component: () => import('pages/SearchPage.vue') }]
+  // },
 
   // Always leave this as last one,
   // but you can also remove it
