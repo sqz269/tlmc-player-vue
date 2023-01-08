@@ -218,9 +218,11 @@ function viewMetadata() {
 }
 
 function playAlbum(addToFront=true, playImmediately=true) {
-  trackList.value?.sort((e1, e2) => {
-    return <number>e2.index - <number>e1.index;
-  });
+  const albumTrackList = trackList.value;
+
+  // albumTrackList?.sort((e1, e2) => {
+  //   return <number>e2.index - <number>e1.index;
+  // });
 
   q.notify({
     position: 'top',
@@ -228,8 +230,8 @@ function playAlbum(addToFront=true, playImmediately=true) {
     message: `Added ${trackList.value?.length} tracks to Queue`
   })
 
-  const toadd = <string[]>trackList.value?.map(e => e?.id).reverse();
-  songQueue.addTrackToQueueByIdBatch(toadd, addToFront, playImmediately);
+  // const toadd = <string[]>albumTrackList?.map(e => e?.id).reverse();
+  songQueue.addTrackToQueueByIdBatch(<string[]>albumTrackList?.map(e => e?.id), addToFront, playImmediately);
 }
 
 async function playTrack(trackId: string, addToFront=true, playImmediately=true) {

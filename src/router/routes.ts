@@ -3,16 +3,18 @@ import { RouteRecordRaw } from 'vue-router';
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: 'home/inf', name: 'home', component: () => import('pages/HomePageInfScroll.vue') }],
+    redirect: 'home'
   },
-
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: 'home/:page?', name: 'homePaginate', component: () => import('pages/HomePagePaginate.vue') }]
+    children: [{ path: ':page?', alias: ['home/:page?'], name: 'homePaginate', component: () => import('pages/HomePagePaginate.vue') }]
   },
-
+  {
+    path: '/',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [{ path: 'home/inf', name: 'home', component: () => import('pages/HomePageInfScroll.vue') }],
+  },
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
