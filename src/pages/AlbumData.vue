@@ -135,18 +135,13 @@ export default defineComponent({
 </script>
 
 <script setup lang="ts">
-import {
-  outlinedOpenInNew,
-  outlinedEdit
-} from '@quasar/extras/material-icons-outlined';
-
-import {computed, onMounted, onUpdated, ref} from 'vue';
-import { AlbumApi } from "app/backend-service-api";
-import { AlbumReadDto, TrackReadDto, AssetReadDto } from "app/backend-service-api";
+import {computed, onMounted, ref} from 'vue';
+import { AlbumApi } from 'app/backend-service-api';
+import { AlbumReadDto, TrackReadDto, AssetReadDto } from 'app/backend-service-api';
 import { useRouter } from 'vue-router';
-import { formatDuration, sumDurations } from 'src/utils/durationUtils';
-import {usePageContainerBgStyleStore} from "stores/pageContainerBg";
-import {ApiConfigProvider} from "src/utils/ApiConfigProvider";
+import { formatDuration } from 'src/utils/durationUtils';
+import {usePageContainerBgStyleStore} from 'stores/pageContainerBg';
+import {ApiConfigProvider} from 'src/utils/ApiConfigProvider';
 
 const router = useRouter();
 
@@ -185,7 +180,6 @@ function setAlbumMetadata(albumData: AlbumReadDto) {
 
   for (let key of metadataIndex) {
     const  d = albumDict[key];
-    console.log(d);
     if (d) {
       metadata.push({name: key, value: d});
     }
@@ -195,7 +189,6 @@ function setAlbumMetadata(albumData: AlbumReadDto) {
 }
 
 function setAlbumAsset() {
-  // TODO: NEWEST UPDATE CHANGED OTHERIMAGES TO OTHERFILES
   if (albumInfo.value?.thumbnail?.original) {
     albumAssets.value?.push(albumInfo.value?.thumbnail.original)
   }
@@ -224,7 +217,6 @@ async function setAlbumPage() {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return ta.index! - tb.index!
     })
-    console.log(albumInfo.value)
     trackList.value = albumInfo.value?.tracks;
 
     setAlbumAsset();
@@ -342,13 +334,13 @@ const albumMetadataColumns = [
   }
 ]
 
-let totalDuration = computed(() => {
-  let allDurations: string[] = []
-  albumInfo.value?.tracks?.forEach(t => {
-    if (t.duration) allDurations.push(t.duration)
-  });
-  return sumDurations(allDurations);
-})
+// let totalDuration = computed(() => {
+//   let allDurations: string[] = []
+//   albumInfo.value?.tracks?.forEach(t => {
+//     if (t.duration) allDurations.push(t.duration)
+//   });
+//   return sumDurations(allDurations);
+// })
 
 const pagination = {
   rowsPerPage: 0,

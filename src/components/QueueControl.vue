@@ -51,7 +51,7 @@ import {
 } from '@quasar/extras/material-icons-outlined';
 
 import {audioController} from 'boot/audioController';
-import {computed, ref, watch} from 'vue';
+import {ref, watch} from 'vue';
 import {useQueueDisplayStore} from 'stores/showQueue';
 
 const queueShowStatusStore = useQueueDisplayStore();

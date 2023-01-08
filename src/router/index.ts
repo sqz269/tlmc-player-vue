@@ -24,7 +24,7 @@ export default route(function (/* { store, ssrContext } */) {
 
   const Router = createRouter({
     scrollBehavior: (to, from, savedPosition) => {
-      if (to.name === 'home' && savedPosition) {
+      if ((to.name === 'home' || to.name === 'homePaginate') && savedPosition) {
         return savedPosition;
       }
       return {top: 0};

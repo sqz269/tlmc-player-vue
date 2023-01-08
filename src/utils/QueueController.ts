@@ -3,7 +3,7 @@ import {AlbumApi, TrackReadDto} from 'app/backend-service-api';
 import {watch} from 'vue';
 import {AudioController} from 'src/utils/AudioController';
 import {audioController} from 'boot/audioController';
-import {ApiConfigProvider} from "src/utils/ApiConfigProvider";
+import {ApiConfigProvider} from 'src/utils/ApiConfigProvider';
 
 class QueueController {
   private static _instance: QueueController | null = null;
@@ -67,22 +67,17 @@ class QueueController {
   }
 
   private onTrackAdd() {
-    console.log('Current Queue')
-    console.log(this._queue.value)
     if (this.currentlyPlaying === undefined) {
       this.playNext();
     }
   }
 
   public playNext() {
-    console.log("PlayNext Invoked")
-    console.log(this._queue.value)
     if (this.currentlyPlaying !== undefined) {
       this._songHistory.value.push(this.currentlyPlaying);
     }
 
     if (this._queue.value.length === 0) {
-      console.log('PlayNext: Queue is empty')
       if (this.currentlyPlaying === undefined) {
         return;
       }
@@ -96,7 +91,6 @@ class QueueController {
       this._audioController.unload();
       return;
     }
-    console.log(`Invoking playTrack with ${JSON.stringify(song)}`)
     this._audioController.playTrack(<string>song.trackFile?.url);
     this._currentlyPlaying.value = song;
   }
@@ -122,8 +116,6 @@ class QueueController {
    */
   public async addTrackToQueueById(trackId: string, addToFront = false, playImmediately=false) {
     const trackData = await this._albumApi.getTrack({ id : trackId });
-    console.log("Adding Track by Id")
-    console.log(trackData);
     if (addToFront) {
       this._queue.value.splice(0, 0, trackData);
       if (playImmediately) {

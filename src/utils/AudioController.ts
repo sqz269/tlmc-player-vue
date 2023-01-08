@@ -75,7 +75,6 @@ class AudioController {
   }
 
   public playTrack(src: string) {
-    console.log(`Playing track : ${src}`)
     this.unload()
 
     this.howl = new Howl({
@@ -88,7 +87,6 @@ class AudioController {
       }
     })
     this.playbackId = this.howl.play()
-    console.log(this.playbackId)
   }
 
   public onPlaybackComplete(callback: Action) {
@@ -112,7 +110,6 @@ class AudioController {
   }
 
   public togglePause() {
-    console.log(!this.paused.value)
     this.paused.value = !this.paused.value;
   }
 }

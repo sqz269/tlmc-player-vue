@@ -12,8 +12,8 @@ export default defineComponent({
 
 <script setup lang="ts">
 import {onMounted} from 'vue';
-import {useAuthStore} from "stores/authDataStore";
-import {QueueController} from "src/utils/QueueController";
+import {useAuthStore} from 'stores/authDataStore';
+import {QueueController} from 'src/utils/QueueController';
 
 onMounted(() => {
   let authStore = useAuthStore();

@@ -46,7 +46,7 @@ import {
 import {computed, ref} from 'vue';
 import {audioController} from 'boot/audioController';
 import {durationToSeconds, formatDuration, secondsToDuration} from 'src/utils/durationUtils';
-import {QueueController} from "src/utils/QueueController";
+import {QueueController} from 'src/utils/QueueController';
 
 const currentTime = ref(0);
 const songQueue = QueueController.getInstance();
@@ -67,7 +67,6 @@ const onPan = (phase: string) => {
     isPanningProgress.value = true;
   }
   else {
-    console.log(currentTime.value)
     // Seek
     audioController.seek(currentTime.value);
 

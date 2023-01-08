@@ -100,11 +100,11 @@ import {
 
 
 import { useRouter } from 'vue-router';
-import { AlbumApi } from "app/backend-service-api";
+import { AlbumApi } from 'app/backend-service-api';
 import { AlbumReadDto, TrackReadDto, OriginalTrackReadDto } from 'app/backend-service-api';
 import { computed, onMounted, onUpdated, ref } from 'vue';
 import { formatDuration } from 'src/utils/durationUtils';
-import {ApiConfigProvider} from "src/utils/ApiConfigProvider";
+import {ApiConfigProvider} from 'src/utils/ApiConfigProvider';
 
 type Metadata = { name: string, value: string };
 
@@ -177,7 +177,6 @@ function fmtOriginalTracks(track: TrackReadDto): Metadata[] {
       const originalAlbumName = original?.album?.fullName?._default;
       if (!originalAlbumName)
       {
-        console.log("One of the original album's name is undefined")
         continue;
       }
 
@@ -201,7 +200,6 @@ function fmtMetadata(track: TrackReadDto): Metadata[] {
   const trackDict = track as { [key: string]: string[] | null }
   for (let knownDataIndex of metadataIndex) {
     const d = trackDict[knownDataIndex]
-    console.log(d)
     if (d?.length != 0) {
       metadata.push({name: knownDataIndex, value: d.join(',')});
     }
@@ -214,19 +212,13 @@ async function setTrackPage(trackId: string): Promise<void> {
   // Fetch track
   trackInfo.value = await trackApi.getTrack({id: trackId})
   albumInfo.value = trackInfo.value?.album;
-  console.log(trackInfo.value);
 }
 
 onMounted(async () => {
-  console.log('Mounted');
   await setTrackPage(<string>router.currentRoute.value.params.trackId)
-  console.log(fmtOriginalTracks(<TrackReadDto>trackInfo.value))
-  console.log(fmtMetadata(<TrackReadDto>trackInfo.value))
 })
 
 onUpdated(async () => {
-  console.log('Updated')
   await setTrackPage(<string>router.currentRoute.value.params.trackId)
-  console.log(fmtOriginalTracks(<TrackReadDto>trackInfo.value));
 })
 </script>

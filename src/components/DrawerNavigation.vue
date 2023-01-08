@@ -51,7 +51,7 @@
 
       <q-item v-ripple clickable :inset-level=0.3>
         <q-item-section avatar>
-          <q-icon :name="outlinedPlaylistAdd" size="32px"/>
+          <q-icon :name="outlinedPlaylistAdd" size="24px"/>
         </q-item-section>
         <q-item-section>
           <q-item-label>
@@ -146,10 +146,6 @@ const collectionNavigations = [
 ]
 
 const playlistItems = [
-  'playlist1',
-  'abc',
-  'daskdpaosdasd',
-  'asdf'
 ]
 
 </script>

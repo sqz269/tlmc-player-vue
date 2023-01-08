@@ -23,6 +23,10 @@
   background-color: rgba(0, 0, 0, 0.90);
 }
 
+.bg-white-a-5 {
+  background-color: rgba(255,255,255,0.05) !important;
+}
+
 .bg-filter-blur-10 {
   backdrop-filter: blur(10px);
 }

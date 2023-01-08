@@ -4,13 +4,17 @@ import {AuthMiddleware} from "src/auth/AuthMiddleware";
 class ApiConfigProvider {
   private static _instance: ApiConfigProvider | null = null;
 
-  private _basePath = 'http://home.internal.com';
+  private _basePath = 'http://music.marisad.me';
   private _debugPath = 'http://home.internal.com';
 
   private _middleware: Middleware[] | null = null;
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {
+  }
+
+  public get basePath() {
+    return this._basePath;
   }
 
   public getApiConfig(withAuthMiddleware=true) {

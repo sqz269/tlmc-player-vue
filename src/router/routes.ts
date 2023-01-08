@@ -3,10 +3,18 @@ import { RouteRecordRaw } from 'vue-router';
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', name: 'home', component: () => import('pages/HomePage.vue') }],
+    redirect: 'home'
   },
-
+  {
+    path: '/',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [{ path: ':page?', alias: ['home/:page?'], name: 'homePaginate', component: () => import('pages/HomePagePaginate.vue') }]
+  },
+  {
+    path: '/',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [{ path: 'home/inf', name: 'home', component: () => import('pages/HomePageInfScroll.vue') }],
+  },
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
@@ -22,11 +30,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('layouts/MainLayout.vue'),
     children: [{ path: 'track/:trackId', name: 'track', component: () => import('pages/TrackPage.vue') }]
   },
-  {
-    path: '/',
-    component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: 'search/:searchQuery', component: () => import('pages/SearchPage.vue') }]
-  },
+  // {
+  //   path: '/',
+  //   component: () => import('layouts/MainLayout.vue'),
+  //   children: [{ path: 'search/:searchQuery', component: () => import('pages/SearchPage.vue') }]
+  // },
 
   // Always leave this as last one,
   // but you can also remove it

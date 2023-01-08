@@ -62,9 +62,9 @@ export default defineComponent({
 import {ref} from 'vue';
 import {useQuasar} from 'quasar';
 import RegistrationModal from 'components/RegistrationModal.vue';
-import {LoginRequest, LoginResult, ProblemDetails, UserApi} from "app/backend-service-api";
-import {useAuthStore} from "stores/authDataStore";
-import {ApiConfigProvider} from "src/utils/ApiConfigProvider";
+import {LoginRequest, LoginResult, ProblemDetails, UserApi} from 'app/backend-service-api';
+import {useAuthStore} from 'stores/authDataStore';
+import {ApiConfigProvider} from 'src/utils/ApiConfigProvider';
 
 const { setAuthFromLoginResult } = useAuthStore();
 

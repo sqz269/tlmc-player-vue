@@ -16,22 +16,22 @@
   </q-page>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-export default defineComponent({
-  // name: 'PageName'
-})
-</script>
+<!--<script lang="ts">-->
+<!--import { defineComponent } from 'vue'-->
+<!--export default defineComponent({-->
+<!--  // name: 'PageName'-->
+<!--})-->
+<!--</script>-->
 
 <script setup lang="ts">
-import {AlbumApi, AlbumReadDto} from "app/backend-service-api";
-import {onActivated, onDeactivated, onMounted, onUnmounted, ref} from 'vue';
+import {AlbumApi, AlbumReadDto} from 'app/backend-service-api';
+import {onActivated, onDeactivated, onMounted, ref} from 'vue';
 import AlbumCard from 'components/AlbumCard.vue';
 import {QInfiniteScroll} from 'quasar';
 
-import {usePageContainerBgStyleStore} from "stores/pageContainerBg";
-import {ApiConfigProvider} from "src/utils/ApiConfigProvider";
-import {QueueController} from "src/utils/QueueController";
+import {usePageContainerBgStyleStore} from 'stores/pageContainerBg';
+import {ApiConfigProvider} from 'src/utils/ApiConfigProvider';
+import {QueueController} from 'src/utils/QueueController';
 
 const infScroll = ref<QInfiniteScroll>();
 
@@ -45,22 +45,19 @@ const displayAlbums = ref<AlbumReadDto[]>([])
 const { setColors } = usePageContainerBgStyleStore();
 
 function onLoad(index: number, done: (stop?: boolean) => void) {
-  console.log(index)
   albumApi.getAlbums({start: index * 50, limit: 50}).then((resp) => {
-    console.log('Fetched ' + resp.length + ' items')
     displayAlbums.value.push(...resp);
     done();
   });
 }
 
 onMounted(async () => {
-  console.log(`Fetch (Exist ${displayAlbums.value.length})`);
   displayAlbums.value.push(...await albumApi.getAlbums({limit: 50}))
 })
 
-onUnmounted(() => {
-  console.log('Unmounted')
-})
+// onUnmounted(() => {
+//
+// })
 
 onDeactivated(() => {
   infScroll.value?.stop();
