@@ -4,7 +4,7 @@ import {AuthMiddleware} from "src/auth/AuthMiddleware";
 class ApiConfigProvider {
   private static _instance: ApiConfigProvider | null = null;
 
-  private _basePath = 'http://music.marisad.me';
+  private _basePath = 'https://music.marisad.me';
   private _debugPath = 'http://home.internal.com';
 
   private _middleware: Middleware[] | null = null;
