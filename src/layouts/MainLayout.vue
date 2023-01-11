@@ -36,7 +36,7 @@
 
     <q-page-container :style="{ background: bgGradient }" style="transition: background, 250ms, linear !important;">
       <router-view v-slot="{ Component }">
-        <keep-alive :include="['HomePagePaginate', 'HomePageInfScroll']">
+        <keep-alive :include="['HomePagePaginate', 'HomePageInfScroll', 'ArtistPage']">
           <component :is="Component"></component>
         </keep-alive>
       </router-view>
