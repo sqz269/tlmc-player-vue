@@ -9,7 +9,7 @@
       <q-card-section class="justify-around q-py-none">
         <div class="text-h6">{{ songQueue.currentlyPlaying.name._default }}</div>
         <div class="text-subtitle2">{{ songQueue.currentlyPlaying.album.albumName._default }}</div>
-        <div class="text-subtitle1 text-grey q-py-sm">{{ songQueue.currentlyPlaying.album.albumArtist[0].name }}</div>
+        <div class="text-subtitle1 text-grey q-py-sm cursor-pointer" @click="gotoArtist">{{ songQueue.currentlyPlaying.album.albumArtist[0].name }}</div>
       </q-card-section>
       <q-card-actions vertical class="justify-around q-px-md">
         <q-btn flat round size="md" color="red" :icon="outlinedFavoriteBorder" />
@@ -31,7 +31,13 @@ import {
   outlinedFavoriteBorder
 } from '@quasar/extras/material-icons-outlined';
 import {QueueController} from 'src/utils/QueueController';
-
+import {useRouter} from "vue-router";
 
 const songQueue = QueueController.getInstance();
+
+const router = useRouter();
+
+const gotoArtist = () => {
+  router.push({ name: 'artist', params: { artist: songQueue.currentlyPlaying?.album?.albumArtist[0].name } })
+}
 </script>

@@ -71,7 +71,7 @@ const onPageChange = (pg: number) => {
 function loadPage(index: number) {
   router.push({ name: 'homePaginate', params: { page: current.value } })
 
-  albumApi.getAlbums({start: index * 50, limit: 50}).then((resp) => {
+  albumApi.getAlbums({start: (index - 1) * 50, limit: 50}).then((resp) => {
     displayAlbums.value = resp;
     window.scroll({
       top: 0,
