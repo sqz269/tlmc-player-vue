@@ -26,13 +26,13 @@ import {
 } from '../models';
 
 export interface GetCircleAlbumsByIdRequest {
-    name: string;
+    id: string;
     start?: number;
     limit?: number;
 }
 
 export interface GetCircleAlbumsByNameRequest {
-    id: string;
+    name: string;
     start?: number;
     limit?: number;
 }
@@ -58,8 +58,48 @@ export class CircleApi extends runtime.BaseAPI {
     /**
      */
     async getCircleAlbumsByIdRaw(requestParameters: GetCircleAlbumsByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AlbumReadDto>>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getCircleAlbumsById.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.start !== undefined) {
+            queryParameters['start'] = requestParameters.start;
+        }
+
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Jwt authentication
+        }
+
+        const response = await this.request({
+            path: `/api/entity/circle/{id}/albums`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(AlbumReadDtoFromJSON));
+    }
+
+    /**
+     */
+    async getCircleAlbumsById(requestParameters: GetCircleAlbumsByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<AlbumReadDto>> {
+        const response = await this.getCircleAlbumsByIdRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async getCircleAlbumsByNameRaw(requestParameters: GetCircleAlbumsByNameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AlbumReadDto>>> {
         if (requestParameters.name === null || requestParameters.name === undefined) {
-            throw new runtime.RequiredError('name','Required parameter requestParameters.name was null or undefined when calling getCircleAlbumsById.');
+            throw new runtime.RequiredError('name','Required parameter requestParameters.name was null or undefined when calling getCircleAlbumsByName.');
         }
 
         const queryParameters: any = {};
@@ -90,47 +130,7 @@ export class CircleApi extends runtime.BaseAPI {
 
     /**
      */
-    async getCircleAlbumsById(requestParameters: GetCircleAlbumsByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<AlbumReadDto>> {
-        const response = await this.getCircleAlbumsByIdRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     */
-    async getCircleAlbumsByNameRaw(requestParameters: GetCircleAlbumsByNameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AlbumReadDto>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getCircleAlbumsByName.');
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters.start !== undefined) {
-            queryParameters['start'] = requestParameters.start;
-        }
-
-        if (requestParameters.limit !== undefined) {
-            queryParameters['limit'] = requestParameters.limit;
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Jwt authentication
-        }
-
-        const response = await this.request({
-            path: `/api/entity/circle/{id}/albums`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => AlbumReadDtoFromJSON(jsonValue));
-    }
-
-    /**
-     */
-    async getCircleAlbumsByName(requestParameters: GetCircleAlbumsByNameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AlbumReadDto> {
+    async getCircleAlbumsByName(requestParameters: GetCircleAlbumsByNameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<AlbumReadDto>> {
         const response = await this.getCircleAlbumsByNameRaw(requestParameters, initOverrides);
         return await response.value();
     }
