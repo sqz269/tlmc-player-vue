@@ -26,6 +26,7 @@ import {usePageContainerBgStyleStore} from 'stores/pageContainerBg';
 import {ApiConfigProvider} from 'src/utils/ApiConfigProvider';
 import {QueueController} from 'src/utils/QueueController';
 import {useRouter} from "vue-router";
+  import {biAward} from "@quasar/extras/bootstrap-icons";
 
 const infScroll = ref<QInfiniteScroll>();
 
@@ -89,12 +90,13 @@ onDeactivated(() => {
   infScroll.value?.stop();
 })
 
-onActivated(() => {
+onActivated(async () => {
   let artist = <string>router.currentRoute.value.params.artist;
   if (artist !== currArtist) {
     currArtist = artist;
     infScroll.value?.setIndex(0);
     displayAlbums.value.length = 0;
+    displayAlbums.value.push(...await loadArtist(0, 50));
   }
 
   infScroll.value?.resume();
