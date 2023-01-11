@@ -16,6 +16,7 @@ models/JwtKeyResponse.ts
 models/JwtRenewResult.ts
 models/LocalizedField.ts
 models/LoginResult.ts
+models/OkResult.ts
 models/OriginalAlbumReadDto.ts
 models/OriginalAlbumReadDtoActionResult.ts
 models/OriginalAlbumWriteDto.ts

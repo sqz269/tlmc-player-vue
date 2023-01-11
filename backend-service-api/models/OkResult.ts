@@ -16,41 +16,41 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface JwtKeyResponse
+ * @interface OkResult
  */
-export interface JwtKeyResponse {
+export interface OkResult {
     /**
      * 
-     * @type {string}
-     * @memberof JwtKeyResponse
+     * @type {number}
+     * @memberof OkResult
      */
-    publicKey?: string | null;
+    statusCode?: number;
 }
 
 /**
- * Check if a given object implements the JwtKeyResponse interface.
+ * Check if a given object implements the OkResult interface.
  */
-export function instanceOfJwtKeyResponse(value: object): boolean {
+export function instanceOfOkResult(value: object): boolean {
     let isInstance = true;
 
     return isInstance;
 }
 
-export function JwtKeyResponseFromJSON(json: any): JwtKeyResponse {
-    return JwtKeyResponseFromJSONTyped(json, false);
+export function OkResultFromJSON(json: any): OkResult {
+    return OkResultFromJSONTyped(json, false);
 }
 
-export function JwtKeyResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): JwtKeyResponse {
+export function OkResultFromJSONTyped(json: any, ignoreDiscriminator: boolean): OkResult {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'publicKey': !exists(json, 'publicKey') ? undefined : json['publicKey'],
+        'statusCode': !exists(json, 'statusCode') ? undefined : json['statusCode'],
     };
 }
 
-export function JwtKeyResponseToJSON(value?: JwtKeyResponse | null): any {
+export function OkResultToJSON(value?: OkResult | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -59,7 +59,7 @@ export function JwtKeyResponseToJSON(value?: JwtKeyResponse | null): any {
     }
     return {
         
-        'publicKey': value.publicKey,
+        'statusCode': value.statusCode,
     };
 }
 

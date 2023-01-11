@@ -23,6 +23,11 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
+    children: [{ path: 'artist/:artist', name: 'artist', component: () => import('pages/ArtistPage.vue') }]
+  },
+  {
+    path: '/',
+    component: () => import('layouts/MainLayout.vue'),
     children: [{ path: 'album/:albumId/metadata', name: 'albumMetadata', component: () => import('pages/AlbumData.vue')}]
   },
   {

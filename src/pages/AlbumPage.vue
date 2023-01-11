@@ -16,7 +16,7 @@
 
           <div class="col-12">
             <div class="row full-width">
-              <div class="text-subtitle1 text-bold">
+              <div class="text-subtitle1 text-bold cursor-pointer" @click="gotoArtist">
                 {{ albumInfo.albumArtist[0].name }}
               </div>
 
@@ -207,6 +207,10 @@ const albumInfo = ref<AlbumReadDto>();
 const trackList = ref<TrackReadDto[]>();
 
 const songQueue = QueueController.getInstance();
+
+const gotoArtist = () => {
+  router.push({ name: 'artist', params: { artist: albumInfo.value.albumArtist[0].name } })
+}
 
 const getAlbumImage = computed(() => {
   return albumInfo?.value?.thumbnail?.medium?.url === null ?

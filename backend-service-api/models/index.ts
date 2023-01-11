@@ -10,6 +10,7 @@ export * from './JwtKeyResponse';
 export * from './JwtRenewResult';
 export * from './LocalizedField';
 export * from './LoginResult';
+export * from './OkResult';
 export * from './OriginalAlbumReadDto';
 export * from './OriginalAlbumReadDtoActionResult';
 export * from './OriginalAlbumWriteDto';
