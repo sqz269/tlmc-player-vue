@@ -48,6 +48,10 @@
   border-bottom: gray 1px solid !important;
 }
 
+.border-top-thin {
+  border-top: grey 1px solid !important;
+}
+
 .border {
   border: 1px solid !important;
 }
@@ -63,4 +67,12 @@
 
 .q-card--dark {
   box-shadow: none;
+}
+
+.underline-on-hover:hover {
+  text-decoration: underline;
+}
+
+.pointer-on-hover:hover {
+  cursor: pointer;
 }

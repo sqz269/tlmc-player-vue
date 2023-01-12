@@ -113,7 +113,7 @@ const navigations = [
   {
     text: 'Home',
     icon: outlinedHome,
-    route: { name: 'home' }
+    route: { name: 'homePaginate' }
   },
   {
     text: 'Search',

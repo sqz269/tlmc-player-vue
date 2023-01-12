@@ -10,7 +10,7 @@
       <div class="col-8">
         <div class="row full-width full-height items-end">
           <div class="col-12">
-            <div class="text-body1">Album</div>
+            <div class="text-h5">Album</div>
             <h3 class="q-mb-sm-sm q-mb-none q-mt-md">{{ albumInfo.albumName._default }}</h3>
           </div>
 
@@ -119,7 +119,9 @@
             <template v-slot:body-cell-title="props">
               <q-td :props="props">
                 <div class="flex row items-center text-subtitle1 text-bold">
-                  {{ props.value }}
+                  <div class="underline-on-hover pointer-on-hover" @click="gotoTrack(props.key)">
+                    {{ props.value }}
+                  </div>
                 </div>
               </q-td>
             </template>
@@ -132,16 +134,15 @@
               </q-td>
             </template>
 
-
             <template v-slot:body-cell="props">
               <q-td :props="props">
                 {{props.value}}
               </q-td>
               <q-menu
                 class="bg-black border border-white"
-
                 touch-position
                 context-menu
+                auto-close
               >
                 <q-list style="min-width: 150px;">
                   <q-item clickable v-close-popup>
@@ -152,6 +153,9 @@
                   </q-item>
                   <q-item clickable v-close-popup>
                     <q-item-section>Add to Playlist</q-item-section>
+                  </q-item>
+                  <q-item clickable v-close-popup>
+                    <q-item-section @click="copyTrackUrl(props.key)">Copy Track Url</q-item-section>
                   </q-item>
                   <q-item clickable v-close-popup>
                     <q-item-section>View Metadata</q-item-section>
@@ -194,6 +198,7 @@ import {useQuasar} from 'quasar';
 import {usePageContainerBgStyleStore} from 'stores/pageContainerBg';
 import {ApiConfigProvider} from 'src/utils/ApiConfigProvider';
 import {QueueController} from 'src/utils/QueueController';
+import {route} from "quasar/wrappers";
 
 const router = useRouter();
 const q = useQuasar();
@@ -208,8 +213,23 @@ const trackList = ref<TrackReadDto[]>();
 
 const songQueue = QueueController.getInstance();
 
+const copyTrackUrl = (trackId: string) => {
+  const loc = router.resolve({ name: 'track', params: { trackId: trackId }});
+  console.log(loc);
+
+  let url = new URL(window.location.origin);
+  url.pathname = window.location.pathname;
+  url.hash = loc.href;
+
+  navigator.clipboard.writeText(url.toString());
+}
+
 const gotoArtist = () => {
   router.push({ name: 'artist', params: { artist: albumInfo.value.albumArtist[0].name } })
+}
+
+const gotoTrack = (trackId: string) => {
+  router.push({ name: 'track', params: { trackId: trackId } })
 }
 
 const getAlbumImage = computed(() => {

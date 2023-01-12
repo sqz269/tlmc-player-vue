@@ -42,7 +42,7 @@
       </router-view>
     </q-page-container>
 
-    <q-footer>
+    <q-footer class="border-top-thin">
       <player-control></player-control>
     </q-footer>
 

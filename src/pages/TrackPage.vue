@@ -1,23 +1,23 @@
 <template>
-  <q-page padding>
-    <div class="row full-width" v-if="trackInfo">
+  <q-page>
+    <div class="row full-width q-px-none q-pt-lg" v-if="trackInfo && albumInfo && artistRecommend">
       <div class="col-4 q-px-md" style="max-width: 230px">
         <q-img
-          :src="albumInfo.albumImage.url"
+          :src="getAlbumImage"
           ratio="1">
         </q-img>
       </div>
       <div class="col-8">
         <div class="row full-width full-height items-end">
           <div class="col-12">
-            <div class="text-body1">Track</div>
+            <div class="text-h5">Track</div>
             <h3 class="q-mb-sm-sm q-mb-none q-mt-md">{{ trackInfo.name._default }}</h3>
           </div>
 
           <div class="col-12">
             <div class="row full-width">
-              <div class="text-subtitle1 text-bold">
-                {{ albumInfo.albumArtist[0] }}
+              <div class="text-subtitle1 text-bold cursor-pointer" @click="gotoArtist">
+                {{ albumInfo.albumArtist[0].name }}
               </div>
 
               <q-separator vertical spaced v-if="albumInfo.releaseDate"></q-separator>
@@ -33,52 +33,46 @@
           </div>
         </div>
       </div>
-      <div class="col-12 q-pt-md">
-        <q-btn fab class="q-mx-md" round :icon="outlinedPlayArrow" color="black" text-color="white">
-          <q-tooltip>Play</q-tooltip>
-        </q-btn>
+      <div class="page-section-blur col-all q-mt-lg row">
+        <div class="col-12 q-pt-md">
+          <q-btn fab class="q-mx-md" round :icon="outlinedPlayArrow" color="black" text-color="white" @click="playTrack">
+            <q-tooltip>Play</q-tooltip>
+          </q-btn>
 
-        <q-btn fab flat class="q-mx-md" round :icon="outlinedStarBorder">
-          <q-tooltip>Save</q-tooltip>
-        </q-btn>
+          <q-btn fab flat class="q-mx-md" round :icon="outlinedStarBorder">
+            <q-tooltip>Save</q-tooltip>
+          </q-btn>
 
-        <q-btn fab flat class="q-mx-md" round :icon="outlinedMoreHoriz">
-          <q-tooltip>More</q-tooltip>
-        </q-btn>
-      </div>
+          <q-btn fab flat class="q-mx-md" round :icon="outlinedMoreHoriz">
+            <q-tooltip>More</q-tooltip>
+          </q-btn>
+        </div>
 
-      <div class="col-12 q-pt-md">
-        <q-table :rows="originalTracks"
-                 :columns="originalColumns"
-                 :pagination="pagination"
-                 title="Original"
-                 separator="horizontal"
-                 row-key="index"
-                 flat
-                 hide-bottom
-                 virtual-scroll
-                 hide-pagination>
-          <!--          <template v-slot:body-cell-index>-->
+        <div class="col-12 q-pt-md q-px-md">
 
-          <!--          </template>-->
-        </q-table>
-      </div>
+          <div class="row">
+            <div class="col-12">
+              <AlbumCardLong :album-info="albumInfo"></AlbumCardLong>
+            </div>
 
-      <div class="col-12 q-pt-md">
-        <q-table :rows="trackMetadata"
-                 :columns="metadataColumns"
-                 :pagination="pagination"
-                 title="Metadata"
-                 separator="cell"
-                 row-key="index"
-                 flat
-                 hide-bottom
-                 virtual-scroll
-                 hide-header
-                 hide-pagination>
-          <!--          <template v-slot:body-cell-index>-->
-          <!--          </template>-->
-        </q-table>
+            <div class="col-12 q-my-lg">
+              <q-separator></q-separator>
+            </div>
+
+            <div class="col-12">
+              <div class="text-h5">
+                More From {{ albumInfo.albumArtist[0].name }}
+              </div>
+              <q-scroll-area class="full-width" style="height: 350px">
+                <div class="row no-wrap">
+                  <AlbumCard v-for="(album, index) in artistRecommend" :key="index"
+                             :album-info="album">
+                  </AlbumCard>
+                </div>
+              </q-scroll-area>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </q-page>
@@ -100,118 +94,60 @@ import {
 
 
 import { useRouter } from 'vue-router';
-import { AlbumApi } from 'app/backend-service-api';
+import {AlbumApi, CircleApi} from 'app/backend-service-api';
 import { AlbumReadDto, TrackReadDto, OriginalTrackReadDto } from 'app/backend-service-api';
 import { computed, onMounted, onUpdated, ref } from 'vue';
-import { formatDuration } from 'src/utils/durationUtils';
+import {formatDuration, sumDurations} from 'src/utils/durationUtils';
 import {ApiConfigProvider} from 'src/utils/ApiConfigProvider';
+import {usePageContainerBgStyleStore} from "stores/pageContainerBg";
+import {QueueController} from "src/utils/QueueController";
+import AlbumCardLong from "components/AlbumCardLong.vue";
+import {useQuasar} from "quasar";
+import AlbumCard from "components/AlbumCard.vue";
 
-type Metadata = { name: string, value: string };
+const q = useQuasar();
 
-const metadataColumns = [
-  {
-    name: 'metadata',
-    label: 'FIELD',
-    align: 'left',
-    field: (row: Metadata) => row.name
-  },
-  {
-    name: 'value',
-    label: 'VALUE',
-    align: 'left',
-    field: (row: Metadata) => row.value
-  }
-]
-
-const originalColumns = [
-  {
-    name: 'metadata',
-    label: 'Track',
-    align: 'left',
-    field: (row: Metadata) => row.value
-  },
-  {
-    name: 'value',
-    label: 'Album',
-    align: 'left',
-    field: (row: Metadata) => row.name
-  }
-]
-
-const pagination = {
-  rowsPerPage: 0,
-  descending: true,
-  field: (row: Metadata) => row.value
-}
+const songQueue = QueueController.getInstance();
 
 const router = useRouter();
 
+const {setColors} = usePageContainerBgStyleStore();
+
 const apiConfig = ApiConfigProvider.getInstance().getApiConfig();
 const trackApi = new AlbumApi(apiConfig);
+const artistApi = new CircleApi(apiConfig);
 const trackInfo = ref<TrackReadDto>();
 const albumInfo = ref<AlbumReadDto>();
+const trackList = ref<TrackReadDto[]>();
+const artistRecommend = ref<AlbumReadDto[]>();
 
-const trackMetadata = computed(() => {
-  if (trackInfo.value)
-    return fmtMetadata(trackInfo.value);
-  return null;
+const getAlbumImage = computed(() => {
+  return albumInfo?.value?.thumbnail?.medium?.url === null ?
+    'http://via.placeholder.com/640x360' : albumInfo?.value?.thumbnail?.medium?.url
 })
 
-const originalTracks = computed(() => {
-  if (trackInfo.value)
-    return fmtOriginalTracks(trackInfo.value);
-  return null;
-})
-
-/**
- * Extract Original track info from the API response object
- * @param track
- */
-function fmtOriginalTracks(track: TrackReadDto): Metadata[] {
-  const originals: Metadata[] = []
-  if (track.original)
-  {
-    for (let i = 0; i < track.original.length; i++) {
-      const original: OriginalTrackReadDto = track.original[i];
-
-      const originalAlbumName = original?.album?.fullName?._default;
-      if (!originalAlbumName)
-      {
-        continue;
-      }
-
-      originals.push({name: originalAlbumName, value: <string>original.title?.en})
-    }
-  }
-
-  return originals;
-}
-
-function fmtMetadata(track: TrackReadDto): Metadata[] {
-  const metadata: Metadata[] = [];
-  const metadataIndex = [
-    'staff',
-    'arrangement',
-    'vocalist',
-    'lyricist',
-    'genre'
-  ]
-
-  const trackDict = track as { [key: string]: string[] | null }
-  for (let knownDataIndex of metadataIndex) {
-    const d = trackDict[knownDataIndex]
-    if (d?.length != 0) {
-      metadata.push({name: knownDataIndex, value: d.join(',')});
-    }
-  }
-
-  return metadata;
+const gotoArtist = () => {
+  router.push({ name: 'artist', params: { artist: albumInfo.value.albumArtist[0].name } })
 }
 
 async function setTrackPage(trackId: string): Promise<void> {
   // Fetch track
-  trackInfo.value = await trackApi.getTrack({id: trackId})
-  albumInfo.value = trackInfo.value?.album;
+  trackInfo.value = await trackApi.getTrack({id: trackId});
+  albumInfo.value = await trackApi.getAlbum({id: trackInfo.value?.album?.id});
+  artistRecommend.value = await artistApi.getCircleAlbumsById({id: albumInfo.value?.albumArtist[0]?.name, limit: 20});
+
+  trackList.value = albumInfo.value?.tracks;
+
+  setColors(<string[]>albumInfo.value?.thumbnail?.colors);
+}
+
+async function playTrack(addToFront=true, playImmediately=true) {
+  await songQueue.addTrackToQueueById(<string> trackInfo.value?.id, addToFront, playImmediately);
+  q.notify({
+    position: 'top',
+    type: 'secondary',
+    message: 'Added to Queue'
+  });
 }
 
 onMounted(async () => {
