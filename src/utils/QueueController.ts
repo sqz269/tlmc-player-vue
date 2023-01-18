@@ -5,6 +5,23 @@ import {AudioController} from 'src/utils/AudioController';
 import {audioController} from 'boot/audioController';
 import {ApiConfigProvider} from 'src/utils/ApiConfigProvider';
 
+class QueuedTrack {
+  private readonly queueItemId: string;
+  private index: number;
+  private readonly track: TrackReadDto;
+
+  get Index() { return this.index; }
+  set Index(val) { this.index = val }
+
+  get Track() { return this.track; }
+
+  constructor(index: number, track: TrackReadDto) {
+    this.queueItemId = uuidv4();
+    this.index = index;
+    this.track = track;
+  }
+}
+
 class QueueController {
   private static _instance: QueueController | null = null;
 
@@ -72,9 +89,13 @@ class QueueController {
     }
   }
 
-  public playNext() {
+  public playNext(pushCurrentToQueue=false) {
     if (this.currentlyPlaying !== undefined) {
-      this._songHistory.value.push(this.currentlyPlaying);
+      if (!pushCurrentToQueue) {
+        this._songHistory.value.push(this.currentlyPlaying);
+      } else {
+        this._queue.value.splice(1, 0, this.currentlyPlaying);
+      }
     }
 
     if (this._queue.value.length === 0) {
@@ -96,10 +117,13 @@ class QueueController {
   }
 
   public playPrevious() {
-    this._queue.value.push(<TrackReadDto>this._songHistory.value.pop());
-    this._queue.value.push(<TrackReadDto>this._songHistory.value.pop());
+    if (this._songHistory.value.length === 0) {
+      return;
+    }
 
-    this.playNext();
+    this._queue.value.splice(0, 0, <TrackReadDto>this._songHistory.value.pop());
+
+    this.playNext(true);
   }
 
   /**

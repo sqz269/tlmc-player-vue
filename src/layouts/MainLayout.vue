@@ -26,7 +26,7 @@
 
     </q-header>
 
-    <q-drawer show-if-above side="left" :width="270">
+    <q-drawer show-if-above side="left" :width="250">
       <drawer-navigation></drawer-navigation>
     </q-drawer>
 
@@ -81,7 +81,10 @@ import AboutDialog from 'components/AboutDialog.vue'
 
 const router = useRouter();
 
-const containerBg = usePageContainerBgStyleStore();
+const bgStyleStore = usePageContainerBgStyleStore();
+
+const bgGradient1 = computed(() => bgStyleStore.getGradient1);
+const bgGradient2 = computed(() => bgStyleStore.getGradient2)
 
 const back = () => {
   router.back();
@@ -92,7 +95,7 @@ const forward = () => {
 }
 
 const bgGradient = computed(() => {
-  return `linear-gradient(180deg, ${containerBg.getGradient1} 0%, ${containerBg.getGradient2} 30%, rgba(0,0,0,1) 50%)`;
+  return `linear-gradient(180deg, ${bgGradient1.value} 0%, ${bgGradient2.value} 30%, rgba(0,0,0,1) 50%)`;
 });
 
 const queueDisplayStore = useQueueDisplayStore();

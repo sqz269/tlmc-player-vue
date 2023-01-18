@@ -1,16 +1,16 @@
 <template>
   <div>
-    <q-list padding>
-      <q-item>
-        <q-item-section>
-          <q-item-label>
-            <span class="text-weight-medium text-h5">
-              LOGO HERE
-            </span>
-          </q-item-label>
-        </q-item-section>
-      </q-item>
-    </q-list>
+<!--    <q-list padding>-->
+<!--      <q-item>-->
+<!--        <q-item-section>-->
+<!--          <q-item-label>-->
+<!--            <span class="text-weight-medium text-h5">-->
+<!--              LOGO HERE-->
+<!--            </span>-->
+<!--          </q-item-label>-->
+<!--        </q-item-section>-->
+<!--      </q-item>-->
+<!--    </q-list>-->
 
     <q-list padding>
       <q-item v-for="link in navigations" :key="link.text"

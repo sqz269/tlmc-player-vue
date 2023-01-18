@@ -3,6 +3,8 @@ apis/AssetApi.ts
 apis/AuthApi.ts
 apis/CircleApi.ts
 apis/OriginalAlbumApi.ts
+apis/PlaylistApi.ts
+apis/PlaylistItemApi.ts
 apis/UserApi.ts
 apis/index.ts
 index.ts
@@ -23,6 +25,13 @@ models/OriginalAlbumWriteDto.ts
 models/OriginalTrackReadDto.ts
 models/OriginalTrackReadDtoActionResult.ts
 models/OriginalTrackWriteDto.ts
+models/PlaylistCreateRequest.ts
+models/PlaylistItemAddRequest.ts
+models/PlaylistItemDeleteRequest.ts
+models/PlaylistItemReadDto.ts
+models/PlaylistReadDto.ts
+models/PlaylistType.ts
+models/PlaylistVisibility.ts
 models/ProblemDetails.ts
 models/RefreshToken.ts
 models/Role.ts
