@@ -106,6 +106,13 @@
                     <q-item-label caption lines="2">ASP.NET Core + PostgreSQL</q-item-label>
                   </q-item-section>
                 </q-item>
+
+                <q-item clickable v-ripple target="_blank" :href="playlistSwaggerUrl">
+                  <q-item-section>
+                    <q-item-label lines="1">Playlist API</q-item-label>
+                    <q-item-label caption lines="2">ASP.NET Core + PostgreSQL</q-item-label>
+                  </q-item-section>
+                </q-item>
               </q-list>
             </q-tab-panel>
           </q-tab-panels>
@@ -124,6 +131,7 @@ const tab = ref('media');
 const apiConfigProvider = ApiConfigProvider.getInstance();
 const authSwaggerUrl = `${apiConfigProvider.basePath}/swagger/auth`;
 const musicDataSwaggerUrl = `${apiConfigProvider.basePath}/swagger/music-data`
+const playlistSwaggerUrl = `${apiConfigProvider.basePath}/swagger/playlist`
 
 </script>
 

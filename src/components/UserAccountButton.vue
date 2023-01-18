@@ -4,7 +4,7 @@
       <q-btn v-if="!isLoggedInReactive" @click="showLoginDialog" outline text-color="white" label="Login" size="md" style="width: 100px" />
     </div>
 
-    <q-btn-dropdown v-if="isLoggedInReactive" rounded :label="getUsername" style="width: 150px">
+    <q-btn-dropdown v-if="isLoggedInReactive" rounded :label="currentUser" style="width: 150px">
       <q-list>
         <q-item clickable v-close-popup>
           <q-item-section>
@@ -12,13 +12,7 @@
           </q-item-section>
         </q-item>
 
-        <q-item clickable v-close-popup>
-          <q-item-section>
-            <q-item-label>Settings</q-item-label>
-          </q-item-section>
-        </q-item>
-
-        <q-separator class="q-my-md" />
+        <q-separator class="q-my-sm" />
 
         <q-item clickable v-close-popup>
           <q-item-section>
@@ -37,9 +31,10 @@ import {useQuasar} from 'quasar';
 import {useAuthStore} from 'stores/authDataStore';
 import {computed} from 'vue';
 
-const { isLoggedIn, getUsername } = useAuthStore();
+const authStore = useAuthStore();
 
-const isLoggedInReactive = computed(() => isLoggedIn);
+const isLoggedInReactive = computed(() => authStore.isLoggedIn);
+const currentUser = computed(() => authStore.getUsername);
 
 const $q = useQuasar();
 const showLoginDialog = () => {
