@@ -89,6 +89,10 @@ onMounted(async () => {
   loadPage(page);
 
   watch(() => router.currentRoute.value.params.page, (to, from) => {
+    if (router.currentRoute.value.name !== 'homePaginate') {
+      return;
+    }
+    // Also need to check if
     let toPage = Number.parseInt(<string>to);
     if (Number.isNaN(toPage)) {
       current.value = 1;
