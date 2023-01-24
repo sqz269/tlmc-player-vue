@@ -20,6 +20,7 @@
     <q-item-section>
       <q-slider v-model="currentTime"
                 @pan="onPan"
+                @update:model-value="onChange"
                 :min="0" :max="totalTime" :step="0.1"
                 color="white"/>
     </q-item-section>
@@ -51,12 +52,13 @@ import {QueueController} from 'src/utils/QueueController';
 const currentTime = ref(0);
 const songQueue = QueueController.getInstance();
 const isPanningProgress = ref(false);
+const isUpdating = ref(false);
 
 const queueController = QueueController.getInstance();
 
 queueController.watchCurrentlyPlaying(() => {
   return;
-})
+});
 
 const paused = computed(() => {
   return audioController.paused.value;
@@ -70,8 +72,19 @@ const onPan = (phase: string) => {
     // Seek
     audioController.seek(currentTime.value);
 
-    isPanningProgress.value = false;
+    setTimeout(() => {
+      isPanningProgress.value = false;
+    }, 0);
   }
+}
+
+const onChange = (k: unknown) => {
+  isUpdating.value = true;
+  audioController.seek(currentTime.value);
+
+  setTimeout(() => {
+    isUpdating.value = false;
+  }, 0);
 }
 
 const totalTime = computed(() => {
@@ -83,7 +96,7 @@ const totalTime = computed(() => {
 })
 
 audioController.onProgressTick((time) => {
-  if (isPanningProgress.value)
+  if (isPanningProgress.value || isUpdating.value)
   {
     return;
   }
