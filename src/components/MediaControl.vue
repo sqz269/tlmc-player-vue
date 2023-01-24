@@ -79,8 +79,11 @@ const onPan = (phase: string) => {
 }
 
 const onChange = (k: unknown) => {
+  if (isPanningProgress.value) {
+    return;
+  }
   isUpdating.value = true;
-  audioController.seek(currentTime.value);
+  audioController.seek(<number>k);
 
   setTimeout(() => {
     isUpdating.value = false;
