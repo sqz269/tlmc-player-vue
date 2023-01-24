@@ -40,7 +40,7 @@
 
 <script setup lang="ts">
 import {AlbumApi, AlbumReadDto} from 'app/backend-service-api';
-import {onMounted, onUnmounted, onUpdated, ref} from 'vue';
+import {onMounted, onUpdated, ref, watch} from 'vue';
 import AlbumCard from 'components/AlbumCard.vue';
 
 import {usePageContainerBgStyleStore} from 'stores/pageContainerBg';
@@ -55,7 +55,6 @@ const displayAlbums = ref<AlbumReadDto[]>([])
 const { setColors } = usePageContainerBgStyleStore();
 
 const router = useRouter();
-
 const current = ref(1);
 
 const model = ref('50');
@@ -68,8 +67,11 @@ const onPageChange = (pg: number) => {
   loadPage(pg);
 };
 
-function loadPage(index: number) {
-  router.push({ name: 'homePaginate', params: { page: current.value } })
+function loadPage(index: number, bypassPushRoute=false) {
+  if (bypassPushRoute)
+  {
+    router.push({ name: 'homePaginate', params: { page: current.value } })
+  }
 
   albumApi.getAlbums({start: (index - 1) * 50, limit: 50}).then((resp) => {
     displayAlbums.value = resp;
@@ -85,10 +87,18 @@ onMounted(async () => {
   const page = Number.parseInt(<string>router.currentRoute.value.params.page || '1');
   current.value = page;
   loadPage(page);
-})
 
-onUnmounted(() => {
-  {}
+  watch(() => router.currentRoute.value.params.page, (to, from) => {
+    let toPage = Number.parseInt(<string>to);
+    if (Number.isNaN(toPage)) {
+      current.value = 1;
+      loadPage(1, false);
+    }
+    if (toPage !== current.value){
+      current.value = toPage;
+      loadPage(toPage, true);
+    }
+  });
 })
 
 onUpdated(async () => {
