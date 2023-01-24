@@ -68,7 +68,7 @@ const onPageChange = (pg: number) => {
 };
 
 function loadPage(index: number, bypassPushRoute=false) {
-  if (bypassPushRoute)
+  if (!bypassPushRoute)
   {
     router.push({ name: 'homePaginate', params: { page: current.value } })
   }
@@ -92,7 +92,7 @@ onMounted(async () => {
     let toPage = Number.parseInt(<string>to);
     if (Number.isNaN(toPage)) {
       current.value = 1;
-      loadPage(1, false);
+      loadPage(1);
     }
     if (toPage !== current.value){
       current.value = toPage;
