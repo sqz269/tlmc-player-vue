@@ -1,4 +1,9 @@
 
+.link[data-v-df93308e] {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 #q-app > div > div:nth-child(3) > aside {
   background-color: rgba(0, 0, 0, 0.65);
 }
