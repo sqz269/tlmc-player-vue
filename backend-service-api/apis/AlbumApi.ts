@@ -18,6 +18,7 @@ import type {
   AlbumReadDto,
   AlbumReadDtoActionResult,
   AlbumWriteDto,
+  TrackGetMultipleResp,
   TrackReadDto,
   TrackReadDtoActionResult,
   TrackWriteDto,
@@ -29,6 +30,8 @@ import {
     AlbumReadDtoActionResultToJSON,
     AlbumWriteDtoFromJSON,
     AlbumWriteDtoToJSON,
+    TrackGetMultipleRespFromJSON,
+    TrackGetMultipleRespToJSON,
     TrackReadDtoFromJSON,
     TrackReadDtoToJSON,
     TrackReadDtoActionResultFromJSON,
@@ -69,6 +72,10 @@ export interface GetAlbumsRequest {
 
 export interface GetTrackRequest {
     id: string;
+}
+
+export interface GetTracksRequest {
+    requestBody?: Array<string>;
 }
 
 /**
@@ -303,6 +310,37 @@ export class AlbumApi extends runtime.BaseAPI {
      */
     async getTrack(requestParameters: GetTrackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TrackReadDto> {
         const response = await this.getTrackRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async getTracksRaw(requestParameters: GetTracksRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TrackGetMultipleResp>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json-patch+json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Jwt authentication
+        }
+
+        const response = await this.request({
+            path: `/api/music/track`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: requestParameters.requestBody,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => TrackGetMultipleRespFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async getTracks(requestParameters: GetTracksRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TrackGetMultipleResp> {
+        const response = await this.getTracksRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
