@@ -28,6 +28,7 @@ export * from './ProblemDetails';
 export * from './RefreshToken';
 export * from './Role';
 export * from './ThumbnailReadDto';
+export * from './TrackGetMultipleResp';
 export * from './TrackReadDto';
 export * from './TrackReadDtoActionResult';
 export * from './TrackWriteDto';

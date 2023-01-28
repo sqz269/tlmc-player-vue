@@ -36,6 +36,7 @@ models/ProblemDetails.ts
 models/RefreshToken.ts
 models/Role.ts
 models/ThumbnailReadDto.ts
+models/TrackGetMultipleResp.ts
 models/TrackReadDto.ts
 models/TrackReadDtoActionResult.ts
 models/TrackWriteDto.ts
