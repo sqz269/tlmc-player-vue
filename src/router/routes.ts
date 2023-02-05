@@ -35,6 +35,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('layouts/MainLayout.vue'),
     children: [{ path: 'track/:trackId', name: 'track', component: () => import('pages/TrackPage.vue') }]
   },
+  {
+    path: '/',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [{ path: 'playlist/:playlistId', name: 'playlist', component: () => import('pages/PlaylistPage.vue') }]
+  },
   // {
   //   path: '/',
   //   component: () => import('layouts/MainLayout.vue'),

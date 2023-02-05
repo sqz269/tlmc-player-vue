@@ -140,9 +140,7 @@
               </q-td>
               <q-menu
                 class="bg-black border border-white"
-                touch-position
                 context-menu
-                auto-close
               >
                 <q-list style="min-width: 150px;">
                   <q-item clickable v-close-popup>
@@ -151,9 +149,9 @@
                   <q-item clickable v-close-popup>
                     <q-item-section @click="playTrack(props.key, false, false)">Add to Queue</q-item-section>
                   </q-item>
-                  <q-item clickable v-close-popup>
-                    <q-item-section>Add to Playlist</q-item-section>
-                  </q-item>
+
+                  <AddToPlaylistMenu :track-id="props.key"></AddToPlaylistMenu>
+
                   <q-item clickable v-close-popup>
                     <q-item-section @click="copyTrackUrl(props.key)">Copy Track Url</q-item-section>
                   </q-item>
@@ -163,12 +161,9 @@
                 </q-list>
               </q-menu>
             </template>
-
           </q-table>
         </div>
-
       </div>
-
     </div>
   </q-page>
 </template>
@@ -185,6 +180,7 @@ import {
   outlinedPlayArrow,
   outlinedMoreHoriz,
   outlinedFavoriteBorder,
+  outlinedPlaylistAdd,
   outlinedDescription,
   outlinedTipsAndUpdates
 } from '@quasar/extras/material-icons-outlined';
@@ -199,6 +195,7 @@ import {usePageContainerBgStyleStore} from 'stores/pageContainerBg';
 import {ApiConfigProvider} from 'src/utils/ApiConfigProvider';
 import {QueueController} from 'src/utils/QueueController';
 import {route} from "quasar/wrappers";
+import AddToPlaylistMenu from "components/AddToPlaylistMenu.vue";
 
 const router = useRouter();
 const q = useQuasar();
