@@ -6,8 +6,8 @@
       </q-avatar>
     </q-item-section>
     <q-item-section>
-      <q-item-label :class="{ 'text-gt' : currentlyPlaying }">{{ props.trackInfo.name._default }}</q-item-label>
-      <q-item-label :class="{ 'text-gt' : currentlyPlaying }" caption lines="2">{{ props.trackInfo.album.albumName._default }}</q-item-label>
+      <q-item-label class="ellipsis" :class="{ 'text-gt' : currentlyPlaying }">{{ props.trackInfo.name._default }}</q-item-label>
+      <q-item-label class="ellipsis" :class="{ 'text-gt' : currentlyPlaying }" caption lines="2">{{ props.trackInfo.album.albumName._default }}</q-item-label>
     </q-item-section>
     <q-item-section side v-if="currentlyPlaying">
       <q-spinner-audio v-if="!paused" size="2em" color="gt" />
