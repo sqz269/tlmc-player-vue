@@ -85,7 +85,9 @@ const bgStyleStore = usePageContainerBgStyleStore();
 
 const bgGradient1 = computed(() => bgStyleStore.getGradient1);
 const bgGradient2 = computed(() => bgStyleStore.getGradient2)
-
+const bgGradient = computed(() => {
+  return `linear-gradient(180deg, ${bgGradient1.value} 0%, ${bgGradient2.value} 30%, rgba(0,0,0,1) 50%)`;
+});
 const back = () => {
   router.back();
 }
@@ -93,10 +95,6 @@ const back = () => {
 const forward = () => {
   router.forward();
 }
-
-const bgGradient = computed(() => {
-  return `linear-gradient(180deg, ${bgGradient1.value} 0%, ${bgGradient2.value} 30%, rgba(0,0,0,1) 50%)`;
-});
 
 const queueDisplayStore = useQueueDisplayStore();
 
