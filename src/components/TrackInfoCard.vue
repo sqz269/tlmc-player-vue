@@ -13,7 +13,11 @@
       </q-card-section>
       <q-card-actions vertical class="justify-around q-px-md">
         <q-btn flat round size="md" color="red" :icon="outlinedFavoriteBorder" />
-        <q-btn flat round size="md" color="accent" :icon="outlinedPlaylistAddCircle" />
+        <q-btn flat round size="md" color="accent" :icon="outlinedPlaylistAddCircle">
+          <q-menu>
+            <AddToPlaylistMenu :track-id="songQueue.currentlyPlaying.id"></AddToPlaylistMenu>
+          </q-menu>
+        </q-btn>
       </q-card-actions>
     </q-card-section>
   </q-card>
@@ -32,12 +36,13 @@ import {
 } from '@quasar/extras/material-icons-outlined';
 import {QueueController} from 'src/utils/QueueController';
 import {useRouter} from "vue-router";
+import AddToPlaylistMenu from "components/AddToPlaylistMenu.vue";
 
 const songQueue = QueueController.getInstance();
 
 const router = useRouter();
 
 const gotoArtist = () => {
-  router.push({ name: 'artist', params: { artist: songQueue.currentlyPlaying?.album?.albumArtist[0].name } })
+  router.push({ name: 'artist', params: { artist: songQueue.currentlyPlaying?.album?.albumArtist![0]!.name } })
 }
 </script>
