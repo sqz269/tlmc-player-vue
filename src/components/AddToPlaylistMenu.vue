@@ -82,6 +82,21 @@ const createPlaylist = async () => {
     type: 'secondary',
     message: `Playlist Created`
   });
+
+  const r = await playlistItemApi.addPlaylistItemToPlaylist({playlistItemAddRequest: {
+    playlistId: result.id!,
+    playlistItemId: props.trackId
+  }});
+
+  playlistStore.addPlaylistItem(result.id!, r);
+
+  $q.notify({
+    position: 'top',
+    type: 'secondary',
+    message: `Added to Playlist`
+  });
+
+  playlistCreateActive.value = false;
 }
 
 let playlistStatus = ref<string[]>([]);
