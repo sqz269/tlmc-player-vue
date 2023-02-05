@@ -34,7 +34,7 @@
       <div class="page-section-blur col-all q-mt-lg row">
 
         <div class="col-12 q-pt-md">
-          <q-btn fab class="q-mx-md" round :icon="outlinedPlayArrow" color="black" text-color="white">
+          <q-btn fab class="q-mx-md" round :icon="outlinedPlayArrow" color="black" text-color="white" @click="playPlaylist">
             <q-tooltip>Play</q-tooltip>
 
             <q-menu
@@ -43,10 +43,10 @@
               context-menu
             >
               <q-list style="min-width: 150px;">
-                <q-item clickable v-close-popup>
+                <q-item clickable v-close-popup @click="playPlaylist(true, false)">
                   <q-item-section>Play Next</q-item-section>
                 </q-item>
-                <q-item clickable v-close-popup>
+                <q-item clickable v-close-popup @click="playPlaylist(false, false)">
                   <q-item-section>Add to Queue</q-item-section>
                 </q-item>
               </q-list>
@@ -87,7 +87,7 @@
 
               <q-img
                 style="height: 50px; max-width: 50px"
-                :src="item.Track.album.thumbnail.tiny.url"
+                :src="item.Track.album.thumbnail?.tiny.url"
               />
 
               <div class="row full-width">
@@ -121,6 +121,7 @@ import {ApiConfigProvider} from 'src/utils/ApiConfigProvider';
 import {onMounted, onUpdated, ref, watch} from 'vue';
 import {useRouter} from 'vue-router';
 import {formatDuration} from 'src/utils/durationUtils';
+import {QueueController} from "src/utils/QueueController";
 
 const playlistApi = new PlaylistApi(ApiConfigProvider.getInstance().getApiConfig());
 const albumApi = new AlbumApi(ApiConfigProvider.getInstance().getApiConfig());
@@ -135,6 +136,15 @@ interface PlaylistEntry {
 const playlistMetadata = ref<PlaylistReadDto>()
 const playlistItemsExist = ref<PlaylistEntry[]>();
 const playlistItemsNotFound = ref<string[]>();
+
+
+const songQueue = QueueController.getInstance();
+
+const playPlaylist = (addToFront=true, playImmediately=true) => {
+  const tracks = playlistItemsExist.value?.map(e => e.Track.id);
+
+  songQueue.addTrackToQueueByIdBatch(tracks, addToFront, playImmediately);
+}
 
 async function setPlaylistPage() {
   let playlistId = <string>router.currentRoute.value.params.playlistId;
