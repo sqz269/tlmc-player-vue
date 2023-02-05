@@ -3,6 +3,7 @@ import {AuthToken, AuthTokenToJSON, JwtRenewResult, LoginResult} from "app/backe
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
+    loaded: false,
     jwtToken: null as string | null,
     refreshToken: null as string | null,
     authInfo: null as AuthToken | null
@@ -52,6 +53,7 @@ export const useAuthStore = defineStore('auth', {
     },
 
     loadAuthFromLocalStorage() {
+      this.loaded = true;
       this.jwtToken = localStorage.getItem('auth_jwtToken');
       this.refreshToken = localStorage.getItem('auth_refreshToken');
 

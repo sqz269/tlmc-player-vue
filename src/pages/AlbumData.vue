@@ -136,7 +136,7 @@ export default defineComponent({
 
 <script setup lang="ts">
 import {computed, onMounted, ref} from 'vue';
-import { AlbumApi } from 'app/backend-service-api';
+import {AlbumApi, PlaylistApi} from 'app/backend-service-api';
 import { AlbumReadDto, TrackReadDto, AssetReadDto } from 'app/backend-service-api';
 import { useRouter } from 'vue-router';
 import { formatDuration } from 'src/utils/durationUtils';

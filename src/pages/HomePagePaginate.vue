@@ -1,7 +1,7 @@
 <template>
   <q-page padding :ref="page">
 
-    <div class="row q-gutter-md">
+    <div class="row q-gutter-md justify-evenly">
       <AlbumCard v-for="(album, index) in displayAlbums" :key="index"
                  :album-info="album">
       </AlbumCard>
