@@ -7,9 +7,9 @@
       />
 
       <q-card-section class="justify-around q-py-none">
-        <div class="text-h6">{{ songQueue.currentlyPlaying.name._default }}</div>
-        <div class="text-subtitle2">{{ songQueue.currentlyPlaying.album.albumName._default }}</div>
-        <div class="text-subtitle1 text-grey q-py-sm cursor-pointer" @click="gotoArtist">{{ songQueue.currentlyPlaying.album.albumArtist[0].name }}</div>
+        <div class="text-h6 link" @click="gotoTrack">{{ songQueue.currentlyPlaying.name._default }}</div>
+        <div class="text-subtitle2 link" @click="gotoAlbum">{{ songQueue.currentlyPlaying.album.albumName._default }}</div>
+        <div class="text-subtitle1 text-grey q-py-sm link" @click="gotoArtist">{{ songQueue.currentlyPlaying.album.albumArtist[0].name }}</div>
       </q-card-section>
       <q-card-actions vertical class="justify-around q-px-md">
         <q-btn flat round size="md" color="red" :icon="outlinedFavoriteBorder" />
@@ -44,5 +44,13 @@ const router = useRouter();
 
 const gotoArtist = () => {
   router.push({ name: 'artist', params: { artist: songQueue.currentlyPlaying?.album?.albumArtist![0]!.name } })
+}
+
+const gotoAlbum = () => {
+  router.push({ name: 'album', params: { albumId: songQueue.currentlyPlaying?.album?.id } })
+}
+
+const gotoTrack = () => {
+  router.push({ name: 'track', params: { trackId: songQueue.currentlyPlaying?.id } })
 }
 </script>
