@@ -17105,6 +17105,14 @@ body.body--dark {
   box-shadow: none;
 }
 
+.link {
+  cursor: pointer;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
 .underline-on-hover:hover {
   text-decoration: underline;
 }
