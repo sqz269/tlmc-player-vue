@@ -5,7 +5,7 @@
     </q-btn>
 
     <q-btn fab class="q-mx-md" round size="md" :icon="paused ? outlinedPlayArrow : outlinedPause" @click="audioController.togglePause()">
-      <q-tooltip>{{ audioController.paused ? "Play" : "Pause" }}</q-tooltip>
+      <q-tooltip>{{ paused ? "Play" : "Pause" }}</q-tooltip>
     </q-btn>
 
     <q-btn flat fab size="md" :icon="outlinedSkipNext" @click="queueController.playNext()">
@@ -13,7 +13,7 @@
     </q-btn>
   </div>
 
-  <div class="row full-width q-pt-lg" v-if="songQueue.currentlyPlaying !== undefined">
+  <div class="row full-width q-pt-lg" v-if="currentlyPlaying !== null">
     <q-item-section side>
       {{ formatDuration(secondsToDuration(currentTime)) }}
     </q-item-section>
@@ -25,7 +25,7 @@
                 color="white"/>
     </q-item-section>
     <q-item-section side>
-      {{ formatDuration(songQueue.currentlyPlaying.duration) }}
+      {{ formatDuration(currentlyPlaying.Track.duration) }}
     </q-item-section>
   </div>
 </template>
@@ -47,22 +47,30 @@ import {
 import {computed, ref} from 'vue';
 import {audioController} from 'boot/audioController';
 import {durationToSeconds, formatDuration, secondsToDuration} from 'src/utils/durationUtils';
-import {QueueController} from 'src/utils/QueueController';
+import {QueueController, QueuedTrack} from 'src/utils/QueueController';
+import {audioEvents, queueEvents} from "boot/eventBus";
 
 const currentTime = ref(0);
-const songQueue = QueueController.getInstance();
 const isPanningProgress = ref(false);
 const isUpdating = ref(false);
 
 const queueController = QueueController.getInstance();
 
-queueController.watchCurrentlyPlaying(() => {
-  return;
+const paused = ref(false);
+
+const currentlyPlaying = ref<QueuedTrack | null>(null);
+
+queueEvents.currentPlayingChanged.on(({prev, curr}) => {
+  currentlyPlaying.value = curr;
+})
+
+audioEvents.playbackPaused.on(() => {
+  paused.value = true
 });
 
-const paused = computed(() => {
-  return audioController.paused.value;
-})
+audioEvents.playbackResumed.on(() => {
+  paused.value = false;
+});
 
 const onPan = (phase: string) => {
   if (phase === 'start') {
@@ -91,18 +99,18 @@ const onChange = (k: unknown) => {
 }
 
 const totalTime = computed(() => {
-  if (songQueue.currentlyPlaying !== undefined) {
-    return durationToSeconds(<string>songQueue.currentlyPlaying.duration);
+  if (currentlyPlaying.value !== null) {
+    return durationToSeconds(<string>currentlyPlaying.value.Track.duration);
   }
 
   return -1;
 })
 
-audioController.onProgressTick((time) => {
+audioEvents.playbackProgressed.on(({prev, curr}) => {
   if (isPanningProgress.value || isUpdating.value)
   {
     return;
   }
-  currentTime.value = time;
+  currentTime.value = curr;
 })
 </script>

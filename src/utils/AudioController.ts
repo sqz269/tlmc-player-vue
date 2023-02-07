@@ -1,19 +1,17 @@
 import { Howl } from 'howler';
-import {ref, watch} from 'vue';
 import {Action, Func} from 'src/utils/HelperType';
+import {audioEvents} from "boot/eventBus";
+import {audioController} from "boot/audioController";
 
 class AudioController {
   private howl: Howl | null = null;
   private playbackId: number | undefined;
 
-  public volume = ref<number>(1);
-  public progress = ref<number>(0);
+  private _volume = 1;
+  private _progress = 0;
 
-  public paused = ref<boolean>(false);
-  private pauseSave: number | undefined;
-
-  private onComplete: Action[] = [];
-  private onTick: Func[] = [];
+  private _paused = false;
+  private _pauseSave: number | undefined;
 
   private progressTicker;
 
@@ -22,54 +20,76 @@ class AudioController {
       alert('Your browser doesn\'t support FLAC')
     }
 
-    watch(this.volume, () => {
-      this.onVolumeChanged();
-    })
-
-    watch(this.paused, () => {
-      if (this.howl === null) {
-        return;
-      }
-
-      if (this.paused.value === true) {
-        this.pauseSave = this.howl.seek(this.playbackId);
-        this.howl.pause()
-      }
-      else {
-        this.howl.play(this.playbackId)
-        this.howl.seek(<number>this.pauseSave, this.playbackId);
-      }
-    })
-
     this.progressTicker = setInterval(() => {
-      if (this.howl === null ||
-          this.paused.value === true ||
+      if (this.howl === null || this.paused ||
           this.playbackId === undefined)
         return;
+
 
       const pos = this.howl?.seek(this.playbackId);
       if (pos === undefined) {
         return;
       }
 
-      this.onTick.forEach(a => {
-        a(pos);
-      });
+      this.progress = pos;
     }, 100);
   }
 
-  private onVolumeChanged() {
+  get volume(): number {
+    return this._volume;
+  }
+
+  set volume(value: number) {
+    const prev = this.volume;
+    this._volume = value;
+
     if (this.howl !== null) {
-      this.howl.volume(this.volume.value)
+      this.howl.volume(this._volume);
     }
+
+    audioEvents.volumeChanged({prev: prev, curr: this.volume});
+  }
+  get progress(): number {
+    return this._progress;
+  }
+
+  set progress(value: number) {
+    const prev = this.progress;
+    this._progress = value;
+
+    audioEvents.playbackProgressed({prev: prev, curr: this.progress});
+  }
+
+  get paused(): boolean {
+    return this._paused;
+  }
+
+  private set paused(value) {
+    const prev = this.paused;
+    this._paused = value;
+
+    if (this.howl === null) {
+      return;
+    }
+    if (this.paused) {
+      this._pauseSave = this.howl.seek(this.playbackId);
+      this.howl.pause()
+      audioEvents.playbackPaused();
+    }
+    else {
+      this.howl.play(this.playbackId)
+      this.howl.seek(<number>this._pauseSave, this.playbackId);
+      audioEvents.playbackResumed();
+    }
+    audioEvents.playbackStateChanged({prev:prev, curr:this.paused});
   }
 
   public unload() {
     if (this.howl !== null) {
       this.howl.unload();
-      this.paused.value = false
-      this.progress.value = 0;
-      this.pauseSave = 0;
+      this.unpause()
+      this.progress = 0;
+      this._pauseSave = 0;
       this.playbackId = undefined;
     }
   }
@@ -80,21 +100,13 @@ class AudioController {
     this.howl = new Howl({
       src: src,
       format: ['flac'],
-      volume: this.volume.value,
+      volume: this.volume,
       autoplay: true,
       onend: () => {
-        this.onComplete.forEach(a => {a()});
+        audioEvents.playbackCompleted();
       }
     })
     this.playbackId = this.howl.play()
-  }
-
-  public onPlaybackComplete(callback: Action) {
-    this.onComplete.push(callback);
-  }
-
-  public onProgressTick(callback: Func) {
-    this.onTick.push(callback);
   }
 
   public seek(time: number) {
@@ -102,15 +114,15 @@ class AudioController {
   }
 
   public pause() {
-    this.paused.value = true;
+    this.paused = true;
   }
 
   public unpause() {
-    this.paused.value = false;
+    this.paused = false;
   }
 
   public togglePause() {
-    this.paused.value = !this.paused.value;
+    this.paused = !this.paused;
   }
 }
 

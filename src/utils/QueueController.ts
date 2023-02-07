@@ -1,35 +1,34 @@
-import {ref, WatchCallback} from 'vue';
 import {AlbumApi, TrackReadDto} from 'app/backend-service-api';
-import {watch} from 'vue';
 import {AudioController} from 'src/utils/AudioController';
 import {audioController} from 'boot/audioController';
 import {ApiConfigProvider} from 'src/utils/ApiConfigProvider';
+import {audioEvents, queueEvents} from "boot/eventBus";
+import {uuidv4} from "src/utils/Utils";
 
 class QueuedTrack {
   private readonly queueItemId: string;
-  private index: number;
   private readonly track: TrackReadDto;
+  private readonly index: number;
+  private readonly srcPlaylist: string | null;
 
+  get ItemId() { return this.queueItemId; }
   get Index() { return this.index; }
-  set Index(val) { this.index = val }
-
   get Track() { return this.track; }
 
-  constructor(index: number, track: TrackReadDto) {
+  constructor(index: number, track: TrackReadDto, srcPlaylist: string | null=null) {
     this.queueItemId = uuidv4();
     this.index = index;
     this.track = track;
+    this.srcPlaylist = srcPlaylist;
   }
 }
 
 class QueueController {
   private static _instance: QueueController | null = null;
-
-  private _prevSongHistoryLen: number;
-  private _songHistory = ref<TrackReadDto[]>([]);
-  private _prevQueueLen: number;
-  private _queue = ref<TrackReadDto[]>([]);
-  private _currentlyPlaying = ref<TrackReadDto>();
+  private _index = 0;
+  private _songHistory: QueuedTrack[] = [];
+  private _queue: QueuedTrack[] = [];
+  private _currentlyPlaying: QueuedTrack | null = null;
 
   private _albumApi: AlbumApi;
 
@@ -40,90 +39,184 @@ class QueueController {
 
     this._albumApi = new AlbumApi(apiConfig);
     this._audioController = audioController;
-
-    this._prevQueueLen = this._queue.value.length;
-    this._prevSongHistoryLen = this._songHistory.value.length;
   }
 
   public init() {
-    this._audioController.onPlaybackComplete(() => {
+    audioEvents.playbackCompleted.on(() => {
       this.playNext();
     })
-
-    this.watchQueue(() => {
-      const currLength = this._queue.value.length;
-      if (currLength > this._prevQueueLen) {
-        this.onTrackAdd()
-      }
-      this._prevQueueLen = currLength;
-    });
   }
 
-  get queue(): TrackReadDto[] {
-    return this._queue.value;
+  get queue(): QueuedTrack[] {
+    return this._queue;
   }
 
-  get currentlyPlaying(): TrackReadDto | undefined {
-    return this._currentlyPlaying.value;
+  get currentlyPlaying(): QueuedTrack | null {
+    return this._currentlyPlaying;
+  }
+  set currentlyPlaying(value: QueuedTrack | null) {
+    const prev = this.currentlyPlaying;
+    this._currentlyPlaying = value;
+
+    queueEvents.currentPlayingChanged({prev: prev, curr: this.currentlyPlaying});
   }
 
-  get songHistory(): TrackReadDto[] {
-    return this._songHistory.value;
+  get songHistory(): QueuedTrack[] {
+    return this._songHistory;
   }
 
-  public watchQueue(func: WatchCallback<TrackReadDto[] | undefined, TrackReadDto[] | undefined>) {
-    watch(this._queue, func, { deep: true });
+  public addToHistory(item: QueuedTrack, position=-1) {
+    const prev = [...this.songHistory];
+
+    if (position == -1) {
+      this._songHistory.push(item);
+    } else {
+      this._songHistory.splice(position, 0, item);
+    }
+
+    queueEvents.historyChanged({ prev, curr: this.songHistory });
   }
 
-  public watchCurrentlyPlaying(func: WatchCallback<TrackReadDto | undefined, TrackReadDto | undefined>) {
-    watch(this._currentlyPlaying, func);
+  public removeFromHistory(position=-1) : QueuedTrack | undefined {
+    const prev = [...this.songHistory];
+
+    let rm: QueuedTrack | undefined;
+    if (position == -1) {
+      rm = this._songHistory.pop();
+    }
+    else {
+      rm = this._songHistory.splice(position, 1)[0];
+    }
+
+    queueEvents.historyChanged({ prev, curr: this.songHistory });
+    return rm;
   }
 
-  public watchSongHistory(func: WatchCallback<TrackReadDto[] | undefined, TrackReadDto[] | undefined>) {
-    watch(this._songHistory, func, { deep: true });
+  public addToQueue(item: QueuedTrack, position=-1) {
+    const prev = [...this.queue];
+
+    if (position == -1)
+    {
+      this._queue.push(item);
+    } else {
+      this._queue.splice(position, 0, item);
+    }
+
+    queueEvents.queueChanged({ prev, curr: this.queue });
   }
 
-  private onTrackAdd() {
-    if (this.currentlyPlaying === undefined) {
+  public addToQueueBatch(item: QueuedTrack[], position=-1) {
+    const prev = [...this.queue];
+
+    if (position == -1)
+    {
+      this._queue.push(...item);
+    } else {
+      this._queue.splice(position, 0, ...item);
+    }
+
+    queueEvents.queueChanged({ prev, curr: this.queue });
+  }
+
+  public removeFromQueue(position=-1): QueuedTrack | undefined {
+    const prev = [...this._queue]
+
+    let rm: QueuedTrack | undefined;
+    if (position == -1) {
+      rm = this._queue.pop();
+    }
+    else {
+      rm = this._queue.splice(position, 1)[0];
+    }
+
+    queueEvents.queueChanged({ prev, curr: this.queue });
+    return rm;
+  }
+
+  public removeQueuedItem(itemId: string): QueuedTrack | undefined {
+    // Is the removed item currently playing?
+    if (this.currentlyPlaying?.ItemId === itemId) {
       this.playNext();
+    }
+
+    // Check queue
+    let index: number | undefined;
+    this.queue.forEach((e, idx) => {
+      if (e.ItemId === itemId) {
+        index = idx;
+      }
+    });
+
+    if (index !== undefined) {
+      return this.removeFromQueue(index);
+    }
+
+    // Check History
+    this.songHistory.forEach((e, idx) => {
+      if (e.ItemId === itemId) {
+        index = idx;
+      }
+    });
+
+    if (index !== undefined) {
+      return this.removeFromHistory(index);
     }
   }
 
   public playNext(pushCurrentToQueue=false) {
-    if (this.currentlyPlaying !== undefined) {
+    if (this.currentlyPlaying !== null) {
       if (!pushCurrentToQueue) {
-        this._songHistory.value.push(this.currentlyPlaying);
+        this.addToHistory(this.currentlyPlaying);
       } else {
-        this._queue.value.splice(1, 0, this.currentlyPlaying);
+        this.addToQueue(this.currentlyPlaying, 1);
       }
     }
 
-    if (this._queue.value.length === 0) {
-      if (this.currentlyPlaying === undefined) {
+    if (this._queue.length === 0) {
+      if (this.currentlyPlaying === null) {
         return;
       }
-      this._currentlyPlaying.value = undefined;
+      this.currentlyPlaying = null;
     }
 
-    const song = this._queue.value.splice(0, 1)[0];
+    const song = this.removeFromQueue(0);
 
     if (song === undefined) {
-      this._currentlyPlaying.value = undefined;
+      this.currentlyPlaying = null;
       this._audioController.unload();
       return;
     }
-    this._audioController.playTrack(<string>song.trackFile?.url);
-    this._currentlyPlaying.value = song;
+    this._audioController.playTrack(<string>song.Track.trackFile?.url);
+    this.currentlyPlaying = song;
   }
 
   public playPrevious() {
-    if (this._songHistory.value.length === 0) {
+    if (this.songHistory.length === 0) {
       return;
     }
 
-    this._queue.value.splice(0, 0, <TrackReadDto>this._songHistory.value.pop());
+    this.addToQueue(this.removeFromHistory()!, 0);
 
     this.playNext(true);
+  }
+
+  // TODO: Add checks to ensure track have all the properties we need
+  public addTrackToQueue(track: TrackReadDto, position: number, srcPlaylist: string | undefined=undefined) {
+    const queueItem = new QueuedTrack(this._index, track, srcPlaylist)
+    this._index++;
+    this.addToQueue(queueItem, position)
+  }
+
+  // TODO: Add checks to ensure track have all the properties we need
+  public addTracksToQueue(track: TrackReadDto[], position: number, srcPlaylist: string | undefined=undefined) {
+    const queueItems: QueuedTrack[] = []
+
+    track.forEach(t => {
+      queueItems.push(new QueuedTrack(this._index, t, srcPlaylist));
+      this._index++;
+    })
+
+    this.addToQueueBatch(queueItems, position)
   }
 
   /**
@@ -141,12 +234,12 @@ class QueueController {
   public async addTrackToQueueById(trackId: string, addToFront = false, playImmediately=false) {
     const trackData = await this._albumApi.getTrack({ id : trackId });
     if (addToFront) {
-      this._queue.value.splice(0, 0, trackData);
+      this.addTrackToQueue(trackData, 0);
       if (playImmediately) {
         this.playNext();
       }
     } else {
-      this._queue.value.push(trackData);
+      this.addTrackToQueue(trackData, -1);
     }
   }
 
@@ -166,11 +259,11 @@ class QueueController {
     }
 
     if (!addToFront) {
-      this._queue.value.push(...tracks);
+      this.addTracksToQueue(tracks, -1);
       return;
     }
 
-    this._queue.value.splice(0, 0, ...tracks);
+    this.addTracksToQueue(tracks, 0);
 
     if (playImmediately) {
       this.playNext();
@@ -182,7 +275,7 @@ class QueueController {
       throw new Error('Invalid track object to add to queue. Track missing property \"trackFile\" or \"album\"');
     }
 
-    this._queue.value.push(track);
+    this.addTrackToQueue(track, -1);
   }
 
   public static getInstance() : QueueController {
@@ -195,5 +288,6 @@ class QueueController {
 }
 
 export {
-  QueueController
+  QueueController,
+  QueuedTrack
 }

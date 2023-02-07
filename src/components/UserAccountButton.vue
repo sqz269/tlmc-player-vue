@@ -14,7 +14,7 @@
 
         <q-separator class="q-my-sm" />
 
-        <q-item clickable v-close-popup>
+        <q-item clickable v-close-popup @click="logout">
           <q-item-section>
             <q-item-label>Logout</q-item-label>
           </q-item-section>
@@ -30,6 +30,11 @@ import LoginModal from 'components/LoginModal.vue'
 import {useQuasar} from 'quasar';
 import {useAuthStore} from 'stores/authDataStore';
 import {computed} from 'vue';
+import {AuthApi, UserApi} from "app/backend-service-api";
+import {ApiConfigProvider} from "src/utils/ApiConfigProvider";
+import {biAward} from "@quasar/extras/bootstrap-icons";
+
+const userApi = new UserApi(ApiConfigProvider.getInstance().getApiConfig());
 
 const authStore = useAuthStore();
 
@@ -42,8 +47,16 @@ const showLoginDialog = () => {
     component: LoginModal
   });
 }
+
+const logout = async () => {
+  if (!authStore.refreshToken) {
+    return;
+  }
+  const result = await userApi.apiUserLogoutPost({ body: authStore.refreshToken });
+  $q.notify({
+    position: 'top',
+    type: 'positive',
+    message: 'Logged Out'
+  });
+}
 </script>
-
-<style scoped>
-
-</style>
