@@ -138,10 +138,7 @@
               <q-td :props="props">
                 {{props.value}}
               </q-td>
-              <q-menu
-                class="bg-black border border-white"
-                context-menu
-              >
+              <q-menu context-menu>
                 <q-list style="min-width: 150px;">
                   <q-item clickable v-close-popup>
                     <q-item-section @click="playTrack(props.key, true, false)">Play Next</q-item-section>

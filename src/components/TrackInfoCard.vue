@@ -14,9 +14,7 @@
       <q-card-actions vertical class="justify-around q-px-md">
         <q-btn flat round size="md" color="red" :icon="outlinedFavoriteBorder" />
         <q-btn flat round size="md" color="accent" :icon="outlinedPlaylistAddCircle">
-          <q-menu>
-            <AddToPlaylistMenu :track-id="songQueue.currentlyPlaying.id"></AddToPlaylistMenu>
-          </q-menu>
+          <AddToPlaylistSelector :track-id="songQueue.currentlyPlaying.id"></AddToPlaylistSelector>
         </q-btn>
       </q-card-actions>
     </q-card-section>
@@ -37,6 +35,7 @@ import {
 import {QueueController} from 'src/utils/QueueController';
 import {useRouter} from "vue-router";
 import AddToPlaylistMenu from "components/AddToPlaylistMenu.vue";
+import AddToPlaylistSelector from "components/AddToPlaylistSelector.vue";
 
 const songQueue = QueueController.getInstance();
 
