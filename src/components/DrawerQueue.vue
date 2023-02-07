@@ -5,19 +5,21 @@
         dense
         label="History"
         default-opened>
+        <QueueItem v-for="h in history" :key="h.Track.id"
+                   :track-info="h.Track" :queue-info="h"
+                   :currently-playing="false"></QueueItem>
 
-        <QueueItem v-for="history in queuedHistory" :key="history.id"
-                   :track-info="history" :currently-playing="false"></QueueItem>
-
-        <QueueItem :currently-playing="true" :track-info="currentlyPlaying"></QueueItem>
+        <QueueItem v-if="currentlyPlaying" :currently-playing="true"
+                   :track-info="currentlyPlaying.Track" :queue-info="currentlyPlaying"></QueueItem>
       </q-expansion-item>
 
       <q-expansion-item
         dense
         label="Next Up"
         default-opened>
-        <QueueItem v-for="future in queuedFuture" :key="future.id"
-                   :track-info="future" :currently-playing="false"></QueueItem>
+        <QueueItem v-for="future in queue" :key="future.Track.id"
+                   :track-info="future.Track" :queue-info="future"
+                   :currently-playing="false"></QueueItem>
       </q-expansion-item>
     </q-list>
   </div>
@@ -25,21 +27,25 @@
 
 <script lang="ts" setup>
 import QueueItem from 'components/QueueItem.vue';
-import {computed} from 'vue';
-import {QueueController} from 'src/utils/QueueController';
+import {ref} from 'vue';
+import {QueuedTrack} from 'src/utils/QueueController';
+import {queueEvents} from "boot/eventBus";
 
-let queueController = QueueController.getInstance();
+const history = ref<QueuedTrack[]>([]);
+const queue = ref<QueuedTrack[]>([]);
+const currentlyPlaying = ref<QueuedTrack | null>(null);
 
-const queuedHistory = computed(() => {
-  return queueController.songHistory;
-})
+queueEvents.historyChanged.on(({prev, curr}) => {
+  history.value = curr;
+});
 
-const queuedFuture = computed(() => {
-  return queueController.queue;
-})
+queueEvents.queueChanged.on(({prev, curr}) => {
+  queue.value.length = 0;
+  queue.value.push(...curr);
+});
 
-const currentlyPlaying = computed(() => {
-  return queueController.currentlyPlaying;
-})
+queueEvents.currentPlayingChanged.on(({prev, curr}) => {
+  currentlyPlaying.value = curr;
+});
 
 </script>

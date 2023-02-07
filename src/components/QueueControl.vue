@@ -37,12 +37,6 @@
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'QueueControl'
-}
-</script>
-
 <script setup lang="ts">
 import {
   outlinedShuffle,
@@ -56,9 +50,10 @@ import {useQueueDisplayStore} from 'stores/showQueue';
 
 const queueShowStatusStore = useQueueDisplayStore();
 
-const volume = ref(audioController.volume.value * 100);
+const volume = ref(audioController.volume * 100);
+
 watch(volume, () => {
-  audioController.volume.value = volume.value / 100;
+  audioController.volume = volume.value / 100;
 })
 
 </script>

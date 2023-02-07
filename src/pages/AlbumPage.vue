@@ -43,8 +43,6 @@
             <q-tooltip>Play</q-tooltip>
 
             <q-menu
-              class="bg-black border border-white"
-
               touch-position
               context-menu
             >
@@ -66,13 +64,13 @@
           <q-btn fab flat class="q-mx-md" round :icon="outlinedMoreHoriz">
             <q-menu fit anchor="center middle" self="top middle">
               <q-list>
-                <q-item clickable v-close-popup class="bg-dark" @click="viewMetadata">
+                <q-item clickable v-close-popup @click="viewMetadata">
                   <q-item-section avatar>
                     <q-avatar :icon="outlinedDescription" />
                   </q-item-section>
                   <q-item-section>View Full Metadata</q-item-section>
                 </q-item>
-                <q-item clickable v-close-popup class="bg-dark">
+                <q-item clickable v-close-popup>
                   <q-item-section avatar>
                     <q-avatar :icon="outlinedTipsAndUpdates" />
                   </q-item-section>
@@ -138,10 +136,7 @@
               <q-td :props="props">
                 {{props.value}}
               </q-td>
-              <q-menu
-                class="bg-black border border-white"
-                context-menu
-              >
+              <q-menu context-menu>
                 <q-list style="min-width: 150px;">
                   <q-item clickable v-close-popup>
                     <q-item-section @click="playTrack(props.key, true, false)">Play Next</q-item-section>
