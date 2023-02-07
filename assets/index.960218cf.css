@@ -17119,6 +17119,14 @@ body.body--dark {
 
 .pointer-on-hover:hover {
   cursor: pointer;
+}
+
+.q-menu {
+  background: rgba(26, 26, 26, 0.65) !important;
+  border: 1px solid rgba(96, 96, 96, 0.46) !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
 }.bg-gt {
   color: #A4925A !important;
 }
