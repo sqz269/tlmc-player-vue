@@ -92,6 +92,11 @@ import {ref} from 'vue';
 import {UserApi, RegisterRequest, ProblemDetails} from 'app/backend-service-api';
 import {QDialog, useQuasar} from 'quasar';
 import {ApiConfigProvider} from 'src/utils/ApiConfigProvider';
+import LoginModal from "components/LoginModal.vue";
+
+const props = defineProps<{
+  showLogin: boolean
+}>();
 
 const show = ref(false);
 
@@ -117,6 +122,11 @@ const onSubmit = (evt: SubmitEvent) => {
         position: 'top',
         timeout: 7000
       });
+      if (props.showLogin) {
+        $q.dialog({
+          component: LoginModal
+        });
+      }
       show.value = false;
     })
     .catch((result) => result.response.json().then((r: ProblemDetails) => {
@@ -127,6 +137,12 @@ const onSubmit = (evt: SubmitEvent) => {
         caption: 'Error when creating an account',
         timeout: 7000
       });
+      if (props.showLogin) {
+        $q.dialog({
+          component: LoginModal
+        });
+      }
+      show.value = false;
     }));
 };
 

@@ -119,7 +119,10 @@ const gotoPlaylist = (playlist: PlaylistReadDto) => {
 
 const showRegisterDialog = () => {
   $q.dialog({
-    component: RegistrationModal
+    component: RegistrationModal,
+    componentProps: {
+      'showLogin': true
+    }
   });
 }
 
