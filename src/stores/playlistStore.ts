@@ -26,7 +26,13 @@ export const usePlaylistStore = defineStore('playlist', {
       this.playlistsMap.set(playlist.id!, playlist);
     },
     addPlaylistItem(playlist: string, playlistItem: PlaylistItemReadDto) {
+      if (!this.playlistsMap.has(playlist)) {
+        alert('Playlist Does Not Exist')
+        return;
+      }
+
       this.playlistItemMap.get(playlist)?.add(playlistItem.trackId!);
+      this.playlistsMap.get(playlist)!.lastModified = new Date();
     },
     removePlaylistItem(playlist: string, playlistItem: string) {
       this.playlistItemMap.get(playlist)?.delete(playlistItem);
