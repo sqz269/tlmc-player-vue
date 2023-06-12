@@ -67,7 +67,7 @@
 }
 
 /*!
- * * Quasar Framework v2.11.3
+ * * Quasar Framework v2.11.8
  * * (c) 2015-present Razvan Stoenescu
  * * Released under the MIT License.
  * */
@@ -2239,7 +2239,7 @@ body.q-ios-padding .q-dialog__inner > div {
 .q-field__native:-webkit-autofill + .q-field__label, .q-field__input:-webkit-autofill + .q-field__label {
   transform: translateY(-40%) scale(0.75);
 }
-.q-field__native[type=number]:invalid + .q-field__label, .q-field__input[type=number]:invalid + .q-field__label {
+.q-field__native[type=color] + .q-field__label, .q-field__native[type=date] + .q-field__label, .q-field__native[type=datetime-local] + .q-field__label, .q-field__native[type=month] + .q-field__label, .q-field__native[type=time] + .q-field__label, .q-field__native[type=week] + .q-field__label, .q-field__input[type=color] + .q-field__label, .q-field__input[type=date] + .q-field__label, .q-field__input[type=datetime-local] + .q-field__label, .q-field__input[type=month] + .q-field__label, .q-field__input[type=time] + .q-field__label, .q-field__input[type=week] + .q-field__label {
   transform: translateY(-40%) scale(0.75);
 }
 .q-field__native:invalid, .q-field__input:invalid {
@@ -2518,7 +2518,7 @@ body.q-ios-padding .q-dialog__inner > div {
 .q-field--dense .q-field__native:-webkit-autofill + .q-field__label, .q-field--dense .q-field__input:-webkit-autofill + .q-field__label {
   transform: translateY(-30%) scale(0.75);
 }
-.q-field--dense .q-field__native[type=number]:invalid + .q-field__label, .q-field--dense .q-field__input[type=number]:invalid + .q-field__label {
+.q-field--dense .q-field__native[type=color] + .q-field__label, .q-field--dense .q-field__native[type=date] + .q-field__label, .q-field--dense .q-field__native[type=datetime-local] + .q-field__label, .q-field--dense .q-field__native[type=month] + .q-field__label, .q-field--dense .q-field__native[type=time] + .q-field__label, .q-field--dense .q-field__native[type=week] + .q-field__label, .q-field--dense .q-field__input[type=color] + .q-field__label, .q-field--dense .q-field__input[type=date] + .q-field__label, .q-field--dense .q-field__input[type=datetime-local] + .q-field__label, .q-field--dense .q-field__input[type=month] + .q-field__label, .q-field--dense .q-field__input[type=time] + .q-field__label, .q-field--dense .q-field__input[type=week] + .q-field__label {
   transform: translateY(-30%) scale(0.75);
 }
 .q-field--borderless .q-field__bottom, .q-field--borderless.q-field--dense .q-field__control, .q-field--standard .q-field__bottom, .q-field--standard.q-field--dense .q-field__control {
@@ -2889,6 +2889,7 @@ body.body--dark .q-knob--editable:focus:before {
 }
 .q-layout {
   width: 100%;
+  outline: 0;
 }
 .q-layout-container {
   position: relative;
