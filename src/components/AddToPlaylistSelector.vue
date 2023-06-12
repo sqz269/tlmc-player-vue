@@ -52,7 +52,10 @@ let firstActivate = true;
 const $q = useQuasar();
 const playlistStore = usePlaylistStore();
 
-const playlists = computed(() => playlistStore.getPlaylists);
+const playlists = computed(() => {
+  const pl = playlistStore.getPlaylists;
+  return pl.sort((a, b) => (a.lastModified!.getTime() - b.lastModified!.getTime())).reverse()
+});
 const playlistApi = new PlaylistApi(ApiConfigProvider.getInstance().getApiConfig());
 const playlistItemApi = new PlaylistItemApi(ApiConfigProvider.getInstance().getApiConfig());
 
@@ -76,12 +79,12 @@ const createPlaylist = async () => {
     message: `Playlist Created`
   });
 
-  const r = await playlistItemApi.addPlaylistItemToPlaylist({playlistItemAddRequest: {
-      playlistId: result.id!,
-      playlistItemId: props.trackId
-    }});
+  // const r = await playlistItemApi.addPlaylistItemToPlaylist({playlistItemAddRequest: {
+  //     playlistId: result.id!,
+  //     playlistItemId: props.trackId
+  //   }});
 
-  playlistStore.addPlaylistItem(result.id!, r);
+  playlistStatus.value.push(result.id!);
 
   $q.notify({
     position: 'top',

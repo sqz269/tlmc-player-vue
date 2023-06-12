@@ -16,26 +16,20 @@
 import * as runtime from '../runtime';
 import type {
   AlbumReadDto,
-  AlbumReadDtoActionResult,
   AlbumWriteDto,
   TrackGetMultipleResp,
   TrackReadDto,
-  TrackReadDtoActionResult,
   TrackWriteDto,
 } from '../models';
 import {
     AlbumReadDtoFromJSON,
     AlbumReadDtoToJSON,
-    AlbumReadDtoActionResultFromJSON,
-    AlbumReadDtoActionResultToJSON,
     AlbumWriteDtoFromJSON,
     AlbumWriteDtoToJSON,
     TrackGetMultipleRespFromJSON,
     TrackGetMultipleRespToJSON,
     TrackReadDtoFromJSON,
     TrackReadDtoToJSON,
-    TrackReadDtoActionResultFromJSON,
-    TrackReadDtoActionResultToJSON,
     TrackWriteDtoFromJSON,
     TrackWriteDtoToJSON,
 } from '../models';
@@ -70,6 +64,14 @@ export interface GetAlbumsRequest {
     limit?: number;
 }
 
+export interface GetAlbumsByIdsRequest {
+    requestBody?: Array<string>;
+}
+
+export interface GetRandomSampleTrackRequest {
+    limit?: number;
+}
+
 export interface GetTrackRequest {
     id: string;
 }
@@ -85,7 +87,7 @@ export class AlbumApi extends runtime.BaseAPI {
 
     /**
      */
-    async addAlbumRaw(requestParameters: AddAlbumRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AlbumReadDtoActionResult>> {
+    async addAlbumRaw(requestParameters: AddAlbumRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AlbumReadDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -97,26 +99,26 @@ export class AlbumApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/api/music/album`,
+            path: `/api/music/album/create`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: AlbumWriteDtoToJSON(requestParameters.albumWriteDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => AlbumReadDtoActionResultFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => AlbumReadDtoFromJSON(jsonValue));
     }
 
     /**
      */
-    async addAlbum(requestParameters: AddAlbumRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AlbumReadDtoActionResult> {
+    async addAlbum(requestParameters: AddAlbumRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AlbumReadDto> {
         const response = await this.addAlbumRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async addTrackRaw(requestParameters: AddTrackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TrackReadDtoActionResult>> {
+    async addTrackRaw(requestParameters: AddTrackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TrackReadDto>> {
         if (requestParameters.albumId === null || requestParameters.albumId === undefined) {
             throw new runtime.RequiredError('albumId','Required parameter requestParameters.albumId was null or undefined when calling addTrack.');
         }
@@ -132,19 +134,19 @@ export class AlbumApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/api/music/album/{albumId}/track`.replace(`{${"albumId"}}`, encodeURIComponent(String(requestParameters.albumId))),
+            path: `/api/music/album/{albumId}/track/create`.replace(`{${"albumId"}}`, encodeURIComponent(String(requestParameters.albumId))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: TrackWriteDtoToJSON(requestParameters.trackWriteDto),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => TrackReadDtoActionResultFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => TrackReadDtoFromJSON(jsonValue));
     }
 
     /**
      */
-    async addTrack(requestParameters: AddTrackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TrackReadDtoActionResult> {
+    async addTrack(requestParameters: AddTrackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TrackReadDto> {
         const response = await this.addTrackRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -278,6 +280,69 @@ export class AlbumApi extends runtime.BaseAPI {
      */
     async getAlbums(requestParameters: GetAlbumsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<AlbumReadDto>> {
         const response = await this.getAlbumsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async getAlbumsByIdsRaw(requestParameters: GetAlbumsByIdsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AlbumReadDto>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json-patch+json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Jwt authentication
+        }
+
+        const response = await this.request({
+            path: `/api/music/album`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: requestParameters.requestBody,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(AlbumReadDtoFromJSON));
+    }
+
+    /**
+     */
+    async getAlbumsByIds(requestParameters: GetAlbumsByIdsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<AlbumReadDto>> {
+        const response = await this.getAlbumsByIdsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async getRandomSampleTrackRaw(requestParameters: GetRandomSampleTrackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<TrackReadDto>>> {
+        const queryParameters: any = {};
+
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Jwt authentication
+        }
+
+        const response = await this.request({
+            path: `/api/music/random`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(TrackReadDtoFromJSON));
+    }
+
+    /**
+     */
+    async getRandomSampleTrack(requestParameters: GetRandomSampleTrackRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<TrackReadDto>> {
+        const response = await this.getRandomSampleTrackRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

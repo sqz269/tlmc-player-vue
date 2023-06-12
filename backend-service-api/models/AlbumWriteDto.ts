@@ -58,6 +58,18 @@ export interface AlbumWriteDto {
     numberOfDiscs?: number | null;
     /**
      * 
+     * @type {number}
+     * @memberof AlbumWriteDto
+     */
+    discNumber?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof AlbumWriteDto
+     */
+    discName?: string | null;
+    /**
+     * 
      * @type {Array<string>}
      * @memberof AlbumWriteDto
      */
@@ -119,6 +131,8 @@ export function AlbumWriteDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'releaseConvention': !exists(json, 'releaseConvention') ? undefined : json['releaseConvention'],
         'catalogNumber': !exists(json, 'catalogNumber') ? undefined : json['catalogNumber'],
         'numberOfDiscs': !exists(json, 'numberOfDiscs') ? undefined : json['numberOfDiscs'],
+        'discNumber': !exists(json, 'discNumber') ? undefined : json['discNumber'],
+        'discName': !exists(json, 'discName') ? undefined : json['discName'],
         'website': !exists(json, 'website') ? undefined : json['website'],
         'albumArtist': !exists(json, 'albumArtist') ? undefined : json['albumArtist'],
         'genre': !exists(json, 'genre') ? undefined : json['genre'],
@@ -142,6 +156,8 @@ export function AlbumWriteDtoToJSON(value?: AlbumWriteDto | null): any {
         'releaseConvention': value.releaseConvention,
         'catalogNumber': value.catalogNumber,
         'numberOfDiscs': value.numberOfDiscs,
+        'discNumber': value.discNumber,
+        'discName': value.discName,
         'website': value.website,
         'albumArtist': value.albumArtist,
         'genre': value.genre,

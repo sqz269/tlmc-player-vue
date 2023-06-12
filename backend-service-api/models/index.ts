@@ -1,16 +1,20 @@
 /* tslint:disable */
 /* eslint-disable */
 export * from './AlbumReadDto';
-export * from './AlbumReadDtoActionResult';
 export * from './AlbumWriteDto';
+export * from './Asset';
 export * from './AssetReadDto';
 export * from './AuthToken';
 export * from './CircleReadDto';
+export * from './CircleStatus';
+export * from './CircleWebsiteReadDto';
+export * from './CircleWriteDto';
 export * from './JwtKeyResponse';
 export * from './JwtRenewResult';
 export * from './LocalizedField';
 export * from './LoginResult';
 export * from './OkResult';
+export * from './Operation';
 export * from './OriginalAlbumReadDto';
 export * from './OriginalAlbumReadDtoActionResult';
 export * from './OriginalAlbumWriteDto';
@@ -30,7 +34,7 @@ export * from './Role';
 export * from './ThumbnailReadDto';
 export * from './TrackGetMultipleResp';
 export * from './TrackReadDto';
-export * from './TrackReadDtoActionResult';
+export * from './TrackUpdateDto';
 export * from './TrackWriteDto';
 export * from './User';
 export * from './UserCredentialsDto';

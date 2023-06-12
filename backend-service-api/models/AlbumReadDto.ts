@@ -88,6 +88,12 @@ export interface AlbumReadDto {
     numberOfDiscs?: number | null;
     /**
      * 
+     * @type {number}
+     * @memberof AlbumReadDto
+     */
+    discNumber?: number | null;
+    /**
+     * 
      * @type {Array<string>}
      * @memberof AlbumReadDto
      */
@@ -110,6 +116,18 @@ export interface AlbumReadDto {
      * @memberof AlbumReadDto
      */
     tracks?: Array<TrackReadDto> | null;
+    /**
+     * 
+     * @type {Array<AlbumReadDto>}
+     * @memberof AlbumReadDto
+     */
+    childAlbums?: Array<AlbumReadDto> | null;
+    /**
+     * 
+     * @type {AlbumReadDto}
+     * @memberof AlbumReadDto
+     */
+    parentAlbum?: AlbumReadDto;
     /**
      * 
      * @type {ThumbnailReadDto}
@@ -149,10 +167,13 @@ export function AlbumReadDtoFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'releaseConvention': !exists(json, 'releaseConvention') ? undefined : json['releaseConvention'],
         'catalogNumber': !exists(json, 'catalogNumber') ? undefined : json['catalogNumber'],
         'numberOfDiscs': !exists(json, 'numberOfDiscs') ? undefined : json['numberOfDiscs'],
+        'discNumber': !exists(json, 'discNumber') ? undefined : json['discNumber'],
         'website': !exists(json, 'website') ? undefined : json['website'],
         'albumArtist': !exists(json, 'albumArtist') ? undefined : (json['albumArtist'] === null ? null : (json['albumArtist'] as Array<any>).map(CircleReadDtoFromJSON)),
         'dataSource': !exists(json, 'dataSource') ? undefined : json['dataSource'],
         'tracks': !exists(json, 'tracks') ? undefined : (json['tracks'] === null ? null : (json['tracks'] as Array<any>).map(TrackReadDtoFromJSON)),
+        'childAlbums': !exists(json, 'childAlbums') ? undefined : (json['childAlbums'] === null ? null : (json['childAlbums'] as Array<any>).map(AlbumReadDtoFromJSON)),
+        'parentAlbum': !exists(json, 'parentAlbum') ? undefined : AlbumReadDtoFromJSON(json['parentAlbum']),
         'thumbnail': !exists(json, 'thumbnail') ? undefined : ThumbnailReadDtoFromJSON(json['thumbnail']),
         'otherFiles': !exists(json, 'otherFiles') ? undefined : (json['otherFiles'] === null ? null : (json['otherFiles'] as Array<any>).map(AssetReadDtoFromJSON)),
     };
@@ -173,10 +194,13 @@ export function AlbumReadDtoToJSON(value?: AlbumReadDto | null): any {
         'releaseConvention': value.releaseConvention,
         'catalogNumber': value.catalogNumber,
         'numberOfDiscs': value.numberOfDiscs,
+        'discNumber': value.discNumber,
         'website': value.website,
         'albumArtist': value.albumArtist === undefined ? undefined : (value.albumArtist === null ? null : (value.albumArtist as Array<any>).map(CircleReadDtoToJSON)),
         'dataSource': value.dataSource,
         'tracks': value.tracks === undefined ? undefined : (value.tracks === null ? null : (value.tracks as Array<any>).map(TrackReadDtoToJSON)),
+        'childAlbums': value.childAlbums === undefined ? undefined : (value.childAlbums === null ? null : (value.childAlbums as Array<any>).map(AlbumReadDtoToJSON)),
+        'parentAlbum': AlbumReadDtoToJSON(value.parentAlbum),
         'thumbnail': ThumbnailReadDtoToJSON(value.thumbnail),
         'otherFiles': value.otherFiles === undefined ? undefined : (value.otherFiles === null ? null : (value.otherFiles as Array<any>).map(AssetReadDtoToJSON)),
     };
