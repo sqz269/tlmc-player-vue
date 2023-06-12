@@ -25,12 +25,8 @@ import {
     PlaylistReadDtoToJSON,
 } from '../models';
 
-export interface CreatePlaylistRequest {
+export interface ApiPlaylistPostRequest {
     playlistCreateRequest?: PlaylistCreateRequest;
-}
-
-export interface DeletePlaylistRequest {
-    playlistId: string;
 }
 
 export interface GetPlaylistRequest {
@@ -48,7 +44,7 @@ export class PlaylistApi extends runtime.BaseAPI {
 
     /**
      */
-    async createPlaylistRaw(requestParameters: CreatePlaylistRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PlaylistReadDto>> {
+    async apiPlaylistPostRaw(requestParameters: ApiPlaylistPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PlaylistReadDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -72,40 +68,8 @@ export class PlaylistApi extends runtime.BaseAPI {
 
     /**
      */
-    async createPlaylist(requestParameters: CreatePlaylistRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PlaylistReadDto> {
-        const response = await this.createPlaylistRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     */
-    async deletePlaylistRaw(requestParameters: DeletePlaylistRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
-        if (requestParameters.playlistId === null || requestParameters.playlistId === undefined) {
-            throw new runtime.RequiredError('playlistId','Required parameter requestParameters.playlistId was null or undefined when calling deletePlaylist.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Jwt authentication
-        }
-
-        const response = await this.request({
-            path: `/api/playlist/{playlistId}`.replace(`{${"playlistId"}}`, encodeURIComponent(String(requestParameters.playlistId))),
-            method: 'DELETE',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.TextApiResponse(response) as any;
-    }
-
-    /**
-     */
-    async deletePlaylist(requestParameters: DeletePlaylistRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
-        const response = await this.deletePlaylistRaw(requestParameters, initOverrides);
+    async apiPlaylistPost(requestParameters: ApiPlaylistPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PlaylistReadDto> {
+        const response = await this.apiPlaylistPostRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

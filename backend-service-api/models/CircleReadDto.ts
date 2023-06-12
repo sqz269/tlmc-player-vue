@@ -13,6 +13,19 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { CircleStatus } from './CircleStatus';
+import {
+    CircleStatusFromJSON,
+    CircleStatusFromJSONTyped,
+    CircleStatusToJSON,
+} from './CircleStatus';
+import type { CircleWebsiteReadDto } from './CircleWebsiteReadDto';
+import {
+    CircleWebsiteReadDtoFromJSON,
+    CircleWebsiteReadDtoFromJSONTyped,
+    CircleWebsiteReadDtoToJSON,
+} from './CircleWebsiteReadDto';
+
 /**
  * 
  * @export
@@ -37,6 +50,36 @@ export interface CircleReadDto {
      * @memberof CircleReadDto
      */
     alias?: Array<string> | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof CircleReadDto
+     */
+    country?: string | null;
+    /**
+     * 
+     * @type {Array<CircleWebsiteReadDto>}
+     * @memberof CircleReadDto
+     */
+    website?: Array<CircleWebsiteReadDto> | null;
+    /**
+     * 
+     * @type {CircleStatus}
+     * @memberof CircleReadDto
+     */
+    status?: CircleStatus;
+    /**
+     * 
+     * @type {Date}
+     * @memberof CircleReadDto
+     */
+    established?: Date;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof CircleReadDto
+     */
+    dataSource?: Array<string> | null;
 }
 
 /**
@@ -61,6 +104,11 @@ export function CircleReadDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'id': !exists(json, 'id') ? undefined : json['id'],
         'name': !exists(json, 'name') ? undefined : json['name'],
         'alias': !exists(json, 'alias') ? undefined : json['alias'],
+        'country': !exists(json, 'country') ? undefined : json['country'],
+        'website': !exists(json, 'website') ? undefined : (json['website'] === null ? null : (json['website'] as Array<any>).map(CircleWebsiteReadDtoFromJSON)),
+        'status': !exists(json, 'status') ? undefined : CircleStatusFromJSON(json['status']),
+        'established': !exists(json, 'established') ? undefined : (new Date(json['established'])),
+        'dataSource': !exists(json, 'dataSource') ? undefined : json['dataSource'],
     };
 }
 
@@ -76,6 +124,11 @@ export function CircleReadDtoToJSON(value?: CircleReadDto | null): any {
         'id': value.id,
         'name': value.name,
         'alias': value.alias,
+        'country': value.country,
+        'website': value.website === undefined ? undefined : (value.website === null ? null : (value.website as Array<any>).map(CircleWebsiteReadDtoToJSON)),
+        'status': CircleStatusToJSON(value.status),
+        'established': value.established === undefined ? undefined : (value.established.toISOString()),
+        'dataSource': value.dataSource,
     };
 }
 
