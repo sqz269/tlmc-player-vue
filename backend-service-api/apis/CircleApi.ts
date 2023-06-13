@@ -57,7 +57,7 @@ export class CircleApi extends runtime.BaseAPI {
 
     /**
      */
-    async getCircleAlbumsByIdRaw(requestParameters: GetCircleAlbumsByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AlbumReadDto>> {
+    async getCircleAlbumsByIdRaw(requestParameters: GetCircleAlbumsByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AlbumReadDto>>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getCircleAlbumsById.');
         }
@@ -85,12 +85,12 @@ export class CircleApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => AlbumReadDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(AlbumReadDtoFromJSON));
     }
 
     /**
      */
-    async getCircleAlbumsById(requestParameters: GetCircleAlbumsByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AlbumReadDto> {
+    async getCircleAlbumsById(requestParameters: GetCircleAlbumsByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<AlbumReadDto>> {
         const response = await this.getCircleAlbumsByIdRaw(requestParameters, initOverrides);
         return await response.value();
     }

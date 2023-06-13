@@ -94,6 +94,12 @@ export interface AlbumReadDto {
     discNumber?: number | null;
     /**
      * 
+     * @type {string}
+     * @memberof AlbumReadDto
+     */
+    discName?: string | null;
+    /**
+     * 
      * @type {Array<string>}
      * @memberof AlbumReadDto
      */
@@ -168,6 +174,7 @@ export function AlbumReadDtoFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'catalogNumber': !exists(json, 'catalogNumber') ? undefined : json['catalogNumber'],
         'numberOfDiscs': !exists(json, 'numberOfDiscs') ? undefined : json['numberOfDiscs'],
         'discNumber': !exists(json, 'discNumber') ? undefined : json['discNumber'],
+        'discName': !exists(json, 'discName') ? undefined : json['discName'],
         'website': !exists(json, 'website') ? undefined : json['website'],
         'albumArtist': !exists(json, 'albumArtist') ? undefined : (json['albumArtist'] === null ? null : (json['albumArtist'] as Array<any>).map(CircleReadDtoFromJSON)),
         'dataSource': !exists(json, 'dataSource') ? undefined : json['dataSource'],
@@ -195,6 +202,7 @@ export function AlbumReadDtoToJSON(value?: AlbumReadDto | null): any {
         'catalogNumber': value.catalogNumber,
         'numberOfDiscs': value.numberOfDiscs,
         'discNumber': value.discNumber,
+        'discName': value.discName,
         'website': value.website,
         'albumArtist': value.albumArtist === undefined ? undefined : (value.albumArtist === null ? null : (value.albumArtist as Array<any>).map(CircleReadDtoToJSON)),
         'dataSource': value.dataSource,
