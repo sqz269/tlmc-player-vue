@@ -100,8 +100,8 @@ onActivated(async () => {
   }
 
   infScroll.value?.resume();
-  if (queueController.currentlyPlaying !== undefined) {
-    const color = queueController.currentlyPlaying.album?.thumbnail?.colors;
+  if (queueController.currentlyPlaying !== null) {
+    const color = queueController.currentlyPlaying.Track.album?.thumbnail?.colors;
     if (color) {
       setColors(color);
     }

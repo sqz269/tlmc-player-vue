@@ -320,7 +320,9 @@ async function setAlbumPageMultiDisc() {
 async function setAlbumPage() {
   trackMap.value = new Map<string, TrackReadDto[]>();
   albumInfo.value = await fetchAlbum(<string>router.currentRoute.value.params.albumId);
-  setColors(<string[]>albumInfo.value?.thumbnail?.colors);
+  if (albumInfo.value?.thumbnail) {
+    setColors(<string[]>albumInfo.value?.thumbnail?.colors);
+  }
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
   if (albumInfo.value?.numberOfDiscs! > 1) {
