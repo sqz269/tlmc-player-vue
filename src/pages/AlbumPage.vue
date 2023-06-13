@@ -27,10 +27,15 @@
                 </div>
               </div>
 
+              <q-separator v-if="albumInfo.numberOfDiscs === 1" vertical spaced></q-separator>
+              <div v-if="albumInfo.numberOfDiscs === 1" class="text-subtitle1">{{ albumInfo.tracks.length }} Tracks</div>
+              <q-separator v-if="albumInfo.numberOfDiscs === 1" vertical spaced></q-separator>
+              <div v-if="albumInfo.numberOfDiscs === 1" class="text-subtitle1">{{ totalDuration }}</div>
+
               <q-separator vertical spaced></q-separator>
-              <div class="text-subtitle1">{{ albumInfo.tracks.length }} Tracks</div>
-              <q-separator vertical spaced></q-separator>
-              <div class="text-subtitle1">{{ totalDuration }}</div>
+              <div v-if="albumInfo.numberOfDiscs > 1">
+                <div class="text-subtitle1"> {{ albumInfo.numberOfDiscs }} Discs</div>
+              </div>
             </div>
           </div>
         </div>
@@ -80,8 +85,15 @@
             </q-menu>
           </q-btn>
         </div>
-        <div class="col-12 q-pt-md q-px-md">
-          <q-table :rows="trackList"
+
+        <div v-for="[discName, tracks] in trackMap" v-bind:key="discName" class="col-12 q-pt-md q-px-md q-pb-lg">
+          <div v-if="trackMap.size > 1" class="full-width bg-filter-blur-10 bg-white-a-5 q-ma-none q-pa-none border-bottom border-white">
+            <q-chip square size="xl" class="bg-transparent">
+              <q-avatar :icon="matAlbum" text-color="white" size="2.7em" />
+              {{ discName }}
+            </q-chip>
+          </div>
+          <q-table :rows="tracks"
                    class="transparent"
                    :columns="columns"
                    :pagination="pagination"
@@ -176,12 +188,18 @@ import {
   outlinedMoreHoriz,
   outlinedFavoriteBorder,
   outlinedPlaylistAdd,
+  outlinedDiscFull,
+  outlinedAlbum,
   outlinedDescription,
   outlinedTipsAndUpdates
 } from '@quasar/extras/material-icons-outlined';
 
+import {
+  matAlbum
+} from '@quasar/extras/material-icons';
+
 import {computed, onMounted, onUpdated, ref} from 'vue';
-import {AlbumApi, OriginalTrackReadDto} from 'app/backend-service-api';
+import {AlbumApi} from 'app/backend-service-api';
 import { AlbumReadDto, TrackReadDto } from 'app/backend-service-api';
 import { useRouter } from 'vue-router';
 import { formatDuration, sumDurations } from 'src/utils/durationUtils';
@@ -189,7 +207,6 @@ import {useQuasar} from 'quasar';
 import {usePageContainerBgStyleStore} from 'stores/pageContainerBg';
 import {ApiConfigProvider} from 'src/utils/ApiConfigProvider';
 import {QueueController} from 'src/utils/QueueController';
-import {route} from "quasar/wrappers";
 import AddToPlaylistMenu from "components/AddToPlaylistMenu.vue";
 
 const router = useRouter();
@@ -201,7 +218,8 @@ const hoveringWhich = ref<number>();
 const apiConfig = ApiConfigProvider.getInstance().getApiConfig();
 const albumApi = new AlbumApi(apiConfig);
 const albumInfo = ref<AlbumReadDto>();
-const trackList = ref<TrackReadDto[]>();
+
+const trackMap = ref<Map<string, TrackReadDto[]>>();
 
 const songQueue = QueueController.getInstance();
 
@@ -217,7 +235,7 @@ const copyTrackUrl = (trackId: string) => {
 }
 
 const gotoArtist = () => {
-  router.push({ name: 'artist', params: { artist: albumInfo.value.albumArtist[0].name } })
+  router.push({ name: 'artist', params: { artist: albumInfo.value!.albumArtist![0].name } })
 }
 
 const gotoTrack = (trackId: string) => {
@@ -234,42 +252,26 @@ function viewMetadata() {
 }
 
 function playAlbum(addToFront=true, playImmediately=true) {
-  const albumTrackList = trackList.value;
+  const albumTrackList = trackMap.value;
 
-  // albumTrackList?.sort((e1, e2) => {
-  //   return <number>e2.index - <number>e1.index;
-  // });
+  let trackIds: string[] = [];
+  trackMap.value?.forEach((value, key) => {
+    value.forEach((track) => {
+      trackIds.push(track.id!);
+    });
+  });
 
   q.notify({
     position: 'top',
     type: 'secondary',
-    message: `Added ${trackList.value?.length} tracks to Queue`
+    message: `Adding ${trackIds.length} tracks to Queue`
   })
 
-  // const toadd = <string[]>albumTrackList?.map(e => e?.id).reverse();
-  songQueue.addTrackToQueueByIdBatch(<string[]>albumTrackList?.map(e => e?.id), addToFront, playImmediately);
+  songQueue.addTrackToQueueByIdBatch(trackIds, addToFront, playImmediately);
 }
 
 async function playTrack(trackId: string, addToFront=true, playImmediately=true) {
-  let trackToPlay = null;
-  if (!trackList.value) {
-    alert('Empty Tracklist');
-    return;
-  }
-
-  for (let track of trackList.value) {
-    if (track.id == trackId) {
-      trackToPlay = track;
-      break
-    }
-  }
-
-  if (trackToPlay === null) {
-    alert('Invalid Index. No Index: ' + trackId + '. in track list.');
-    return;
-  }
-
-  await songQueue.addTrackToQueueById(<string> trackToPlay.id, addToFront, playImmediately);
+  await songQueue.addTrackToQueueById(<string> trackId, addToFront, playImmediately);
   q.notify({
     position: 'top',
     type: 'secondary',
@@ -281,16 +283,59 @@ async function fetchAlbum(albumId: string): Promise<AlbumReadDto> {
   return albumApi.getAlbum({id: albumId});
 }
 
+async function setAlbumPageMultiDisc() {
+  console.log('setAlbumPageMultiDisc')
+  if (!albumInfo.value?.childAlbums) {
+    return;
+  }
+
+  const childAlbums = albumInfo.value.childAlbums;
+  // sort child albums by disc number
+  childAlbums.sort((a, b) => {
+    return a.discNumber! - b.discNumber!;
+  });
+
+  for (const childAlbum of childAlbums) {
+    let album = await fetchAlbum(childAlbum.id!);
+    if (album.tracks) {
+      album.tracks.sort((ta, tb) => {
+        return ta.index! - tb.index!
+      });
+
+      let discName;
+      if (!childAlbum.discName) {
+        discName = 'Disc ' + childAlbum.discNumber;
+      }
+      else {
+        discName = `${childAlbum.discName} (DISC ${childAlbum.discNumber})`;
+      }
+
+      trackMap.value?.set(discName, album.tracks);
+    } else {
+      alert(`${album.id} has no tracks`);
+    }
+  }
+}
+
 async function setAlbumPage() {
+  trackMap.value = new Map<string, TrackReadDto[]>();
   albumInfo.value = await fetchAlbum(<string>router.currentRoute.value.params.albumId);
+  setColors(<string[]>albumInfo.value?.thumbnail?.colors);
+
+  // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+  if (albumInfo.value?.numberOfDiscs! > 1) {
+    await setAlbumPageMultiDisc();
+    return;
+  }
+
   if (albumInfo.value?.tracks) {
     albumInfo.value?.tracks.sort((ta, tb) => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return ta.index! - tb.index!
     })
-    trackList.value = albumInfo.value?.tracks;
+    // trackList.value = albumInfo.value?.tracks;
+    trackMap.value?.set('', albumInfo.value?.tracks);
   }
-  setColors(<string[]>albumInfo.value?.thumbnail?.colors);
 }
 
 onMounted(async () => {
