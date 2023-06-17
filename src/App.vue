@@ -16,9 +16,6 @@ import {useAuthStore} from 'stores/authDataStore';
 import {QueueController} from 'src/utils/QueueController';
 
 onMounted(() => {
-  let authStore = useAuthStore();
-  authStore.loadAuthFromLocalStorage();
-
   QueueController.getInstance().init();
 })
 </script>
