@@ -49,8 +49,8 @@
     <q-list v-if="!isLoggedIn">
       <q-item :inset-level="0.3">
         <div>
-          <a class="link" @click="showLoginDialog">Log in</a> or
-          <a class="link" @click="showRegisterDialog">Sign up</a>
+          <a class="link" @click="keycloak.Login">Log in</a> or
+          <a class="link" @click="keycloak.Register">Sign up</a>
           to create and manage playlists
         </div>
       </q-item>
@@ -63,18 +63,18 @@ import {
   outlinedFavoriteBorder,
   outlinedHistory,
   outlinedLibraryMusic,
-  outlinedPlaylistAdd,
   outlinedPlaylistPlay
 } from '@quasar/extras/material-icons-outlined';
 import {useAuthStore} from 'stores/authDataStore';
 import {computed, onMounted, ref} from 'vue';
-import RegistrationModal from 'components/RegistrationModal.vue';
 import {useQuasar} from 'quasar';
 import {PlaylistApi, PlaylistReadDto} from 'app/backend-service-api';
-import LoginModal from 'components/LoginModal.vue';
 import {ApiConfigProvider} from 'src/utils/ApiConfigProvider';
 import {useRouter} from 'vue-router';
 import {usePlaylistStore} from "stores/playlistStore";
+import {KeycloakController} from "src/utils/KeycloakController";
+
+const keycloak = KeycloakController.Instance;
 
 const authStore = useAuthStore();
 const $q = useQuasar();
@@ -83,7 +83,7 @@ const playlistStore = usePlaylistStore();
 
 const playlistItems = computed(() => playlistStore.getPlaylists);
 
-const isLoggedIn = computed(() => authStore.isLoggedIn);
+const isLoggedIn = computed(() => authStore.isAuthenticated);
 
 const playlistApi = new PlaylistApi(ApiConfigProvider.getInstance().getApiConfig());
 
@@ -117,20 +117,6 @@ const gotoPlaylist = (playlist: PlaylistReadDto) => {
   router.push({name: 'playlist', params: { playlistId: playlist.id }})
 }
 
-const showRegisterDialog = () => {
-  $q.dialog({
-    component: RegistrationModal,
-    componentProps: {
-      'showLogin': true
-    }
-  });
-}
-
-const showLoginDialog = () => {
-  $q.dialog({
-    component: LoginModal
-  });
-}
 </script>
 
 <style scoped>
