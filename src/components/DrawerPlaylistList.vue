@@ -66,7 +66,7 @@ import {
   outlinedPlaylistPlay
 } from '@quasar/extras/material-icons-outlined';
 import {useAuthStore} from 'stores/authDataStore';
-import {computed, onMounted, ref} from 'vue';
+import {computed, onMounted, ref, watch} from 'vue';
 import {useQuasar} from 'quasar';
 import {PlaylistApi, PlaylistReadDto} from 'app/backend-service-api';
 import {ApiConfigProvider} from 'src/utils/ApiConfigProvider';
@@ -93,6 +93,14 @@ onMounted(async () => {
     let normalPlaylists = allPlaylists.filter(p => p.type == 'Normal');
     playlistStore.setPlaylists(normalPlaylists);
   }
+
+  watch(isLoggedIn, async (loggedIn) => {
+    if (loggedIn) {
+      let allPlaylists = await playlistApi.getCurrentUserPlaylist();
+      let normalPlaylists = allPlaylists.filter(p => p.type == 'Normal');
+      playlistStore.setPlaylists(normalPlaylists);
+    }
+  })
 })
 
 const collectionNavigations = [

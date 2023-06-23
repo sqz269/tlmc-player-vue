@@ -2,9 +2,14 @@
   <q-page>
     <div class="row full-width q-px-none q-pt-lg" v-if="playlistItemsExist">
       <div class="col-4 q-px-md" style="max-width: 230px">
-        <q-img
-          ratio="1">
-        </q-img>
+        <div class="row" v-if="playlistImages">
+          <div class="col-6" v-for="thumb in playlistImages" :key="thumb.small.assetId">
+            <q-img ratio="1" :src="thumb.small.url"></q-img>
+          </div>
+        </div>
+<!--        <q-img-->
+<!--          ratio="1">-->
+<!--        </q-img>-->
       </div>
       <div class="col-8">
         <div class="row full-width full-height items-end">
@@ -78,33 +83,7 @@
               </div>
             </q-card-section>
           </q-card>
-
-          <q-card class="my-card bg-transparent q-py-sm" flat v-for="item in playlistItemsExist" :key="item.Track.id">
-            <q-card-section horizontal>
-              <q-card-section class="justify-around q-py-none q-px-md flex column">
-                <div class="text-subtitle2 text-center">{{ item.Playlist.index }}</div>
-              </q-card-section>
-
-              <q-img
-                style="height: 50px; max-width: 50px"
-                :src="item.Track.album.thumbnail?.tiny.url"
-              />
-
-              <div class="row full-width">
-                <q-card-section class="justify-around q-py-none col-7">
-                  <div class="text-subtitle1 ellipsis">{{ item.Track.name._default }}</div>
-                  <div class="text-caption">{{ item.Track.album.albumName._default }}</div>
-                </q-card-section>
-
-                <q-card-section class="justify-around q-py-none col-4 flex column">
-                  <div class="text-caption">{{ item.Playlist.dateAdded.toLocaleDateString() }}</div>
-                </q-card-section>
-                <q-card-section class="justify-around q-py-none col-1 flex column">
-                  <div class="text-caption">{{ formatDuration(item.Track.duration) }}</div>
-                </q-card-section>
-              </div>
-            </q-card-section>
-          </q-card>
+          <PlaylistTrackItem v-for="item in playlistItemsExist" :key="item.Track.id" :item="item"></PlaylistTrackItem>
         </div>
       </div>
     </div>
@@ -116,32 +95,64 @@ import {
   outlinedPlayArrow
 } from '@quasar/extras/material-icons-outlined';
 
-import {AlbumApi, PlaylistApi, PlaylistItemReadDto, TrackReadDto, PlaylistReadDto} from 'app/backend-service-api';
+import {
+  AlbumApi,
+  PlaylistApi,
+  PlaylistItemReadDto,
+  TrackReadDto,
+  PlaylistReadDto,
+  ThumbnailReadDto
+} from 'app/backend-service-api';
 import {ApiConfigProvider} from 'src/utils/ApiConfigProvider';
-import {onMounted, onUpdated, ref, watch} from 'vue';
+import {computed, onMounted, onUpdated, ref, watch} from 'vue';
 import {useRouter} from 'vue-router';
 import {formatDuration} from 'src/utils/durationUtils';
 import {QueueController} from "src/utils/QueueController";
+import {usePageContainerBgStyleStore} from "stores/pageContainerBg";
+import {PlaylistEntry} from "src/utils/HelperInterface";
+import PlaylistTrackItem from "components/PlaylistTrackItem.vue";
 
 const playlistApi = new PlaylistApi(ApiConfigProvider.getInstance().getApiConfig());
 const albumApi = new AlbumApi(ApiConfigProvider.getInstance().getApiConfig());
 
 const router = useRouter();
+const bgColorStore = usePageContainerBgStyleStore();
 
-interface PlaylistEntry {
-  Track: TrackReadDto,
-  Playlist: PlaylistItemReadDto
-}
+const playlistImages = computed(() => {
+  const visited = new Set<string>();
+  const thumbs: ThumbnailReadDto[] = [];
+
+  for (let item of playlistItemsExist.value!) {
+    if (!item.Track.album?.id) {
+      continue;
+    }
+
+    if (!visited.has(item.Track.album?.id)) {
+      visited.add(item.Track.album.id);
+
+      if (!item.Track.album.thumbnail) {
+        continue;
+      }
+
+      thumbs.push(item.Track.album.thumbnail);
+
+      if (thumbs.length === 4) break;
+    }
+  }
+  return thumbs;
+})
 
 const playlistMetadata = ref<PlaylistReadDto>()
 const playlistItemsExist = ref<PlaylistEntry[]>();
 const playlistItemsNotFound = ref<string[]>();
 
-
 const songQueue = QueueController.getInstance();
 
 const playPlaylist = (addToFront=true, playImmediately=true) => {
-  const tracks = playlistItemsExist.value?.map(e => e.Track.id);
+  const tracks = playlistItemsExist.value?.map(e => e.Track.id!);
+  if (!tracks) {
+    return;
+  }
 
   songQueue.addTrackToQueueByIdBatch(tracks, addToFront, playImmediately);
 }
@@ -182,11 +193,24 @@ async function setPlaylistPage() {
 
   playlistItemsExist.value = playlistEntries;
   playlistItemsNotFound.value = trackObj.notFound!
+
+  computeColor();
+}
+
+const computeColor = () => {
+  const colors = playlistImages.value.map(thumb => thumb.colors!);
+  const primaryColors: string[] = [];
+  colors.forEach(c => {
+    if (c.slice(0, 1)) {
+      primaryColors.push(...c.slice(0, 1));
+    }
+  });
+  console.log(`Color: ${primaryColors}`)
+  bgColorStore.setColors(primaryColors);
 }
 
 onMounted(async () => {
   await setPlaylistPage();
-
   watch(() => router.currentRoute.value.params.playlistId, (to, from) => {
     if (router.currentRoute.value.name !== 'playlist') {
       return;
@@ -256,17 +280,7 @@ const pagination = {
 </script>
 
 <style scoped>
-
-.border-sharp {
-  border-radius: 0px !important;
-}
-
 .border {
   border: 1px solid !important;
 }
-
-.border-black-tp50 {
-  border-color: rgba(255, 255, 255, 0.50) !important;
-}
-
 </style>

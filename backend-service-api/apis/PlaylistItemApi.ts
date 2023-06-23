@@ -39,6 +39,11 @@ export interface DeletePlaylistItemFromPlaylistRequest {
     playlistItemDeleteRequest?: PlaylistItemDeleteRequest;
 }
 
+export interface IncrementPlayCountRequest {
+    playlistId?: string;
+    trackId?: string;
+}
+
 /**
  * 
  */
@@ -53,10 +58,14 @@ export class PlaylistItemApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json-patch+json';
 
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Jwt authentication
-        }
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
 
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
         const response = await this.request({
             path: `/api/playlistItem`,
             method: 'POST',
@@ -84,10 +93,14 @@ export class PlaylistItemApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json-patch+json';
 
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Jwt authentication
-        }
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
 
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
         const response = await this.request({
             path: `/api/playlistItem`,
             method: 'DELETE',
@@ -103,6 +116,45 @@ export class PlaylistItemApi extends runtime.BaseAPI {
      */
     async deletePlaylistItemFromPlaylist(requestParameters: DeletePlaylistItemFromPlaylistRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.deletePlaylistItemFromPlaylistRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     */
+    async incrementPlayCountRaw(requestParameters: IncrementPlayCountRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const queryParameters: any = {};
+
+        if (requestParameters.playlistId !== undefined) {
+            queryParameters['PlaylistId'] = requestParameters.playlistId;
+        }
+
+        if (requestParameters.trackId !== undefined) {
+            queryParameters['TrackId'] = requestParameters.trackId;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/playlistItem/inc`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     */
+    async incrementPlayCount(requestParameters: IncrementPlayCountRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.incrementPlayCountRaw(requestParameters, initOverrides);
     }
 
 }
