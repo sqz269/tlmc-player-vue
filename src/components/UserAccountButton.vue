@@ -4,7 +4,7 @@
       <q-btn v-if="!isLoggedInReactive" @click="login" outline text-color="white" label="Login" size="md" style="width: 100px" />
     </div>
 
-    <q-btn-dropdown v-if="isLoggedInReactive" rounded :label="usernameReactive" style="width: 150px">
+    <q-btn-dropdown v-if="isLoggedInReactive" rounded :label="usernameReactive">
       <q-list>
         <q-item clickable v-close-popup @click="modifyAccount">
           <q-item-section>

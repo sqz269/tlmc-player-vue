@@ -14,7 +14,7 @@ class KeycloakController {
   constructor() {
     if (KeycloakController._instance) {
       throw new Error(
-        'Error: Instantiation failed: Use SingletonDemo.getInstance() instead of new.'
+        'Error: Instantiation failed: Use KeycloakController.Instance instead of new.'
       );
     }
     KeycloakController._instance = this;
@@ -51,7 +51,9 @@ class KeycloakController {
   }
 
   public Login() {
-    this.keycloak.login();
+    this.keycloak.login({
+      scope: 'openid offline_access'
+    });
   }
 
   public Register() {
@@ -94,8 +96,8 @@ class KeycloakController {
         console.log('Token not refreshed, valid for '
           + Math.round(this.keycloak.tokenParsed!.exp! + this.keycloak.timeSkew! - new Date().getTime() / 1000) + ' seconds');
       }
-    }).catch(() => {
-      console.log('Failed to refresh token');
+    }).catch((reason) => {
+      console.log('Failed to refresh token, reason: ' + reason);
     });
   }
 

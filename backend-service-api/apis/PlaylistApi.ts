@@ -25,12 +25,16 @@ import {
     PlaylistReadDtoToJSON,
 } from '../models';
 
-export interface ApiPlaylistPostRequest {
+export interface CreatePlaylistRequest {
     playlistCreateRequest?: PlaylistCreateRequest;
 }
 
-export interface GetPlaylistRequest {
+export interface DeletePlaylistRequest {
     playlistId: string;
+}
+
+export interface GetPlaylistRequest {
+    playlistId?: string;
 }
 
 export interface GetUserPlaylistRequest {
@@ -44,17 +48,21 @@ export class PlaylistApi extends runtime.BaseAPI {
 
     /**
      */
-    async apiPlaylistPostRaw(requestParameters: ApiPlaylistPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PlaylistReadDto>> {
+    async createPlaylistRaw(requestParameters: CreatePlaylistRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PlaylistReadDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         headerParameters['Content-Type'] = 'application/json-patch+json';
 
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Jwt authentication
-        }
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
 
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
         const response = await this.request({
             path: `/api/playlist`,
             method: 'POST',
@@ -68,8 +76,44 @@ export class PlaylistApi extends runtime.BaseAPI {
 
     /**
      */
-    async apiPlaylistPost(requestParameters: ApiPlaylistPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PlaylistReadDto> {
-        const response = await this.apiPlaylistPostRaw(requestParameters, initOverrides);
+    async createPlaylist(requestParameters: CreatePlaylistRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PlaylistReadDto> {
+        const response = await this.createPlaylistRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async deletePlaylistRaw(requestParameters: DeletePlaylistRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<boolean>> {
+        if (requestParameters.playlistId === null || requestParameters.playlistId === undefined) {
+            throw new runtime.RequiredError('playlistId','Required parameter requestParameters.playlistId was null or undefined when calling deletePlaylist.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/playlist/{playlistId}`.replace(`{${"playlistId"}}`, encodeURIComponent(String(requestParameters.playlistId))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     */
+    async deletePlaylist(requestParameters: DeletePlaylistRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
+        const response = await this.deletePlaylistRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -80,10 +124,14 @@ export class PlaylistApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Jwt authentication
-        }
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
 
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
         const response = await this.request({
             path: `/api/playlist/user/me/favorite`,
             method: 'GET',
@@ -108,10 +156,14 @@ export class PlaylistApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Jwt authentication
-        }
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
 
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
         const response = await this.request({
             path: `/api/playlist/user/me/history`,
             method: 'GET',
@@ -136,10 +188,14 @@ export class PlaylistApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Jwt authentication
-        }
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
 
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
         const response = await this.request({
             path: `/api/playlist/user/me`,
             method: 'GET',
@@ -164,10 +220,14 @@ export class PlaylistApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Jwt authentication
-        }
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
 
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
         const response = await this.request({
             path: `/api/playlist/user/me/queue`,
             method: 'GET',
@@ -188,20 +248,24 @@ export class PlaylistApi extends runtime.BaseAPI {
     /**
      */
     async getPlaylistRaw(requestParameters: GetPlaylistRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PlaylistReadDto>> {
-        if (requestParameters.playlistId === null || requestParameters.playlistId === undefined) {
-            throw new runtime.RequiredError('playlistId','Required parameter requestParameters.playlistId was null or undefined when calling getPlaylist.');
-        }
-
         const queryParameters: any = {};
+
+        if (requestParameters.playlistId !== undefined) {
+            queryParameters['playlistId'] = requestParameters.playlistId;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Jwt authentication
-        }
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
 
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
         const response = await this.request({
-            path: `/api/playlist/{playlistId}`.replace(`{${"playlistId"}}`, encodeURIComponent(String(requestParameters.playlistId))),
+            path: `/api/playlist`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -212,7 +276,7 @@ export class PlaylistApi extends runtime.BaseAPI {
 
     /**
      */
-    async getPlaylist(requestParameters: GetPlaylistRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PlaylistReadDto> {
+    async getPlaylist(requestParameters: GetPlaylistRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PlaylistReadDto> {
         const response = await this.getPlaylistRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -228,10 +292,14 @@ export class PlaylistApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Jwt authentication
-        }
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
 
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
         const response = await this.request({
             path: `/api/playlist/user/{userId}`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))),
             method: 'GET',
