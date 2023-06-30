@@ -106,6 +106,8 @@ class KeycloakController {
   }
 
   public Logout() {
+    // TODO: Need to revoke offline token using /realms/MusicPlayer/protocol/openid-connect/revoke
+    localStorage.removeItem('OfflineToken');
     this.keycloak.logout();
   }
 
