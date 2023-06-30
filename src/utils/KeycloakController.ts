@@ -1,6 +1,7 @@
-import Keycloak, {KeycloakPromise} from "keycloak-js";
-import {useAuthStore} from "stores/authDataStore";
-import {date} from "quasar";
+import Keycloak, {KeycloakPromise} from 'keycloak-js';
+import {useAuthStore} from 'stores/authDataStore';
+import {date} from 'quasar';
+import {useRouter} from 'vue-router';
 
 class KeycloakController {
   private static _instance: KeycloakController;
@@ -11,48 +12,68 @@ class KeycloakController {
 
   private keycloak: Keycloak;
   private authStore = useAuthStore();
-  constructor() {
-    if (KeycloakController._instance) {
-      throw new Error(
-        'Error: Instantiation failed: Use KeycloakController.Instance instead of new.'
-      );
-    }
-    KeycloakController._instance = this;
+  private constructor() {
+    this.keycloak = new Keycloak(window.location.origin + '/music-player' + '/keycloak.json');
+  }
 
-
-    this.keycloak = new Keycloak()
-
-    console.log('Initializing Keycloak');
-    this.keycloak.init({
-      checkLoginIframe: false,
-      onLoad: 'check-sso',
-      // silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html',
-    }).then(authenticated => {
-      if (authenticated) {
-        console.log('User is authenticated');
-        this.authStore.authenticated = true;
-
-        console.dir(this.keycloak.tokenParsed)
-
-        this.authStore.authenticationComplete(
-          this.keycloak.tokenParsed?.preferred_username,
-          <string>this.keycloak.tokenParsed?.sub
-        );
+  private async ResumeSession() : Promise<boolean> {
+    if (localStorage.getItem('OfflineToken')) {
+      console.log('Offline token found. Attempting to refresh token.');
+      this.keycloak.refreshToken = localStorage.getItem('OfflineToken') || undefined;
+      const refreshed = await this.keycloak.updateToken(-1);
+      if (refreshed) {
+        console.log('Successfully reauthenticated with offline token.');
+        this.authStore.authenticationComplete(this.keycloak.tokenParsed?.preferred_username, this.keycloak.tokenParsed?.sub);
+        return true;
       } else {
-        console.log('User is **not** authenticated');
-        this.authStore.authenticated = false;
+        console.warn('Failed to reauthenticate with offline token. Logging out.');
+        this.keycloak.refreshToken = undefined;
+        localStorage.removeItem('OfflineToken');
+        this.keycloak.logout();
+        return false;
       }
-    })
-      .catch((e) => {
-        console.dir(e);
-        console.log(`keycloak init exception: ${e}`);
-        throw e;
+    }
+
+    return false;
+  }
+
+  public async Init() {
+    console.log('Initializing Keycloak');
+
+    try {
+      const authenticated = await this.keycloak.init({
+        onLoad: 'check-sso',
+        scope: 'openid offline_access',
+        checkLoginIframe: false,
+        silentCheckSsoRedirectUri: window.location.origin + '/music-player' + '/silent-check-sso.html'
       });
+
+      this.authStore.ready = true;
+      if (authenticated) {
+        console.log('User is authenticated (auth init)');
+        this.authStore.authenticationComplete(this.keycloak.tokenParsed?.preferred_username, this.keycloak.tokenParsed?.sub);
+
+        localStorage.setItem('OfflineToken', this.keycloak.refreshToken!);
+      } else {
+
+        if (await this.ResumeSession()) {
+          console.log('User is authenticated (offline token)');
+          return;
+        }
+
+        console.log('User is **not** authenticated');
+      }
+    } catch (error) {
+      console.error('Keycloak initialization failed', error);
+      return;
+    }
   }
 
   public Login() {
     this.keycloak.login({
       scope: 'openid offline_access'
+    }).then((success) => {
+      console.log(`Login success: ${success}`);
     });
   }
 
