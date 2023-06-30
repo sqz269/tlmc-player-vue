@@ -31,7 +31,7 @@ jobs:
         run: quasar build -d
         
       - name: Copy
-        run: copy index.html 404.html
+        run: cp index.html 404.html
         
       - name: Push
         uses: s0/git-publish-subdir-action@develop
