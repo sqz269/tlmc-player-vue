@@ -2,8 +2,9 @@ import { Howl } from 'howler';
 import {Action, Func} from 'src/utils/HelperType';
 import {audioEvents} from "boot/eventBus";
 import {audioController} from "boot/audioController";
+import IAudioController from "src/AudioControllers/IAudioController";
 
-class AudioController {
+class AudioControllerFlac implements IAudioController {
   private howl: Howl | null = null;
   private playbackId: number | undefined;
 
@@ -33,6 +34,13 @@ class AudioController {
 
       this.progress = pos;
     }, 100);
+  }
+
+  resume(): void {
+    this.unpause();
+  }
+  destroy(): void {
+    this.unload();
   }
 
   get volume(): number {
@@ -127,5 +135,5 @@ class AudioController {
 }
 
 export {
-  AudioController
+  AudioControllerFlac
 }

@@ -12,8 +12,17 @@ export default defineComponent({
 
 <script setup lang="ts">
 import {onMounted} from 'vue';
-import {useAuthStore} from 'stores/authDataStore';
 import {QueueController} from 'src/utils/QueueController';
+import {QueueEvents} from "src/utils/Events";
+import {queueEvents} from "boot/eventBus";
+import MediaSessionController from "src/AudioControllers/MediaSessionController";
+
+let mediaSession: MediaSessionController = MediaSessionController.Instance;
+
+console.log("Binding QueueEvents.currentPlayingChanged");
+queueEvents.currentPlayingChanged.on((data) => {
+  console.dir(data);
+});
 
 onMounted(() => {
   QueueController.getInstance().init();
