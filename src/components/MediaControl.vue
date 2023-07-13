@@ -45,10 +45,12 @@ import {
 } from '@quasar/extras/material-icons-outlined';
 
 import {computed, ref} from 'vue';
-import {audioController} from 'boot/audioController';
 import {durationToSeconds, formatDuration, secondsToDuration} from 'src/utils/durationUtils';
 import {QueueController, QueuedTrack} from 'src/utils/QueueController';
 import {audioEvents, queueEvents} from "boot/eventBus";
+import AudioControllerHls from "src/AudioControllers/AudioControllerHls";
+
+const audioController = AudioControllerHls.Instance;
 
 const currentTime = ref(0);
 const isPanningProgress = ref(false);

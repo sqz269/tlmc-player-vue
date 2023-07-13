@@ -1,9 +1,10 @@
 import {AlbumApi, TrackReadDto} from 'app/backend-service-api';
-import {AudioController} from 'src/utils/AudioController';
-import {audioController} from 'boot/audioController';
+import {AudioControllerFlac} from 'src/AudioControllers/AudioControllerFlac';
 import {ApiConfigProvider} from 'src/utils/ApiConfigProvider';
 import {audioEvents, queueEvents} from "boot/eventBus";
 import {uuidv4} from "src/utils/Utils";
+import AudioControllerHls from "src/AudioControllers/AudioControllerHls";
+import {QueueEvents} from "src/utils/Events";
 
 class QueuedTrack {
   private readonly queueItemId: string;
@@ -32,13 +33,13 @@ class QueueController {
 
   private _albumApi: AlbumApi;
 
-  private _audioController: AudioController;
+  private _audioController: AudioControllerHls;
 
   private constructor() {
      const apiConfig = ApiConfigProvider.getInstance().getApiConfig();
 
     this._albumApi = new AlbumApi(apiConfig);
-    this._audioController = audioController;
+    this._audioController = AudioControllerHls.Instance;
   }
 
   public init() {
@@ -55,6 +56,7 @@ class QueueController {
     return this._currentlyPlaying;
   }
   set currentlyPlaying(value: QueuedTrack | null) {
+    console.log("currentlyPlaying changed")
     const prev = this.currentlyPlaying;
     this._currentlyPlaying = value;
 
@@ -164,7 +166,9 @@ class QueueController {
   }
 
   public playNext(pushCurrentToQueue=false) {
+    console.log('PlayNext');
     if (this.currentlyPlaying !== null) {
+      console.log('Currently Playing is not null');
       if (!pushCurrentToQueue) {
         this.addToHistory(this.currentlyPlaying);
       } else {
@@ -173,21 +177,26 @@ class QueueController {
     }
 
     if (this._queue.length === 0) {
+      console.log('Queue is empty');
       if (this.currentlyPlaying === null) {
         return;
       }
       this.currentlyPlaying = null;
+      this._audioController.terminate();
     }
 
     const song = this.removeFromQueue(0);
 
     if (song === undefined) {
       this.currentlyPlaying = null;
-      this._audioController.unload();
+      // this._audioController.unload();
       return;
     }
-    this._audioController.playTrack(<string>song.Track.trackFile?.url);
+    // this._audioController.playTrack(<string>song.Track.trackFile?.url);
+
+    const url = `https://api-music.marisad.me/api/asset/track/${song.Track.id}`;
     this.currentlyPlaying = song;
+    this._audioController.playTrack(url);
   }
 
   public playPrevious() {

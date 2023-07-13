@@ -44,9 +44,11 @@ import {
   outlinedQueueMusic,
 } from '@quasar/extras/material-icons-outlined';
 
-import {audioController} from 'boot/audioController';
 import {ref, watch} from 'vue';
 import {useQueueDisplayStore} from 'stores/showQueue';
+import AudioControllerHls from "src/AudioControllers/AudioControllerHls";
+
+const audioController = AudioControllerHls.Instance;
 
 const queueShowStatusStore = useQueueDisplayStore();
 
