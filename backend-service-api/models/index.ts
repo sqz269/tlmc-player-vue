@@ -1,13 +1,18 @@
 /* tslint:disable */
 /* eslint-disable */
+export * from './AlbumOrderOptions';
 export * from './AlbumReadDto';
 export * from './AlbumWriteDto';
+export * from './AlbumsListResult';
 export * from './Asset';
 export * from './AssetReadDto';
 export * from './CircleReadDto';
 export * from './CircleStatus';
 export * from './CircleWebsiteReadDto';
 export * from './CircleWriteDto';
+export * from './HlsPlaylistType';
+export * from './HlsPlaylistWriteDto';
+export * from './HlsSegmentWriteDto';
 export * from './LocalizedField';
 export * from './Operation';
 export * from './OriginalAlbumReadDto';
@@ -24,6 +29,7 @@ export * from './PlaylistReadDto';
 export * from './PlaylistType';
 export * from './PlaylistVisibility';
 export * from './ProblemDetails';
+export * from './SortOrder';
 export * from './ThumbnailReadDto';
 export * from './TrackGetMultipleResp';
 export * from './TrackReadDto';

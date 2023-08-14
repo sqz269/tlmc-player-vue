@@ -74,7 +74,7 @@ function loadPage(index: number, bypassPushRoute=false) {
   }
 
   albumApi.getAlbums({start: (index - 1) * 50, limit: 50}).then((resp) => {
-    displayAlbums.value = resp;
+    displayAlbums.value = resp.albums!;
     window.scroll({
       top: 0,
       left: 0,
