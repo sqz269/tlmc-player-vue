@@ -15,17 +15,26 @@
 
 import * as runtime from '../runtime';
 import type {
+  AlbumOrderOptions,
   AlbumReadDto,
   AlbumWriteDto,
+  AlbumsListResult,
+  SortOrder,
   TrackGetMultipleResp,
   TrackReadDto,
   TrackWriteDto,
 } from '../models';
 import {
+    AlbumOrderOptionsFromJSON,
+    AlbumOrderOptionsToJSON,
     AlbumReadDtoFromJSON,
     AlbumReadDtoToJSON,
     AlbumWriteDtoFromJSON,
     AlbumWriteDtoToJSON,
+    AlbumsListResultFromJSON,
+    AlbumsListResultToJSON,
+    SortOrderFromJSON,
+    SortOrderToJSON,
     TrackGetMultipleRespFromJSON,
     TrackGetMultipleRespToJSON,
     TrackReadDtoFromJSON,
@@ -62,6 +71,8 @@ export interface GetAlbumFilteredRequest {
 export interface GetAlbumsRequest {
     start?: number;
     limit?: number;
+    sort?: AlbumOrderOptions;
+    sortOrder?: SortOrder;
 }
 
 export interface GetAlbumsByIdsRequest {
@@ -156,6 +167,38 @@ export class AlbumApi extends runtime.BaseAPI {
      */
     async addTrack(requestParameters: AddTrackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TrackReadDto> {
         const response = await this.addTrackRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async countAlbumsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AlbumReadDto>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/music/album/count`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(AlbumReadDtoFromJSON));
+    }
+
+    /**
+     */
+    async countAlbums(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<AlbumReadDto>> {
+        const response = await this.countAlbumsRaw(initOverrides);
         return await response.value();
     }
 
@@ -265,7 +308,7 @@ export class AlbumApi extends runtime.BaseAPI {
 
     /**
      */
-    async getAlbumsRaw(requestParameters: GetAlbumsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AlbumReadDto>>> {
+    async getAlbumsRaw(requestParameters: GetAlbumsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AlbumsListResult>> {
         const queryParameters: any = {};
 
         if (requestParameters.start !== undefined) {
@@ -274,6 +317,14 @@ export class AlbumApi extends runtime.BaseAPI {
 
         if (requestParameters.limit !== undefined) {
             queryParameters['limit'] = requestParameters.limit;
+        }
+
+        if (requestParameters.sort !== undefined) {
+            queryParameters['sort'] = requestParameters.sort;
+        }
+
+        if (requestParameters.sortOrder !== undefined) {
+            queryParameters['sortOrder'] = requestParameters.sortOrder;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -293,12 +344,12 @@ export class AlbumApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(AlbumReadDtoFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => AlbumsListResultFromJSON(jsonValue));
     }
 
     /**
      */
-    async getAlbums(requestParameters: GetAlbumsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<AlbumReadDto>> {
+    async getAlbums(requestParameters: GetAlbumsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AlbumsListResult> {
         const response = await this.getAlbumsRaw(requestParameters, initOverrides);
         return await response.value();
     }

@@ -44,24 +44,24 @@ const { setColors } = usePageContainerBgStyleStore();
 
 let currArtist: string | undefined;
 
-function loadArtist(start: number, limit: number): Promise<AlbumReadDto[]> {
+async function loadArtist(start: number, limit: number): Promise<AlbumReadDto[]> {
   // Check if the param is an uuid or artist name
   let artist = <string>router.currentRoute.value.params.artist;
 
   const isId = /^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$/.test(artist);
   if (isId) {
-    return circleApi.getCircleAlbumsById({
+    (await circleApi.getCircleAlbumsById({
       id: artist,
       start: start,
       limit: limit
-    });
+    })).albums;
   }
 
-  return circleApi.getCircleAlbumsByName({
+  return (await circleApi.getCircleAlbumsByName({
     name: artist,
     start: start,
     limit: limit
-  })
+  })).albums!;
 }
 
 function onLoad(index: number, done: (stop?: boolean) => void) {

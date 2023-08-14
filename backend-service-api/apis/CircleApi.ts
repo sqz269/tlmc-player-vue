@@ -15,26 +15,36 @@
 
 import * as runtime from '../runtime';
 import type {
-  AlbumReadDto,
+  AlbumOrderOptions,
+  AlbumsListResult,
   CircleReadDto,
+  SortOrder,
 } from '../models';
 import {
-    AlbumReadDtoFromJSON,
-    AlbumReadDtoToJSON,
+    AlbumOrderOptionsFromJSON,
+    AlbumOrderOptionsToJSON,
+    AlbumsListResultFromJSON,
+    AlbumsListResultToJSON,
     CircleReadDtoFromJSON,
     CircleReadDtoToJSON,
+    SortOrderFromJSON,
+    SortOrderToJSON,
 } from '../models';
 
 export interface GetCircleAlbumsByIdRequest {
     id: string;
     start?: number;
     limit?: number;
+    sort?: AlbumOrderOptions;
+    sortOrder?: SortOrder;
 }
 
 export interface GetCircleAlbumsByNameRequest {
     name: string;
     start?: number;
     limit?: number;
+    sort?: AlbumOrderOptions;
+    sortOrder?: SortOrder;
 }
 
 export interface GetCircleByIdRequest {
@@ -57,7 +67,7 @@ export class CircleApi extends runtime.BaseAPI {
 
     /**
      */
-    async getCircleAlbumsByIdRaw(requestParameters: GetCircleAlbumsByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AlbumReadDto>>> {
+    async getCircleAlbumsByIdRaw(requestParameters: GetCircleAlbumsByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AlbumsListResult>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getCircleAlbumsById.');
         }
@@ -70,6 +80,14 @@ export class CircleApi extends runtime.BaseAPI {
 
         if (requestParameters.limit !== undefined) {
             queryParameters['limit'] = requestParameters.limit;
+        }
+
+        if (requestParameters.sort !== undefined) {
+            queryParameters['sort'] = requestParameters.sort;
+        }
+
+        if (requestParameters.sortOrder !== undefined) {
+            queryParameters['sortOrder'] = requestParameters.sortOrder;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -89,19 +107,19 @@ export class CircleApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(AlbumReadDtoFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => AlbumsListResultFromJSON(jsonValue));
     }
 
     /**
      */
-    async getCircleAlbumsById(requestParameters: GetCircleAlbumsByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<AlbumReadDto>> {
+    async getCircleAlbumsById(requestParameters: GetCircleAlbumsByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AlbumsListResult> {
         const response = await this.getCircleAlbumsByIdRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async getCircleAlbumsByNameRaw(requestParameters: GetCircleAlbumsByNameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AlbumReadDto>>> {
+    async getCircleAlbumsByNameRaw(requestParameters: GetCircleAlbumsByNameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AlbumsListResult>> {
         if (requestParameters.name === null || requestParameters.name === undefined) {
             throw new runtime.RequiredError('name','Required parameter requestParameters.name was null or undefined when calling getCircleAlbumsByName.');
         }
@@ -114,6 +132,14 @@ export class CircleApi extends runtime.BaseAPI {
 
         if (requestParameters.limit !== undefined) {
             queryParameters['limit'] = requestParameters.limit;
+        }
+
+        if (requestParameters.sort !== undefined) {
+            queryParameters['sort'] = requestParameters.sort;
+        }
+
+        if (requestParameters.sortOrder !== undefined) {
+            queryParameters['sortOrder'] = requestParameters.sortOrder;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -133,12 +159,12 @@ export class CircleApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(AlbumReadDtoFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => AlbumsListResultFromJSON(jsonValue));
     }
 
     /**
      */
-    async getCircleAlbumsByName(requestParameters: GetCircleAlbumsByNameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<AlbumReadDto>> {
+    async getCircleAlbumsByName(requestParameters: GetCircleAlbumsByNameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AlbumsListResult> {
         const response = await this.getCircleAlbumsByNameRaw(requestParameters, initOverrides);
         return await response.value();
     }

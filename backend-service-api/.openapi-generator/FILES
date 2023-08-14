@@ -1,6 +1,7 @@
 apis/AlbumApi.ts
 apis/AssetApi.ts
 apis/CircleApi.ts
+apis/HlsAssetApi.ts
 apis/InternalApi.ts
 apis/OriginalAlbumApi.ts
 apis/PlaylistApi.ts
@@ -8,14 +9,19 @@ apis/PlaylistItemApi.ts
 apis/SearchApi.ts
 apis/index.ts
 index.ts
+models/AlbumOrderOptions.ts
 models/AlbumReadDto.ts
 models/AlbumWriteDto.ts
+models/AlbumsListResult.ts
 models/Asset.ts
 models/AssetReadDto.ts
 models/CircleReadDto.ts
 models/CircleStatus.ts
 models/CircleWebsiteReadDto.ts
 models/CircleWriteDto.ts
+models/HlsPlaylistType.ts
+models/HlsPlaylistWriteDto.ts
+models/HlsSegmentWriteDto.ts
 models/LocalizedField.ts
 models/Operation.ts
 models/OriginalAlbumReadDto.ts
@@ -32,6 +38,7 @@ models/PlaylistReadDto.ts
 models/PlaylistType.ts
 models/PlaylistVisibility.ts
 models/ProblemDetails.ts
+models/SortOrder.ts
 models/ThumbnailReadDto.ts
 models/TrackGetMultipleResp.ts
 models/TrackReadDto.ts

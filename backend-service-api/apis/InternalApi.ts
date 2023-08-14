@@ -18,6 +18,8 @@ import type {
   AlbumWriteDto,
   Asset,
   CircleWriteDto,
+  HlsPlaylistWriteDto,
+  HlsSegmentWriteDto,
   Operation,
   TrackUpdateDto,
   TrackWriteDto,
@@ -29,6 +31,10 @@ import {
     AssetToJSON,
     CircleWriteDtoFromJSON,
     CircleWriteDtoToJSON,
+    HlsPlaylistWriteDtoFromJSON,
+    HlsPlaylistWriteDtoToJSON,
+    HlsSegmentWriteDtoFromJSON,
+    HlsSegmentWriteDtoToJSON,
     OperationFromJSON,
     OperationToJSON,
     TrackUpdateDtoFromJSON,
@@ -56,6 +62,17 @@ export interface ApiInternalAlbumAlbumIdTrackAddTrackIdPutRequest {
 
 export interface ApiInternalAssetAddPutRequest {
     asset?: Asset;
+}
+
+export interface ApiInternalAssetTrackTrackIdPlaylistPutRequest {
+    trackId: string;
+    hlsPlaylistWriteDto?: HlsPlaylistWriteDto;
+}
+
+export interface ApiInternalAssetTrackTrackIdSegmentPutRequest {
+    trackId: string;
+    quality?: number;
+    hlsSegmentWriteDto?: HlsSegmentWriteDto;
 }
 
 export interface ApiInternalCircleAddIdPutRequest {
@@ -237,6 +254,86 @@ export class InternalApi extends runtime.BaseAPI {
      */
     async apiInternalAssetAddPut(requestParameters: ApiInternalAssetAddPutRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.apiInternalAssetAddPutRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     */
+    async apiInternalAssetTrackTrackIdPlaylistPutRaw(requestParameters: ApiInternalAssetTrackTrackIdPlaylistPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.trackId === null || requestParameters.trackId === undefined) {
+            throw new runtime.RequiredError('trackId','Required parameter requestParameters.trackId was null or undefined when calling apiInternalAssetTrackTrackIdPlaylistPut.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json-patch+json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/internal/asset/track/{trackId}/playlist`.replace(`{${"trackId"}}`, encodeURIComponent(String(requestParameters.trackId))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: HlsPlaylistWriteDtoToJSON(requestParameters.hlsPlaylistWriteDto),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     */
+    async apiInternalAssetTrackTrackIdPlaylistPut(requestParameters: ApiInternalAssetTrackTrackIdPlaylistPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.apiInternalAssetTrackTrackIdPlaylistPutRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     */
+    async apiInternalAssetTrackTrackIdSegmentPutRaw(requestParameters: ApiInternalAssetTrackTrackIdSegmentPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.trackId === null || requestParameters.trackId === undefined) {
+            throw new runtime.RequiredError('trackId','Required parameter requestParameters.trackId was null or undefined when calling apiInternalAssetTrackTrackIdSegmentPut.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.quality !== undefined) {
+            queryParameters['quality'] = requestParameters.quality;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json-patch+json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/internal/asset/track/{trackId}/segment`.replace(`{${"trackId"}}`, encodeURIComponent(String(requestParameters.trackId))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: HlsSegmentWriteDtoToJSON(requestParameters.hlsSegmentWriteDto),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     */
+    async apiInternalAssetTrackTrackIdSegmentPut(requestParameters: ApiInternalAssetTrackTrackIdSegmentPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.apiInternalAssetTrackTrackIdSegmentPutRaw(requestParameters, initOverrides);
     }
 
     /**
