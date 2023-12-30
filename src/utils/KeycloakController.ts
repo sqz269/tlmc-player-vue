@@ -45,7 +45,7 @@ class KeycloakController {
         onLoad: 'check-sso',
         scope: 'openid offline_access',
         checkLoginIframe: false,
-        silentCheckSsoRedirectUri: window.location.origin + '/music-player' + '/silent-check-sso.html'
+        silentCheckSsoRedirectUri: window.location.origin + '/tlmc-player-vue' + '/silent-check-sso.html'
       });
 
       this.authStore.ready = true;
