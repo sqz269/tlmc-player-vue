@@ -13,7 +13,7 @@ class KeycloakController {
   private keycloak: Keycloak;
   private authStore = useAuthStore();
   private constructor() {
-    this.keycloak = new Keycloak(window.location.origin + '/music-player' + '/keycloak.json');
+    this.keycloak = new Keycloak(window.location.origin + '/tlmc-player-vue' + '/keycloak.json');
   }
 
   private async ResumeSession() : Promise<boolean> {
