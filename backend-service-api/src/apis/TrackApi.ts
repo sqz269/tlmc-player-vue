@@ -40,6 +40,10 @@ import {
     TrackStratificationModeToJSON,
 } from '../models/index';
 
+export interface GetLyricsRequest {
+    trackId: string;
+}
+
 export interface GetRandomSampleTrackRequest {
     start?: number;
     limit?: number;
@@ -76,6 +80,44 @@ export interface GetTracksFilteredRequest {
  * 
  */
 export class TrackApi extends runtime.BaseAPI {
+
+    /**
+     */
+    async getLyricsRaw(requestParameters: GetLyricsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters['trackId'] == null) {
+            throw new runtime.RequiredError(
+                'trackId',
+                'Required parameter "trackId" was null or undefined when calling getLyrics().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/music/track/{trackId}/lyrics`.replace(`{${"trackId"}}`, encodeURIComponent(String(requestParameters['trackId']))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     */
+    async getLyrics(requestParameters: GetLyricsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.getLyricsRaw(requestParameters, initOverrides);
+    }
 
     /**
      */

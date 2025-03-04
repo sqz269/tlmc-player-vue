@@ -128,6 +128,12 @@ export interface TrackReadDto {
      * @memberof TrackReadDto
      */
     trackFile?: AssetReadDto;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof TrackReadDto
+     */
+    hasLyrics?: boolean;
 }
 
 /**
@@ -161,6 +167,7 @@ export function TrackReadDtoFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'originalNonTouhou': json['originalNonTouhou'] == null ? undefined : json['originalNonTouhou'],
         'album': json['album'] == null ? undefined : AlbumReadDtoFromJSON(json['album']),
         'trackFile': json['trackFile'] == null ? undefined : AssetReadDtoFromJSON(json['trackFile']),
+        'hasLyrics': json['hasLyrics'] == null ? undefined : json['hasLyrics'],
     };
 }
 
@@ -184,6 +191,7 @@ export function TrackReadDtoToJSON(value?: TrackReadDto | null): any {
         'originalNonTouhou': value['originalNonTouhou'],
         'album': AlbumReadDtoToJSON(value['album']),
         'trackFile': AssetReadDtoToJSON(value['trackFile']),
+        'hasLyrics': value['hasLyrics'],
     };
 }
 

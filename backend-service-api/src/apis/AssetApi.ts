@@ -17,6 +17,7 @@ import * as runtime from '../runtime';
 
 export interface GetAssetRequest {
     id: string;
+    download?: boolean;
 }
 
 /**
@@ -35,6 +36,10 @@ export class AssetApi extends runtime.BaseAPI {
         }
 
         const queryParameters: any = {};
+
+        if (requestParameters['download'] != null) {
+            queryParameters['download'] = requestParameters['download'];
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 

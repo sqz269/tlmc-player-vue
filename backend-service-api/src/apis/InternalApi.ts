@@ -20,6 +20,7 @@ import type {
   CircleWriteDto,
   HlsPlaylistWriteDto,
   HlsSegmentWriteDto,
+  Lyrics,
   Operation,
   TrackUpdateDto,
   TrackWriteDto,
@@ -35,6 +36,8 @@ import {
     HlsPlaylistWriteDtoToJSON,
     HlsSegmentWriteDtoFromJSON,
     HlsSegmentWriteDtoToJSON,
+    LyricsFromJSON,
+    LyricsToJSON,
     OperationFromJSON,
     OperationToJSON,
     TrackUpdateDtoFromJSON,
@@ -43,54 +46,60 @@ import {
     TrackWriteDtoToJSON,
 } from '../models/index';
 
-export interface ApiInternalAlbumAddAlbumIdPutRequest {
+export interface INTERNALAddAlbumRequest {
     albumId: string;
     parentId?: string;
     albumWriteDto?: AlbumWriteDto;
 }
 
-export interface ApiInternalAlbumAlbumIdPatchRequest {
-    albumId: string;
-    operation?: Array<Operation>;
-}
-
-export interface ApiInternalAlbumAlbumIdTrackAddTrackIdPutRequest {
-    albumId: string;
-    trackId: string;
-    trackWriteDto?: TrackWriteDto;
-}
-
-export interface ApiInternalAssetAddPutRequest {
+export interface INTERNALAddAssetUncheckedRequest {
     asset?: Asset;
 }
 
-export interface ApiInternalAssetTrackTrackIdPlaylistPutRequest {
+export interface INTERNALAddCircleRequest {
+    id: string;
+    circleWriteDto?: CircleWriteDto;
+}
+
+export interface INTERNALAddHlsFilePlaylistRequest {
     trackId: string;
     hlsPlaylistWriteDto?: HlsPlaylistWriteDto;
 }
 
-export interface ApiInternalAssetTrackTrackIdSegmentPutRequest {
+export interface INTERNALAddHlsFileSegmentRequest {
     trackId: string;
     quality?: number;
     hlsSegmentWriteDto?: HlsSegmentWriteDto;
 }
 
-export interface ApiInternalCircleAddIdPutRequest {
-    id: string;
-    circleWriteDto?: CircleWriteDto;
+export interface INTERNALAddLyricsRequest {
+    trackId: string;
+    lyricsId: string;
+    lyrics?: Lyrics;
 }
 
-export interface ApiInternalCircleIdPatchRequest {
-    id: string;
-    operation?: Array<Operation>;
+export interface INTERNALAddTrackRequest {
+    albumId: string;
+    trackId: string;
+    trackWriteDto?: TrackWriteDto;
 }
 
-export interface ApiInternalTrackJsonpatchTrackIdPatchRequest {
+export interface INTERNALPATCHUpdateTrackRequest {
     trackId: string;
     operation?: Array<Operation>;
 }
 
-export interface ApiInternalTrackTrackIdPatchRequest {
+export interface INTERNALUpdateAlbumRequest {
+    albumId: string;
+    operation?: Array<Operation>;
+}
+
+export interface INTERNALUpdateCircleRequest {
+    id: string;
+    operation?: Array<Operation>;
+}
+
+export interface INTERNALUpdateTrackRequest {
     trackId: string;
     trackUpdateDto?: TrackUpdateDto;
 }
@@ -102,11 +111,11 @@ export class InternalApi extends runtime.BaseAPI {
 
     /**
      */
-    async apiInternalAlbumAddAlbumIdPutRaw(requestParameters: ApiInternalAlbumAddAlbumIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async iNTERNALAddAlbumRaw(requestParameters: INTERNALAddAlbumRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters['albumId'] == null) {
             throw new runtime.RequiredError(
                 'albumId',
-                'Required parameter "albumId" was null or undefined when calling apiInternalAlbumAddAlbumIdPut().'
+                'Required parameter "albumId" was null or undefined when calling iNTERNALAddAlbum().'
             );
         }
 
@@ -141,102 +150,13 @@ export class InternalApi extends runtime.BaseAPI {
 
     /**
      */
-    async apiInternalAlbumAddAlbumIdPut(requestParameters: ApiInternalAlbumAddAlbumIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.apiInternalAlbumAddAlbumIdPutRaw(requestParameters, initOverrides);
+    async iNTERNALAddAlbum(requestParameters: INTERNALAddAlbumRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.iNTERNALAddAlbumRaw(requestParameters, initOverrides);
     }
 
     /**
      */
-    async apiInternalAlbumAlbumIdPatchRaw(requestParameters: ApiInternalAlbumAlbumIdPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['albumId'] == null) {
-            throw new runtime.RequiredError(
-                'albumId',
-                'Required parameter "albumId" was null or undefined when calling apiInternalAlbumAlbumIdPatch().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json-patch+json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("Bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/internal/album/{albumId}`.replace(`{${"albumId"}}`, encodeURIComponent(String(requestParameters['albumId']))),
-            method: 'PATCH',
-            headers: headerParameters,
-            query: queryParameters,
-            body: requestParameters['operation']!.map(OperationToJSON),
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     */
-    async apiInternalAlbumAlbumIdPatch(requestParameters: ApiInternalAlbumAlbumIdPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.apiInternalAlbumAlbumIdPatchRaw(requestParameters, initOverrides);
-    }
-
-    /**
-     */
-    async apiInternalAlbumAlbumIdTrackAddTrackIdPutRaw(requestParameters: ApiInternalAlbumAlbumIdTrackAddTrackIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['albumId'] == null) {
-            throw new runtime.RequiredError(
-                'albumId',
-                'Required parameter "albumId" was null or undefined when calling apiInternalAlbumAlbumIdTrackAddTrackIdPut().'
-            );
-        }
-
-        if (requestParameters['trackId'] == null) {
-            throw new runtime.RequiredError(
-                'trackId',
-                'Required parameter "trackId" was null or undefined when calling apiInternalAlbumAlbumIdTrackAddTrackIdPut().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json-patch+json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("Bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/internal/album/{albumId}/track/add/{trackId}`.replace(`{${"albumId"}}`, encodeURIComponent(String(requestParameters['albumId']))).replace(`{${"trackId"}}`, encodeURIComponent(String(requestParameters['trackId']))),
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-            body: TrackWriteDtoToJSON(requestParameters['trackWriteDto']),
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     */
-    async apiInternalAlbumAlbumIdTrackAddTrackIdPut(requestParameters: ApiInternalAlbumAlbumIdTrackAddTrackIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.apiInternalAlbumAlbumIdTrackAddTrackIdPutRaw(requestParameters, initOverrides);
-    }
-
-    /**
-     */
-    async apiInternalAssetAddPutRaw(requestParameters: ApiInternalAssetAddPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async iNTERNALAddAssetUncheckedRaw(requestParameters: INTERNALAddAssetUncheckedRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -264,17 +184,58 @@ export class InternalApi extends runtime.BaseAPI {
 
     /**
      */
-    async apiInternalAssetAddPut(requestParameters: ApiInternalAssetAddPutRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.apiInternalAssetAddPutRaw(requestParameters, initOverrides);
+    async iNTERNALAddAssetUnchecked(requestParameters: INTERNALAddAssetUncheckedRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.iNTERNALAddAssetUncheckedRaw(requestParameters, initOverrides);
     }
 
     /**
      */
-    async apiInternalAssetTrackTrackIdPlaylistPutRaw(requestParameters: ApiInternalAssetTrackTrackIdPlaylistPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async iNTERNALAddCircleRaw(requestParameters: INTERNALAddCircleRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling iNTERNALAddCircle().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json-patch+json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/internal/circle/add/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CircleWriteDtoToJSON(requestParameters['circleWriteDto']),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     */
+    async iNTERNALAddCircle(requestParameters: INTERNALAddCircleRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.iNTERNALAddCircleRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     */
+    async iNTERNALAddHlsFilePlaylistRaw(requestParameters: INTERNALAddHlsFilePlaylistRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters['trackId'] == null) {
             throw new runtime.RequiredError(
                 'trackId',
-                'Required parameter "trackId" was null or undefined when calling apiInternalAssetTrackTrackIdPlaylistPut().'
+                'Required parameter "trackId" was null or undefined when calling iNTERNALAddHlsFilePlaylist().'
             );
         }
 
@@ -305,17 +266,17 @@ export class InternalApi extends runtime.BaseAPI {
 
     /**
      */
-    async apiInternalAssetTrackTrackIdPlaylistPut(requestParameters: ApiInternalAssetTrackTrackIdPlaylistPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.apiInternalAssetTrackTrackIdPlaylistPutRaw(requestParameters, initOverrides);
+    async iNTERNALAddHlsFilePlaylist(requestParameters: INTERNALAddHlsFilePlaylistRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.iNTERNALAddHlsFilePlaylistRaw(requestParameters, initOverrides);
     }
 
     /**
      */
-    async apiInternalAssetTrackTrackIdSegmentPutRaw(requestParameters: ApiInternalAssetTrackTrackIdSegmentPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async iNTERNALAddHlsFileSegmentRaw(requestParameters: INTERNALAddHlsFileSegmentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters['trackId'] == null) {
             throw new runtime.RequiredError(
                 'trackId',
-                'Required parameter "trackId" was null or undefined when calling apiInternalAssetTrackTrackIdSegmentPut().'
+                'Required parameter "trackId" was null or undefined when calling iNTERNALAddHlsFileSegment().'
             );
         }
 
@@ -350,99 +311,113 @@ export class InternalApi extends runtime.BaseAPI {
 
     /**
      */
-    async apiInternalAssetTrackTrackIdSegmentPut(requestParameters: ApiInternalAssetTrackTrackIdSegmentPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.apiInternalAssetTrackTrackIdSegmentPutRaw(requestParameters, initOverrides);
+    async iNTERNALAddHlsFileSegment(requestParameters: INTERNALAddHlsFileSegmentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.iNTERNALAddHlsFileSegmentRaw(requestParameters, initOverrides);
     }
 
     /**
      */
-    async apiInternalCircleAddIdPutRaw(requestParameters: ApiInternalCircleAddIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling apiInternalCircleAddIdPut().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json-patch+json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("Bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/internal/circle/add/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-            body: CircleWriteDtoToJSON(requestParameters['circleWriteDto']),
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     */
-    async apiInternalCircleAddIdPut(requestParameters: ApiInternalCircleAddIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.apiInternalCircleAddIdPutRaw(requestParameters, initOverrides);
-    }
-
-    /**
-     */
-    async apiInternalCircleIdPatchRaw(requestParameters: ApiInternalCircleIdPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling apiInternalCircleIdPatch().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json-patch+json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("Bearer", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/api/internal/circle/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
-            method: 'PATCH',
-            headers: headerParameters,
-            query: queryParameters,
-            body: requestParameters['operation']!.map(OperationToJSON),
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     */
-    async apiInternalCircleIdPatch(requestParameters: ApiInternalCircleIdPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.apiInternalCircleIdPatchRaw(requestParameters, initOverrides);
-    }
-
-    /**
-     */
-    async apiInternalTrackJsonpatchTrackIdPatchRaw(requestParameters: ApiInternalTrackJsonpatchTrackIdPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async iNTERNALAddLyricsRaw(requestParameters: INTERNALAddLyricsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters['trackId'] == null) {
             throw new runtime.RequiredError(
                 'trackId',
-                'Required parameter "trackId" was null or undefined when calling apiInternalTrackJsonpatchTrackIdPatch().'
+                'Required parameter "trackId" was null or undefined when calling iNTERNALAddLyrics().'
+            );
+        }
+
+        if (requestParameters['lyricsId'] == null) {
+            throw new runtime.RequiredError(
+                'lyricsId',
+                'Required parameter "lyricsId" was null or undefined when calling iNTERNALAddLyrics().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json-patch+json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/internal/track/{trackId}/lyrics/add/{lyricsId}`.replace(`{${"trackId"}}`, encodeURIComponent(String(requestParameters['trackId']))).replace(`{${"lyricsId"}}`, encodeURIComponent(String(requestParameters['lyricsId']))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: LyricsToJSON(requestParameters['lyrics']),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     */
+    async iNTERNALAddLyrics(requestParameters: INTERNALAddLyricsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.iNTERNALAddLyricsRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     */
+    async iNTERNALAddTrackRaw(requestParameters: INTERNALAddTrackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters['albumId'] == null) {
+            throw new runtime.RequiredError(
+                'albumId',
+                'Required parameter "albumId" was null or undefined when calling iNTERNALAddTrack().'
+            );
+        }
+
+        if (requestParameters['trackId'] == null) {
+            throw new runtime.RequiredError(
+                'trackId',
+                'Required parameter "trackId" was null or undefined when calling iNTERNALAddTrack().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json-patch+json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/internal/album/{albumId}/track/add/{trackId}`.replace(`{${"albumId"}}`, encodeURIComponent(String(requestParameters['albumId']))).replace(`{${"trackId"}}`, encodeURIComponent(String(requestParameters['trackId']))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: TrackWriteDtoToJSON(requestParameters['trackWriteDto']),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     */
+    async iNTERNALAddTrack(requestParameters: INTERNALAddTrackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.iNTERNALAddTrackRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     */
+    async iNTERNALPATCHUpdateTrackRaw(requestParameters: INTERNALPATCHUpdateTrackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters['trackId'] == null) {
+            throw new runtime.RequiredError(
+                'trackId',
+                'Required parameter "trackId" was null or undefined when calling iNTERNALPATCHUpdateTrack().'
             );
         }
 
@@ -473,17 +448,99 @@ export class InternalApi extends runtime.BaseAPI {
 
     /**
      */
-    async apiInternalTrackJsonpatchTrackIdPatch(requestParameters: ApiInternalTrackJsonpatchTrackIdPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.apiInternalTrackJsonpatchTrackIdPatchRaw(requestParameters, initOverrides);
+    async iNTERNALPATCHUpdateTrack(requestParameters: INTERNALPATCHUpdateTrackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.iNTERNALPATCHUpdateTrackRaw(requestParameters, initOverrides);
     }
 
     /**
      */
-    async apiInternalTrackTrackIdPatchRaw(requestParameters: ApiInternalTrackTrackIdPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async iNTERNALUpdateAlbumRaw(requestParameters: INTERNALUpdateAlbumRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters['albumId'] == null) {
+            throw new runtime.RequiredError(
+                'albumId',
+                'Required parameter "albumId" was null or undefined when calling iNTERNALUpdateAlbum().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json-patch+json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/internal/album/{albumId}`.replace(`{${"albumId"}}`, encodeURIComponent(String(requestParameters['albumId']))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: requestParameters['operation']!.map(OperationToJSON),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     */
+    async iNTERNALUpdateAlbum(requestParameters: INTERNALUpdateAlbumRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.iNTERNALUpdateAlbumRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     */
+    async iNTERNALUpdateCircleRaw(requestParameters: INTERNALUpdateCircleRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling iNTERNALUpdateCircle().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json-patch+json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("Bearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/api/internal/circle/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: requestParameters['operation']!.map(OperationToJSON),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     */
+    async iNTERNALUpdateCircle(requestParameters: INTERNALUpdateCircleRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.iNTERNALUpdateCircleRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     */
+    async iNTERNALUpdateTrackRaw(requestParameters: INTERNALUpdateTrackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters['trackId'] == null) {
             throw new runtime.RequiredError(
                 'trackId',
-                'Required parameter "trackId" was null or undefined when calling apiInternalTrackTrackIdPatch().'
+                'Required parameter "trackId" was null or undefined when calling iNTERNALUpdateTrack().'
             );
         }
 
@@ -514,8 +571,8 @@ export class InternalApi extends runtime.BaseAPI {
 
     /**
      */
-    async apiInternalTrackTrackIdPatch(requestParameters: ApiInternalTrackTrackIdPatchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.apiInternalTrackTrackIdPatchRaw(requestParameters, initOverrides);
+    async iNTERNALUpdateTrack(requestParameters: INTERNALUpdateTrackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.iNTERNALUpdateTrackRaw(requestParameters, initOverrides);
     }
 
 }
