@@ -15,6 +15,7 @@
 
 import * as runtime from '../runtime';
 import type {
+  LyricsReadDto,
   SortOrder,
   TrackGetMultipleResp,
   TrackListResult,
@@ -24,6 +25,8 @@ import type {
   TrackStratificationMode,
 } from '../models/index';
 import {
+    LyricsReadDtoFromJSON,
+    LyricsReadDtoToJSON,
     SortOrderFromJSON,
     SortOrderToJSON,
     TrackGetMultipleRespFromJSON,
@@ -83,7 +86,7 @@ export class TrackApi extends runtime.BaseAPI {
 
     /**
      */
-    async getLyricsRaw(requestParameters: GetLyricsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async getLyricsRaw(requestParameters: GetLyricsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<LyricsReadDto>> {
         if (requestParameters['trackId'] == null) {
             throw new runtime.RequiredError(
                 'trackId',
@@ -110,13 +113,14 @@ export class TrackApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => LyricsReadDtoFromJSON(jsonValue));
     }
 
     /**
      */
-    async getLyrics(requestParameters: GetLyricsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.getLyricsRaw(requestParameters, initOverrides);
+    async getLyrics(requestParameters: GetLyricsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<LyricsReadDto> {
+        const response = await this.getLyricsRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**

@@ -30,8 +30,12 @@ src/models/HlsSegmentWriteDto.ts
 src/models/LocalizedField.ts
 src/models/Lyrics.ts
 src/models/LyricsLine.ts
+src/models/LyricsLineDto.ts
+src/models/LyricsReadDto.ts
 src/models/LyricsText.ts
+src/models/LyricsTextDto.ts
 src/models/LyricsVariant.ts
+src/models/LyricsVariantDto.ts
 src/models/Operation.ts
 src/models/OriginalAlbumReadDto.ts
 src/models/OriginalAlbumReadDtoActionResult.ts
@@ -46,6 +50,7 @@ src/models/PlaylistType.ts
 src/models/PlaylistVisibility.ts
 src/models/ProblemDetails.ts
 src/models/Ruby.ts
+src/models/RubyDto.ts
 src/models/SortOrder.ts
 src/models/ThumbnailReadDto.ts
 src/models/TrackGetMultipleResp.ts
