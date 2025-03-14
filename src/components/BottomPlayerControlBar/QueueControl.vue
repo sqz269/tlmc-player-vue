@@ -5,6 +5,19 @@
         round
         dense
         flat
+        :icon="outlinedLyrics"
+        class="q-mx-sm"
+        v-if="hasLyrics"
+        @click="gotoLyricsPage"
+      >
+        <q-tooltip>Lyrics</q-tooltip>
+      </q-btn>
+
+
+      <q-btn
+        round
+        dense
+        flat
         :icon="outlinedRepeat"
         class="q-mx-sm"
       >
@@ -69,19 +82,37 @@ import {
   outlinedQueueMusic,
   outlinedRepeat,
   outlinedShuffle,
+  outlinedLyrics
 } from '@quasar/extras/material-icons-outlined';
 import { matRadio } from '@quasar/extras/material-icons';
-import { inject, ref, watch } from 'vue';
+import { computed, inject, reactive, ref, watch } from 'vue';
 import RadioService from 'src/services/domain/RadioService';
 import AudioService from 'src/services/domain/AudioService';
 import { useRouter } from 'vue-router';
+import QueueService from 'src/services/domain/QueueService';
 
 // Injected props
 const $router = useRouter();
+
+const queueService = inject<QueueService>('queueService');
 const radioService = inject<RadioService>('radioService');
 const audioService = inject<AudioService>('audioService');
 
 const volume = ref(1);
+const hasLyrics = computed(() => {
+  if (queueService?.currentTrack !== null)
+  {
+    return queueService?.currentTrack.value?.track.hasLyrics;
+  }
+
+  return false;
+})
+
+const gotoLyricsPage = () => {
+  $router.push({
+    name: 'Lyrics'
+  })
+}
 
 const gotoQueuePage = () => {
   $router.push({

@@ -142,6 +142,7 @@ import TrackListTable from 'src/components/AlbumPage/TrackListTable.vue';
 import { QCard, useQuasar, } from 'quasar';
 import AlbumAssetsViewerDialog from 'src/components/Dialogs/AlbumAssetsViewerDialog.vue';
 import QueueService, { QueueAddMode } from 'src/services/domain/QueueService';
+import LyricsViewDialog from 'src/components/Dialogs/LyricsViewDialog.vue';
 
 // View Models
 interface AlbumPageRouteParameters {
