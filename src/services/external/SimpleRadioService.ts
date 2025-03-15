@@ -3,8 +3,11 @@ import QueueService, { QueueAddMode } from '../domain/QueueService';
 import RadioService from '../domain/RadioService';
 import Logger from 'src/utils/Logger';
 import ApiConfigurationProvider from '../domain/ApiConfigurationProvider';
-import { Configuration, TrackApi, TrackRandomResult, TrackReadDto } from 'app/backend-service-api';
-import { AlbumApi } from 'app/backend-service-api';
+import {
+  Configuration,
+  TrackApi,
+  TrackRandomResult,
+} from 'app/backend-service-api';
 import { TrackQueryFilters } from 'src/models/TrackQueryFilters';
 
 export default function useSimpleRadioService(
@@ -40,9 +43,15 @@ export default function useSimpleRadioService(
       _apiConfigProvider.getApiConfigurationWithAuth()
     );
 
-    const circleIds = _filters.value?.circles?.length ? _filters.value.circles : undefined;
-    const originalAlbumIds = _filters.value?.originalAlbums?.length ? _filters.value.originalAlbums : undefined;
-    const originalTrackIds = _filters.value?.originalTracks?.length ? _filters.value.originalTracks : undefined;
+    const circleIds = _filters.value?.circles?.length
+      ? _filters.value.circles
+      : undefined;
+    const originalAlbumIds = _filters.value?.originalAlbums?.length
+      ? _filters.value.originalAlbums
+      : undefined;
+    const originalTrackIds = _filters.value?.originalTracks?.length
+      ? _filters.value.originalTracks
+      : undefined;
 
     const results = await trackApi.getRandomSampleTrack({
       releaseDateBegin: filters.value?.releaseDateBegin || undefined,
@@ -71,7 +80,7 @@ export default function useSimpleRadioService(
     _offset.value += 10;
 
     return results;
-  }
+  };
 
   const _loadMoreTracks = async () => {
     _logger.debug('Loading more tracks for radio, filters: ', filters.value);
@@ -82,7 +91,12 @@ export default function useSimpleRadioService(
 
     if (trackIds.length > 0) {
       _logger.debug(`Adding ${trackIds.length} tracks to the queue`);
-      _queueService.addTracksByIds(trackIds, QueueAddMode.APPEND_LAST, undefined, 'radio');
+      _queueService.addTracksByIds(
+        trackIds,
+        QueueAddMode.APPEND_LAST,
+        undefined,
+        'radio'
+      );
     }
   };
 
@@ -91,7 +105,8 @@ export default function useSimpleRadioService(
     if (isActive.value && _queueService.remainingTracksCount() <= 10) {
       _logger.debug('Less than 10 tracks remaining, loading more tracks');
       await _loadMoreTracks();
-    } else {
+    }
+ else {
       _logger.debug('More than 10 tracks remaining, not loading more tracks');
     }
   };
@@ -143,7 +158,8 @@ export default function useSimpleRadioService(
   const toggle = async () => {
     if (_isActive.value) {
       await deactivate();
-    } else {
+    }
+ else {
       await activate();
     }
   };

@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { KeepAlive, ref } from 'vue';
+import { ref } from 'vue';
 import NavigationRail from 'src/components/NavgationRail/NavigationRail.vue';
 import AppBar from 'src/components/AppBar.vue';
 import BottomPlayerControlBar from 'src/components/BottomPlayerControlBar/BottomPlayerControlBar.vue';

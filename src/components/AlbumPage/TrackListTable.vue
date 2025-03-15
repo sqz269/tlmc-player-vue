@@ -101,7 +101,7 @@
 import { outlinedPlayArrow } from '@quasar/extras/material-icons-outlined';
 import { AlbumReadDto, TrackReadDto } from 'app/backend-service-api';
 import { QTable, useQuasar } from 'quasar';
-import { Duration } from 'src/models/Duration';
+import { Timespan } from 'src/models/Timespan';
 import QueueService from 'src/services/domain/QueueService';
 import { inject, ref } from 'vue';
 import { QueueAddMode } from 'src/services/domain/QueueService';
@@ -173,7 +173,7 @@ const columns = [
     align: 'right',
     field: (row: TrackReadDto) => row.duration,
     format: (val: string) =>
-      `${Duration.fromDurationString(val).toDurationString()}`,
+      `${Timespan.fromDurationString(val).toDurationString()}`,
     sortable: false,
   },
 ];

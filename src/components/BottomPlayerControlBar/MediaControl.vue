@@ -70,7 +70,7 @@ import {
   outlinedSkipPrevious,
   outlinedPause,
 } from '@quasar/extras/material-icons-outlined';
-import { Duration } from 'src/models/Duration';
+import { Timespan } from 'src/models/Timespan';
 
 import AudioService from 'src/services/domain/AudioService';
 import QueueService from 'src/services/domain/QueueService';
@@ -88,13 +88,13 @@ if (queueService === undefined) {
 
 const currentTime = ref(0);
 const currentTimeString = computed(() => {
-  return Duration.fromSeconds(currentTime.value).toDurationString();
+  return Timespan.fromSeconds(currentTime.value).toDurationString();
 });
 const totalTime = computed(() => {
   return audioService.duration?.value?.toSeconds() || 0;
 });
 const totalTimeString = computed(() => {
-  return Duration.fromSeconds(totalTime.value).toDurationString();
+  return Timespan.fromSeconds(totalTime.value).toDurationString();
 });
 
 const bufferedTime = computed(() => {
@@ -121,7 +121,7 @@ const onPan = (phase: 'start' | 'end') => {
       isPanning.value = false;
 
       isUpdating.value = true;
-      audioService.seek(Duration.fromSeconds(currentTime.value)).then(() => {
+      audioService.seek(Timespan.fromSeconds(currentTime.value)).then(() => {
         isUpdating.value = false;
       });
     }
@@ -134,7 +134,7 @@ const onChange = (value: number | null) => {
   }
 
   isUpdating.value = true;
-  audioService?.seek(Duration.fromSeconds(value || 0)).then(() => {
+  audioService?.seek(Timespan.fromSeconds(value || 0)).then(() => {
     isUpdating.value = false;
   });
 };
