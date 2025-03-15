@@ -132,7 +132,8 @@ export default function useCircleInfoCardController(
       const viewModel = _circleReadDtoToViewModel(circleReadDto);
 
       viewModelController.setSuccess(viewModel);
-    } catch (e) {
+    }
+    catch (e) {
       viewModelController.setError(e as Error);
     }
   };

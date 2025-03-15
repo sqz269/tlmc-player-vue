@@ -71,8 +71,6 @@ const startRadioForCircle = () => {
 
   radioService?.activate();
 }
-
-props.controller.load(props.controller.inputModel.value)
 </script>
 
 <style scoped lang="scss">
