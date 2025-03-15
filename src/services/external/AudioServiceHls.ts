@@ -1,6 +1,6 @@
 import { DeepReadonly, readonly, ref, Ref } from 'vue';
 import Hls, { ErrorData, Events } from 'hls.js';
-import { Duration } from 'src/models/Duration';
+import { Timespan } from 'src/models/Timespan';
 import AudioService from '../domain/AudioService';
 import Logger from 'src/utils/Logger';
 
@@ -11,9 +11,9 @@ export default function useAudioServiceHls(): AudioService {
   let _hls: Hls | null;
 
   const _isPlaying: Ref = ref(false);
-  const _duration: Ref<Duration | null> = ref(null);
-  const _position: Ref<Duration | null> = ref(null);
-  const _bufferPosition: Ref<Duration | null> = ref(null);
+  const _duration: Ref<Timespan | null> = ref(null);
+  const _position: Ref<Timespan | null> = ref(null);
+  const _bufferPosition: Ref<Timespan | null> = ref(null);
 
   const _volume: Ref<number> = ref(1);
 
@@ -21,9 +21,9 @@ export default function useAudioServiceHls(): AudioService {
   const _errorStream: Ref<string | null> = ref(null);
 
   const isPlaying: DeepReadonly<Ref<boolean>> = readonly(_isPlaying);
-  const duration: DeepReadonly<Ref<Duration | null>> = readonly(_duration);
-  const position: DeepReadonly<Ref<Duration | null>> = readonly(_position);
-  const bufferPosition: DeepReadonly<Ref<Duration | null>> =
+  const duration: DeepReadonly<Ref<Timespan | null>> = readonly(_duration);
+  const position: DeepReadonly<Ref<Timespan | null>> = readonly(_position);
+  const bufferPosition: DeepReadonly<Ref<Timespan | null>> =
     readonly(_bufferPosition);
 
   const volume: DeepReadonly<Ref<number>> = readonly(_volume);
@@ -110,7 +110,7 @@ export default function useAudioServiceHls(): AudioService {
     };
 
     _audioPlayer.ontimeupdate = () => {
-      _position.value = Duration.fromSeconds(_audioPlayer!.currentTime);
+      _position.value = Timespan.fromSeconds(_audioPlayer!.currentTime);
     };
 
     _audioPlayer.onprogress = () => {
@@ -120,11 +120,11 @@ export default function useAudioServiceHls(): AudioService {
 
       const buffered = _audioPlayer.buffered;
       if (buffered.length === 0) {
-        _bufferPosition.value = Duration.zero();
+        _bufferPosition.value = Timespan.zero();
       }
 
       const bufferEnd = buffered.end(buffered.length - 1);
-      _bufferPosition.value = Duration.fromSeconds(bufferEnd);
+      _bufferPosition.value = Timespan.fromSeconds(bufferEnd);
     };
   };
 
@@ -145,7 +145,7 @@ export default function useAudioServiceHls(): AudioService {
     _logger.info('Audio service initialized');
   };
 
-  const play = async (src: string): Promise<Duration> => {
+  const play = async (src: string): Promise<Timespan> => {
     if (_audioPlayer === null || _hls === null) {
       _logger.error('Audio player is not initialized');
       throw new Error('Audio player is not initialized');
@@ -157,7 +157,7 @@ export default function useAudioServiceHls(): AudioService {
     _hls.attachMedia(_audioPlayer);
 
     await _audioPlayer.play();
-    _duration.value = Duration.fromSeconds(_audioPlayer.duration);
+    _duration.value = Timespan.fromSeconds(_audioPlayer.duration);
 
     return _duration.value;
   };
@@ -199,7 +199,7 @@ export default function useAudioServiceHls(): AudioService {
     _audioPlayer.currentTime = 0;
   };
 
-  const seek = async (position: Duration) => {
+  const seek = async (position: Timespan) => {
     if (_audioPlayer === null) {
       throw new Error('Audio player is not initialized');
     }

@@ -1,4 +1,4 @@
-import { Duration } from 'src/models/Duration';
+import { Timespan } from 'src/models/Timespan';
 import { DeepReadonly, Ref } from 'vue';
 
 export enum PlaybackEvents { }
@@ -7,9 +7,9 @@ export enum AudioEvents { }
 
 export default interface AudioService {
   isPlaying: DeepReadonly<Ref<boolean>>;
-  duration: DeepReadonly<Ref<Duration | null>>;
-  position: DeepReadonly<Ref<Duration | null>>;
-  bufferPosition: DeepReadonly<Ref<Duration | null>>;
+  duration: DeepReadonly<Ref<Timespan | null>>;
+  position: DeepReadonly<Ref<Timespan | null>>;
+  bufferPosition: DeepReadonly<Ref<Timespan | null>>;
 
   volume: DeepReadonly<Ref<number>>;
 
@@ -18,7 +18,7 @@ export default interface AudioService {
 
   initialize: () => Promise<void>;
 
-  play: (src: string) => Promise<Duration>;
+  play: (src: string) => Promise<Timespan>;
   pause: () => Promise<void>;
   togglePause: () => Promise<void>;
   resume: () => Promise<void>;
@@ -27,5 +27,5 @@ export default interface AudioService {
   setVolume: (volume: number) => Promise<void>;
   getVolume: () => Promise<number>;
 
-  seek: (position: Duration) => Promise<void>;
+  seek: (position: Timespan) => Promise<void>;
 }

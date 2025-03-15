@@ -1,4 +1,4 @@
-import { Duration } from 'src/models/Duration';
+import { Timespan } from 'src/models/Timespan';
 import AudioService from '../domain/AudioService';
 import MediaSessionService from '../domain/MediaSessionService';
 import QueueService from '../domain/QueueService';
@@ -109,7 +109,7 @@ export default function useBrowserMediaSessionService(
       // });
 
       navigator.mediaSession.setActionHandler('seekto', (details) => {
-        audioService.seek(Duration.fromSeconds(details.seekTime!));
+        audioService.seek(Timespan.fromSeconds(details.seekTime!));
       });
 
       navigator.mediaSession.setActionHandler('stop', () => {

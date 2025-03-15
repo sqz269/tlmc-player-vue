@@ -1,5 +1,5 @@
-import { ThumbnailReadDto } from "app/backend-service-api/src";
-import { Asset } from "./Asset";
+import { ThumbnailReadDto } from 'app/backend-service-api/src';
+import { Asset } from './Asset';
 
 export class Thumbnail {
   public original?: Asset;
@@ -16,7 +16,14 @@ export class Thumbnail {
     small?: Asset,
     tiny?: Asset,
     colors?: string[]
-  ) {}
+  ) {
+    this.original = original;
+    this.large = large;
+    this.medium = medium;
+    this.small = small;
+    this.tiny = tiny;
+    this.colors = colors;
+  }
 
   public static fromThumbnailReadDto(thumbnailReadDto: ThumbnailReadDto): Thumbnail {
     return new Thumbnail(

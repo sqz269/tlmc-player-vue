@@ -1,11 +1,10 @@
-import { AlbumReadDto } from "app/backend-service-api/src";
-import { Circle } from "./Circle";
-import { LocalizedEntry } from "./LocalizedEntry";
-import { Track } from "./Track";
-import { Thumbnail } from "./Thumbnail";
+import { AlbumReadDto } from 'app/backend-service-api/src';
+import { Circle } from './Circle';
+import { LocalizedEntry } from './LocalizedEntry';
+import { Track } from './Track';
+import { Thumbnail } from './Thumbnail';
 
-export class Album 
-{
+export class Album {
   public id: string;
   public name: LocalizedEntry;
   public releaseDate: Date;
@@ -55,6 +54,26 @@ export class Album
     this.childAlbums = childAlbums;
     this.parentAlbum = parentAlbum;
     this.thumbnail = thumbnail ?? new Thumbnail();
+  }
+
+  public get Thumbnails(): Thumbnail | null {
+    if (this.thumbnail) {
+      return this.thumbnail;
+    }
+
+    // check if we are a child album
+    if (this.parentAlbum && this.parentAlbum.Thumbnails) {
+      return this.parentAlbum.Thumbnails;
+    }
+
+    // check child albums
+    for (const childAlbum of this.childAlbums ?? []) {
+      if (childAlbum.Thumbnails) {
+        return childAlbum.Thumbnails;
+      }
+    }
+
+    return null;
   }
 
   public static fromAlbumReadDto(albumReadDto: AlbumReadDto): Album {
