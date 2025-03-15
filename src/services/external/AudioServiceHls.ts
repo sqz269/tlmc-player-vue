@@ -114,17 +114,21 @@ export default function useAudioServiceHls(): AudioService {
     };
 
     _audioPlayer.onprogress = () => {
-      if (_audioPlayer === null) {
-        return;
-      }
+      try {
+        if (_audioPlayer === null) {
+          return;
+        }
 
-      const buffered = _audioPlayer.buffered;
-      if (buffered.length === 0) {
-        _bufferPosition.value = Timespan.zero();
-      }
+        const buffered = _audioPlayer.buffered
+        if (buffered.length === 0) {
+          _bufferPosition.value = Timespan.zero();
+        }
 
-      const bufferEnd = buffered.end(buffered.length - 1);
-      _bufferPosition.value = Timespan.fromSeconds(bufferEnd);
+        const bufferEnd = buffered.end(buffered.length - 1);
+        _bufferPosition.value = Timespan.fromSeconds(bufferEnd);
+      } catch (error) {
+        _logger.error('Error updating buffer position', error);
+      }
     };
   };
 
