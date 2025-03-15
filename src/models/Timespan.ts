@@ -1,6 +1,6 @@
-import { TimeSpan } from 'app/backend-service-api/src';
+import { TimeSpan } from 'app/backend-service-api/src/models/TimeSpan';
 
-export class Duration {
+export class Timespan {
   private _duration: number;
 
   constructor(duration: number) {
@@ -24,30 +24,30 @@ export class Duration {
     return hours > 0 ? `${hours}:${mmss}` : mmss;
   }
 
-  public static add(a: Duration, b: Duration): Duration {
-    return new Duration(a._duration + b._duration);
+  public static add(a: Timespan, b: Timespan): Timespan {
+    return new Timespan(a._duration + b._duration);
   }
 
-  public static subtract(a: Duration, b: Duration): Duration {
-    return new Duration(a._duration - b._duration);
+  public static subtract(a: Timespan, b: Timespan): Timespan {
+    return new Timespan(a._duration - b._duration);
   }
 
-  public static zero(): Duration {
-    return new Duration(0);
+  public static zero(): Timespan {
+    return new Timespan(0);
   }
 
-  public static fromSeconds(seconds: number): Duration {
+  public static fromSeconds(seconds: number): Timespan {
     // Truncate to integer
     seconds = Math.floor(seconds);
-    return new Duration(seconds);
+    return new Timespan(seconds);
   }
 
-  public static fromDurationString(durationString: string): Duration {
+  public static fromDurationString(durationString: string): Timespan {
     const [hours, minutes, seconds] = durationString.split(':').map(Number);
-    return new Duration(hours * 3600 + minutes * 60 + seconds);
+    return new Timespan(hours * 3600 + minutes * 60 + seconds);
   }
 
-  public static fromTimespan(timespan: TimeSpan): Duration {
-    return new Duration(timespan.seconds!);
+  public static fromTimespan(timespan: TimeSpan): Timespan {
+    return new Timespan(timespan.seconds!);
   }
 }

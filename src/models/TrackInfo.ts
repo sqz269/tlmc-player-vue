@@ -1,5 +1,5 @@
 import { CircleReadDto, TrackReadDto } from 'app/backend-service-api';
-import { Duration } from './Duration';
+import { Timespan } from './Timespan';
 import { ThumbnailReadDto } from 'app/backend-service-api';
 import GlobalConfiguration from 'src/GlobalConfiguration';
 
@@ -55,7 +55,7 @@ export class TrackInfo {
     public circle: CircleInfo[],
     public albumId: string,
     public albumName: string,
-    public duration: Duration,
+    public duration: Timespan,
     public audioUrl: string,
     public thumbnails: Thumbnails | null = null
   ) { }
@@ -74,7 +74,7 @@ export class TrackInfo {
       circles,
       dto.album!.id!,
       dto.album?.name?._default || '',
-      Duration.fromTimespan(dto.duration!),
+      Timespan.fromTimespan(dto.duration!),
       audioUrl!,
       Thumbnails.fromThumbnailsDto(dto.album?.thumbnail)
     );
