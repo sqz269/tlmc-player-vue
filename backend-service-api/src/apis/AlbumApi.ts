@@ -15,20 +15,20 @@
 
 import * as runtime from '../runtime';
 import type {
-  AlbumOrderOptions,
-  AlbumReadDto,
-  AlbumsListResult,
-  SortOrder,
+  ExtAlbumOrderOptions,
+  ExtAlbumReadDto,
+  ExtAlbumsListResult,
+  ExtSortOrder,
 } from '../models/index';
 import {
-    AlbumOrderOptionsFromJSON,
-    AlbumOrderOptionsToJSON,
-    AlbumReadDtoFromJSON,
-    AlbumReadDtoToJSON,
-    AlbumsListResultFromJSON,
-    AlbumsListResultToJSON,
-    SortOrderFromJSON,
-    SortOrderToJSON,
+    ExtAlbumOrderOptionsFromJSON,
+    ExtAlbumOrderOptionsToJSON,
+    ExtAlbumReadDtoFromJSON,
+    ExtAlbumReadDtoToJSON,
+    ExtAlbumsListResultFromJSON,
+    ExtAlbumsListResultToJSON,
+    ExtSortOrderFromJSON,
+    ExtSortOrderToJSON,
 } from '../models/index';
 
 export interface GetAlbumRequest {
@@ -50,8 +50,8 @@ export interface GetAlbumFilteredRequest {
 export interface GetAlbumsRequest {
     start?: number;
     limit?: number;
-    sort?: AlbumOrderOptions;
-    sortOrder?: SortOrder;
+    sort?: ExtAlbumOrderOptions;
+    sortOrder?: ExtSortOrder;
 }
 
 export interface GetAlbumsByIdsRequest {
@@ -65,7 +65,7 @@ export class AlbumApi extends runtime.BaseAPI {
 
     /**
      */
-    async countAlbumsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AlbumReadDto>>> {
+    async countAlbumsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ExtAlbumReadDto>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -85,19 +85,19 @@ export class AlbumApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(AlbumReadDtoFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ExtAlbumReadDtoFromJSON));
     }
 
     /**
      */
-    async countAlbums(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<AlbumReadDto>> {
+    async countAlbums(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ExtAlbumReadDto>> {
         const response = await this.countAlbumsRaw(initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async getAlbumRaw(requestParameters: GetAlbumRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AlbumReadDto>> {
+    async getAlbumRaw(requestParameters: GetAlbumRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ExtAlbumReadDto>> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -124,19 +124,19 @@ export class AlbumApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => AlbumReadDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ExtAlbumReadDtoFromJSON(jsonValue));
     }
 
     /**
      */
-    async getAlbum(requestParameters: GetAlbumRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AlbumReadDto> {
+    async getAlbum(requestParameters: GetAlbumRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ExtAlbumReadDto> {
         const response = await this.getAlbumRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async getAlbumFilteredRaw(requestParameters: GetAlbumFilteredRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AlbumReadDto>>> {
+    async getAlbumFilteredRaw(requestParameters: GetAlbumFilteredRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ExtAlbumReadDto>>> {
         const queryParameters: any = {};
 
         if (requestParameters['title'] != null) {
@@ -192,19 +192,19 @@ export class AlbumApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(AlbumReadDtoFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ExtAlbumReadDtoFromJSON));
     }
 
     /**
      */
-    async getAlbumFiltered(requestParameters: GetAlbumFilteredRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<AlbumReadDto>> {
+    async getAlbumFiltered(requestParameters: GetAlbumFilteredRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ExtAlbumReadDto>> {
         const response = await this.getAlbumFilteredRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async getAlbumsRaw(requestParameters: GetAlbumsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AlbumsListResult>> {
+    async getAlbumsRaw(requestParameters: GetAlbumsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ExtAlbumsListResult>> {
         const queryParameters: any = {};
 
         if (requestParameters['start'] != null) {
@@ -240,19 +240,19 @@ export class AlbumApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => AlbumsListResultFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ExtAlbumsListResultFromJSON(jsonValue));
     }
 
     /**
      */
-    async getAlbums(requestParameters: GetAlbumsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AlbumsListResult> {
+    async getAlbums(requestParameters: GetAlbumsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ExtAlbumsListResult> {
         const response = await this.getAlbumsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async getAlbumsByIdsRaw(requestParameters: GetAlbumsByIdsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AlbumReadDto>>> {
+    async getAlbumsByIdsRaw(requestParameters: GetAlbumsByIdsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ExtAlbumReadDto>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -275,12 +275,12 @@ export class AlbumApi extends runtime.BaseAPI {
             body: requestParameters['requestBody'],
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(AlbumReadDtoFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ExtAlbumReadDtoFromJSON));
     }
 
     /**
      */
-    async getAlbumsByIds(requestParameters: GetAlbumsByIdsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<AlbumReadDto>> {
+    async getAlbumsByIds(requestParameters: GetAlbumsByIdsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ExtAlbumReadDto>> {
         const response = await this.getAlbumsByIdsRaw(requestParameters, initOverrides);
         return await response.value();
     }

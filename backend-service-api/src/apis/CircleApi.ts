@@ -15,36 +15,36 @@
 
 import * as runtime from '../runtime';
 import type {
-  AlbumOrderOptions,
-  AlbumsListResult,
-  CircleReadDto,
-  SortOrder,
+  ExtAlbumOrderOptions,
+  ExtAlbumsListResult,
+  ExtCircleReadDto,
+  ExtSortOrder,
 } from '../models/index';
 import {
-    AlbumOrderOptionsFromJSON,
-    AlbumOrderOptionsToJSON,
-    AlbumsListResultFromJSON,
-    AlbumsListResultToJSON,
-    CircleReadDtoFromJSON,
-    CircleReadDtoToJSON,
-    SortOrderFromJSON,
-    SortOrderToJSON,
+    ExtAlbumOrderOptionsFromJSON,
+    ExtAlbumOrderOptionsToJSON,
+    ExtAlbumsListResultFromJSON,
+    ExtAlbumsListResultToJSON,
+    ExtCircleReadDtoFromJSON,
+    ExtCircleReadDtoToJSON,
+    ExtSortOrderFromJSON,
+    ExtSortOrderToJSON,
 } from '../models/index';
 
 export interface GetCircleAlbumsByIdRequest {
     id: string;
     start?: number;
     limit?: number;
-    sort?: AlbumOrderOptions;
-    sortOrder?: SortOrder;
+    sort?: ExtAlbumOrderOptions;
+    sortOrder?: ExtSortOrder;
 }
 
 export interface GetCircleAlbumsByNameRequest {
     name: string;
     start?: number;
     limit?: number;
-    sort?: AlbumOrderOptions;
-    sortOrder?: SortOrder;
+    sort?: ExtAlbumOrderOptions;
+    sortOrder?: ExtSortOrder;
 }
 
 export interface GetCircleByIdRequest {
@@ -67,7 +67,7 @@ export class CircleApi extends runtime.BaseAPI {
 
     /**
      */
-    async getCircleAlbumsByIdRaw(requestParameters: GetCircleAlbumsByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AlbumsListResult>> {
+    async getCircleAlbumsByIdRaw(requestParameters: GetCircleAlbumsByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ExtAlbumsListResult>> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -110,19 +110,19 @@ export class CircleApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => AlbumsListResultFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ExtAlbumsListResultFromJSON(jsonValue));
     }
 
     /**
      */
-    async getCircleAlbumsById(requestParameters: GetCircleAlbumsByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AlbumsListResult> {
+    async getCircleAlbumsById(requestParameters: GetCircleAlbumsByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ExtAlbumsListResult> {
         const response = await this.getCircleAlbumsByIdRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async getCircleAlbumsByNameRaw(requestParameters: GetCircleAlbumsByNameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AlbumsListResult>> {
+    async getCircleAlbumsByNameRaw(requestParameters: GetCircleAlbumsByNameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ExtAlbumsListResult>> {
         if (requestParameters['name'] == null) {
             throw new runtime.RequiredError(
                 'name',
@@ -165,19 +165,19 @@ export class CircleApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => AlbumsListResultFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ExtAlbumsListResultFromJSON(jsonValue));
     }
 
     /**
      */
-    async getCircleAlbumsByName(requestParameters: GetCircleAlbumsByNameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AlbumsListResult> {
+    async getCircleAlbumsByName(requestParameters: GetCircleAlbumsByNameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ExtAlbumsListResult> {
         const response = await this.getCircleAlbumsByNameRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async getCircleByIdRaw(requestParameters: GetCircleByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CircleReadDto>> {
+    async getCircleByIdRaw(requestParameters: GetCircleByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ExtCircleReadDto>> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -204,19 +204,19 @@ export class CircleApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => CircleReadDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ExtCircleReadDtoFromJSON(jsonValue));
     }
 
     /**
      */
-    async getCircleById(requestParameters: GetCircleByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CircleReadDto> {
+    async getCircleById(requestParameters: GetCircleByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ExtCircleReadDto> {
         const response = await this.getCircleByIdRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async getCircleByNameRaw(requestParameters: GetCircleByNameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CircleReadDto>> {
+    async getCircleByNameRaw(requestParameters: GetCircleByNameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ExtCircleReadDto>> {
         if (requestParameters['name'] == null) {
             throw new runtime.RequiredError(
                 'name',
@@ -243,19 +243,19 @@ export class CircleApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => CircleReadDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ExtCircleReadDtoFromJSON(jsonValue));
     }
 
     /**
      */
-    async getCircleByName(requestParameters: GetCircleByNameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CircleReadDto> {
+    async getCircleByName(requestParameters: GetCircleByNameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ExtCircleReadDto> {
         const response = await this.getCircleByNameRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async getCirclesRaw(requestParameters: GetCirclesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<CircleReadDto>>> {
+    async getCirclesRaw(requestParameters: GetCirclesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ExtCircleReadDto>>> {
         const queryParameters: any = {};
 
         if (requestParameters['start'] != null) {
@@ -283,12 +283,12 @@ export class CircleApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(CircleReadDtoFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ExtCircleReadDtoFromJSON));
     }
 
     /**
      */
-    async getCircles(requestParameters: GetCirclesRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<CircleReadDto>> {
+    async getCircles(requestParameters: GetCirclesRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ExtCircleReadDto>> {
         const response = await this.getCirclesRaw(requestParameters, initOverrides);
         return await response.value();
     }

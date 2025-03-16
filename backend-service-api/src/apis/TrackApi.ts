@@ -15,32 +15,32 @@
 
 import * as runtime from '../runtime';
 import type {
-  LyricsReadDto,
-  SortOrder,
-  TrackGetMultipleResp,
-  TrackListResult,
-  TrackOrderOptions,
-  TrackRandomResult,
-  TrackReadDto,
-  TrackStratificationMode,
+  ExtLyricsReadDto,
+  ExtSortOrder,
+  ExtTrackGetMultipleResp,
+  ExtTrackListResult,
+  ExtTrackOrderOptions,
+  ExtTrackRandomResult,
+  ExtTrackReadDto,
+  ExtTrackStratificationMode,
 } from '../models/index';
 import {
-    LyricsReadDtoFromJSON,
-    LyricsReadDtoToJSON,
-    SortOrderFromJSON,
-    SortOrderToJSON,
-    TrackGetMultipleRespFromJSON,
-    TrackGetMultipleRespToJSON,
-    TrackListResultFromJSON,
-    TrackListResultToJSON,
-    TrackOrderOptionsFromJSON,
-    TrackOrderOptionsToJSON,
-    TrackRandomResultFromJSON,
-    TrackRandomResultToJSON,
-    TrackReadDtoFromJSON,
-    TrackReadDtoToJSON,
-    TrackStratificationModeFromJSON,
-    TrackStratificationModeToJSON,
+    ExtLyricsReadDtoFromJSON,
+    ExtLyricsReadDtoToJSON,
+    ExtSortOrderFromJSON,
+    ExtSortOrderToJSON,
+    ExtTrackGetMultipleRespFromJSON,
+    ExtTrackGetMultipleRespToJSON,
+    ExtTrackListResultFromJSON,
+    ExtTrackListResultToJSON,
+    ExtTrackOrderOptionsFromJSON,
+    ExtTrackOrderOptionsToJSON,
+    ExtTrackRandomResultFromJSON,
+    ExtTrackRandomResultToJSON,
+    ExtTrackReadDtoFromJSON,
+    ExtTrackReadDtoToJSON,
+    ExtTrackStratificationModeFromJSON,
+    ExtTrackStratificationModeToJSON,
 } from '../models/index';
 
 export interface GetLyricsRequest {
@@ -50,7 +50,7 @@ export interface GetLyricsRequest {
 export interface GetRandomSampleTrackRequest {
     start?: number;
     limit?: number;
-    stratificationMode?: TrackStratificationMode;
+    stratificationMode?: ExtTrackStratificationMode;
     releaseDateBegin?: Date;
     releaseDateEnd?: Date;
     circleIds?: Array<string>;
@@ -75,8 +75,8 @@ export interface GetTracksFilteredRequest {
     originalTrackIds?: Array<string>;
     start?: number;
     limit?: number;
-    sort?: TrackOrderOptions;
-    sortOrder?: SortOrder;
+    sort?: ExtTrackOrderOptions;
+    sortOrder?: ExtSortOrder;
 }
 
 /**
@@ -86,7 +86,7 @@ export class TrackApi extends runtime.BaseAPI {
 
     /**
      */
-    async getLyricsRaw(requestParameters: GetLyricsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<LyricsReadDto>> {
+    async getLyricsRaw(requestParameters: GetLyricsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ExtLyricsReadDto>> {
         if (requestParameters['trackId'] == null) {
             throw new runtime.RequiredError(
                 'trackId',
@@ -113,19 +113,19 @@ export class TrackApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => LyricsReadDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ExtLyricsReadDtoFromJSON(jsonValue));
     }
 
     /**
      */
-    async getLyrics(requestParameters: GetLyricsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<LyricsReadDto> {
+    async getLyrics(requestParameters: GetLyricsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ExtLyricsReadDto> {
         const response = await this.getLyricsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async getRandomSampleTrackRaw(requestParameters: GetRandomSampleTrackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TrackRandomResult>> {
+    async getRandomSampleTrackRaw(requestParameters: GetRandomSampleTrackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ExtTrackRandomResult>> {
         const queryParameters: any = {};
 
         if (requestParameters['start'] != null) {
@@ -181,19 +181,19 @@ export class TrackApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => TrackRandomResultFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ExtTrackRandomResultFromJSON(jsonValue));
     }
 
     /**
      */
-    async getRandomSampleTrack(requestParameters: GetRandomSampleTrackRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TrackRandomResult> {
+    async getRandomSampleTrack(requestParameters: GetRandomSampleTrackRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ExtTrackRandomResult> {
         const response = await this.getRandomSampleTrackRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async getTrackRaw(requestParameters: GetTrackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TrackReadDto>> {
+    async getTrackRaw(requestParameters: GetTrackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ExtTrackReadDto>> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -220,19 +220,19 @@ export class TrackApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => TrackReadDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ExtTrackReadDtoFromJSON(jsonValue));
     }
 
     /**
      */
-    async getTrack(requestParameters: GetTrackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TrackReadDto> {
+    async getTrack(requestParameters: GetTrackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ExtTrackReadDto> {
         const response = await this.getTrackRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async getTracksRaw(requestParameters: GetTracksRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TrackGetMultipleResp>> {
+    async getTracksRaw(requestParameters: GetTracksRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ExtTrackGetMultipleResp>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -255,19 +255,19 @@ export class TrackApi extends runtime.BaseAPI {
             body: requestParameters['requestBody'],
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => TrackGetMultipleRespFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ExtTrackGetMultipleRespFromJSON(jsonValue));
     }
 
     /**
      */
-    async getTracks(requestParameters: GetTracksRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TrackGetMultipleResp> {
+    async getTracks(requestParameters: GetTracksRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ExtTrackGetMultipleResp> {
         const response = await this.getTracksRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async getTracksFilteredRaw(requestParameters: GetTracksFilteredRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TrackListResult>> {
+    async getTracksFilteredRaw(requestParameters: GetTracksFilteredRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ExtTrackListResult>> {
         const queryParameters: any = {};
 
         if (requestParameters['releaseDateBegin'] != null) {
@@ -323,12 +323,12 @@ export class TrackApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => TrackListResultFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ExtTrackListResultFromJSON(jsonValue));
     }
 
     /**
      */
-    async getTracksFiltered(requestParameters: GetTracksFilteredRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TrackListResult> {
+    async getTracksFiltered(requestParameters: GetTracksFilteredRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ExtTrackListResult> {
         const response = await this.getTracksFilteredRaw(requestParameters, initOverrides);
         return await response.value();
     }

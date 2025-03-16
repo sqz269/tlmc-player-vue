@@ -1,4 +1,4 @@
-import { ThumbnailReadDto } from 'app/backend-service-api/src';
+import { ExtThumbnailReadDto } from 'app/backend-service-api/src';
 import { Asset } from './Asset';
 
 export class Thumbnail {
@@ -25,7 +25,7 @@ export class Thumbnail {
     this.colors = colors;
   }
 
-  public static fromThumbnailReadDto(thumbnailReadDto: ThumbnailReadDto): Thumbnail {
+  public static fromThumbnailReadDto(thumbnailReadDto: ExtThumbnailReadDto): Thumbnail {
     return new Thumbnail(
       thumbnailReadDto.original ? Asset.fromAssetReadDto(thumbnailReadDto.original) : undefined,
       thumbnailReadDto.large ? Asset.fromAssetReadDto(thumbnailReadDto.large) : undefined,

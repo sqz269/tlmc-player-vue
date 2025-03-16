@@ -15,11 +15,11 @@
 
 import * as runtime from '../runtime';
 import type {
-  PlaylistItemReadDto,
+  ExtPlaylistItemReadDto,
 } from '../models/index';
 import {
-    PlaylistItemReadDtoFromJSON,
-    PlaylistItemReadDtoToJSON,
+    ExtPlaylistItemReadDtoFromJSON,
+    ExtPlaylistItemReadDtoToJSON,
 } from '../models/index';
 
 export interface AddTrackToPlaylistRequest {
@@ -50,7 +50,7 @@ export class PlaylistItemsApi extends runtime.BaseAPI {
 
     /**
      */
-    async addTrackToPlaylistRaw(requestParameters: AddTrackToPlaylistRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<PlaylistItemReadDto>>> {
+    async addTrackToPlaylistRaw(requestParameters: AddTrackToPlaylistRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ExtPlaylistItemReadDto>>> {
         if (requestParameters['playlistId'] == null) {
             throw new runtime.RequiredError(
                 'playlistId',
@@ -80,12 +80,12 @@ export class PlaylistItemsApi extends runtime.BaseAPI {
             body: requestParameters['requestBody'],
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(PlaylistItemReadDtoFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ExtPlaylistItemReadDtoFromJSON));
     }
 
     /**
      */
-    async addTrackToPlaylist(requestParameters: AddTrackToPlaylistRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<PlaylistItemReadDto>> {
+    async addTrackToPlaylist(requestParameters: AddTrackToPlaylistRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ExtPlaylistItemReadDto>> {
         const response = await this.addTrackToPlaylistRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -133,7 +133,7 @@ export class PlaylistItemsApi extends runtime.BaseAPI {
 
     /**
      */
-    async getPlaylistItemsRaw(requestParameters: GetPlaylistItemsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<PlaylistItemReadDto>>> {
+    async getPlaylistItemsRaw(requestParameters: GetPlaylistItemsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ExtPlaylistItemReadDto>>> {
         if (requestParameters['playlistId'] == null) {
             throw new runtime.RequiredError(
                 'playlistId',
@@ -168,12 +168,12 @@ export class PlaylistItemsApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(PlaylistItemReadDtoFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ExtPlaylistItemReadDtoFromJSON));
     }
 
     /**
      */
-    async getPlaylistItems(requestParameters: GetPlaylistItemsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<PlaylistItemReadDto>> {
+    async getPlaylistItems(requestParameters: GetPlaylistItemsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ExtPlaylistItemReadDto>> {
         const response = await this.getPlaylistItemsRaw(requestParameters, initOverrides);
         return await response.value();
     }

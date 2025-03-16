@@ -15,24 +15,24 @@
 
 import * as runtime from '../runtime';
 import type {
-  Operation,
-  ProblemDetails,
-  UserProfileReadDto,
-  UserProfileWriteDto,
+  ExtOperation,
+  ExtProblemDetails,
+  ExtUserProfileReadDto,
+  ExtUserProfileWriteDto,
 } from '../models/index';
 import {
-    OperationFromJSON,
-    OperationToJSON,
-    ProblemDetailsFromJSON,
-    ProblemDetailsToJSON,
-    UserProfileReadDtoFromJSON,
-    UserProfileReadDtoToJSON,
-    UserProfileWriteDtoFromJSON,
-    UserProfileWriteDtoToJSON,
+    ExtOperationFromJSON,
+    ExtOperationToJSON,
+    ExtProblemDetailsFromJSON,
+    ExtProblemDetailsToJSON,
+    ExtUserProfileReadDtoFromJSON,
+    ExtUserProfileReadDtoToJSON,
+    ExtUserProfileWriteDtoFromJSON,
+    ExtUserProfileWriteDtoToJSON,
 } from '../models/index';
 
 export interface CreateUserRequest {
-    userProfileWriteDto?: UserProfileWriteDto;
+    extUserProfileWriteDto?: ExtUserProfileWriteDto;
 }
 
 export interface GetUserProfileRequest {
@@ -40,7 +40,7 @@ export interface GetUserProfileRequest {
 }
 
 export interface UpdateUserRequest {
-    operation?: Array<Operation>;
+    extOperation?: Array<ExtOperation>;
 }
 
 /**
@@ -50,7 +50,7 @@ export class UserProfileApi extends runtime.BaseAPI {
 
     /**
      */
-    async createUserRaw(requestParameters: CreateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserProfileReadDto>> {
+    async createUserRaw(requestParameters: CreateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ExtUserProfileReadDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -70,22 +70,22 @@ export class UserProfileApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: UserProfileWriteDtoToJSON(requestParameters['userProfileWriteDto']),
+            body: ExtUserProfileWriteDtoToJSON(requestParameters['extUserProfileWriteDto']),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => UserProfileReadDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ExtUserProfileReadDtoFromJSON(jsonValue));
     }
 
     /**
      */
-    async createUser(requestParameters: CreateUserRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserProfileReadDto> {
+    async createUser(requestParameters: CreateUserRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ExtUserProfileReadDto> {
         const response = await this.createUserRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async getCurrentUserProfileRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserProfileReadDto>> {
+    async getCurrentUserProfileRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ExtUserProfileReadDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -105,19 +105,19 @@ export class UserProfileApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => UserProfileReadDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ExtUserProfileReadDtoFromJSON(jsonValue));
     }
 
     /**
      */
-    async getCurrentUserProfile(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserProfileReadDto> {
+    async getCurrentUserProfile(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ExtUserProfileReadDto> {
         const response = await this.getCurrentUserProfileRaw(initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async getUserProfileRaw(requestParameters: GetUserProfileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserProfileReadDto>> {
+    async getUserProfileRaw(requestParameters: GetUserProfileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ExtUserProfileReadDto>> {
         if (requestParameters['userId'] == null) {
             throw new runtime.RequiredError(
                 'userId',
@@ -144,19 +144,19 @@ export class UserProfileApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => UserProfileReadDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ExtUserProfileReadDtoFromJSON(jsonValue));
     }
 
     /**
      */
-    async getUserProfile(requestParameters: GetUserProfileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserProfileReadDto> {
+    async getUserProfile(requestParameters: GetUserProfileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ExtUserProfileReadDto> {
         const response = await this.getUserProfileRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async updateUserRaw(requestParameters: UpdateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserProfileReadDto>> {
+    async updateUserRaw(requestParameters: UpdateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ExtUserProfileReadDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -176,15 +176,15 @@ export class UserProfileApi extends runtime.BaseAPI {
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters['operation']!.map(OperationToJSON),
+            body: requestParameters['extOperation']!.map(ExtOperationToJSON),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => UserProfileReadDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ExtUserProfileReadDtoFromJSON(jsonValue));
     }
 
     /**
      */
-    async updateUser(requestParameters: UpdateUserRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserProfileReadDto> {
+    async updateUser(requestParameters: UpdateUserRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ExtUserProfileReadDto> {
         const response = await this.updateUserRaw(requestParameters, initOverrides);
         return await response.value();
     }

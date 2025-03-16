@@ -1,6 +1,6 @@
 import {
-  CircleReadDto,
-  CircleWebsiteReadDto,
+  ExtCircleReadDto,
+  ExtCircleWebsiteReadDto,
 } from 'app/backend-service-api/src';
 import { alpha3ToAlpha2, getName } from 'i18n-iso-countries';
 import getUnicodeFlagIcon from 'country-flag-icons/unicode';
@@ -17,7 +17,7 @@ export class CircleWebsite {
   }
 
   public static fromCircleWebsiteReadDto(
-    circleWebsiteReadDto: CircleWebsiteReadDto
+    circleWebsiteReadDto: ExtCircleWebsiteReadDto
   ) {
     return new CircleWebsite(
       circleWebsiteReadDto.url!,
@@ -91,7 +91,7 @@ export class Circle {
     }
   }
 
-  public static fromCircleReadDto(circleReadDto: CircleReadDto) {
+  public static fromCircleReadDto(circleReadDto: ExtCircleReadDto) {
     return new Circle(
       circleReadDto.id!,
       circleReadDto.name!,

@@ -6,7 +6,6 @@
 
 <script setup lang="ts">
 import {
-  AlbumApi,
   Configuration,
   AlbumOrderOptions,
 } from 'app/backend-service-api';
@@ -16,9 +15,10 @@ import useAlbumListGridViewController, {
 } from 'src/components/AlbumListGridView/AlbumListGridViewController';
 import AlbumListGridViewInputModel from 'src/components/AlbumListGridView/models/AlbumListGridViewInputModel';
 import AlbumListGridViewViewModel from 'src/components/AlbumListGridView/models/AlbumListGridViewViewModel';
+import { apiDataSource } from 'src/services/_services';
 import ApiConfigurationProvider from 'src/services/domain/ApiConfigurationProvider';
 import Logger from 'src/utils/Logger';
-import { computed, inject, onActivated, onBeforeMount, onDeactivated, ref, watch } from 'vue';
+import { computed, inject, onActivated, onBeforeMount, ref, watch } from 'vue';
 import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
 
 const isActive = ref(true);
@@ -34,16 +34,7 @@ const logger = Logger.getLogger('HomePage');
 let controller: AlbumListGridViewController | null = null;
 
 const albumListGridViewLoader = async (state: AlbumListGridViewInputModel) => {
-  const albumsApi = new AlbumApi(
-    apiConfigProvider.getApiConfigurationWithAuth()
-  );
-
-  const albums = await albumsApi.getAlbums({
-    start: (state.page - 1) * 50,
-    limit: 50,
-    sortOrder: state.sortOrder,
-    sort: state.sortField,
-  });
+  const albums = await apiDataSource.getAlbums(state.page, 50, state.sortOrder, state.sortField);
 
   if (albums === undefined || albums.albums === undefined) {
     throw new Error('No albums found');

@@ -1,4 +1,4 @@
-import { OriginalTrackReadDto } from 'app/backend-service-api/src';
+import { ExtOriginalTrackReadDto } from 'app/backend-service-api/src';
 import { LocalizedEntry } from './LocalizedEntry';
 import { OriginalAlbum } from './OrigianlAlbum';
 
@@ -14,7 +14,7 @@ export class OriginalTrack {
   }
 
   public static fromOriginalTrackReadDto(
-    originalTrackReadDto: OriginalTrackReadDto
+    originalTrackReadDto: ExtOriginalTrackReadDto
   ) {
     return new OriginalTrack(
       originalTrackReadDto.id!,

@@ -1,4 +1,4 @@
-import { AssetReadDto } from 'app/backend-service-api/src';
+import { ExtAssetReadDto } from 'app/backend-service-api/src';
 
 export class Asset {
   public id: string;
@@ -21,7 +21,7 @@ export class Asset {
     this.url = url;
   }
 
-  public static fromAssetReadDto(assetReadDto: AssetReadDto) {
+  public static fromAssetReadDto(assetReadDto: ExtAssetReadDto) {
     return new Asset(
       assetReadDto.id!,
       assetReadDto.name!,

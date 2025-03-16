@@ -1,22 +1,21 @@
-import { AlbumApi, CircleApi, Configuration, TrackApi } from 'app/backend-service-api/src';
-import { Album } from 'src/models/domain/Album';
+import { AlbumApi, CircleApi, Configuration, TrackApi } from 'app/backend-service-api';
+import { Album, AlbumOrderOptions, SortOrder } from 'src/models/domain/Album';
 import { Circle } from 'src/models/domain/Circle';
+import { Track } from 'src/models/domain/Track';
+import { DataSource } from '../domain/DataSource';
+import ApiConfigurationProvider from '../domain/ApiConfigurationProvider';
 
-export class APIDataSource {
-  public configuration: Configuration;
-  public circleApi: CircleApi;
-  public albumApi: AlbumApi;
-  public trackApi: TrackApi;
+export class APIDataSource implements DataSource {
+  public configurationProvider: ApiConfigurationProvider<Configuration>;
 
-  constructor(configuration: Configuration) {
-    this.configuration = configuration;
-    this.circleApi = new CircleApi(configuration);
-    this.albumApi = new AlbumApi(configuration);
-    this.trackApi = new TrackApi(configuration);
+  constructor(configurationProvider: ApiConfigurationProvider<Configuration>) {
+    this.configurationProvider = configurationProvider;
   }
 
   public async getCircle(circleId: string): Promise<Circle> {
-    const circle = await this.circleApi.getCircleById({
+    const circleApi = new CircleApi(this.configurationProvider.getApiConfiguration());
+
+    const circle = await circleApi.getCircleById({
       id: circleId,
     });
 
@@ -24,16 +23,45 @@ export class APIDataSource {
   }
 
   public async getAlbum(albumId: string): Promise<Album> {
-    const album = await this.albumApi.getAlbum({
+    const albumApi = new AlbumApi(this.configurationProvider.getApiConfiguration());
+
+    const album = await albumApi.getAlbum({
       id: albumId,
     });
 
     return Album.fromAlbumReadDto(album);
   }
-}
 
-export class APIDataSourceFactory {
-  public static create(configuration: Configuration): APIDataSource {
-    return new APIDataSource(configuration);
+  public async getAlbums(page: number, limit: number, sortOrder: SortOrder, sortField: AlbumOrderOptions): Promise<{
+    total: number;
+    albums: Album[];
+    currentPage: number;
+    totalPages: number;
+  }> {
+    const albumApi = new AlbumApi(this.configurationProvider.getApiConfiguration());
+
+    const albums = await albumApi.getAlbums({
+      start: page,
+      limit,
+      sortOrder,
+      sort: sortField,
+    });
+
+    return {
+      total: albums.total || 0,
+      albums: albums.albums?.map(Album.fromAlbumReadDto) || [],
+      currentPage: page,
+      totalPages: Math.ceil((albums.total || 0) / limit),
+    };
+  }
+
+  public async getTrack(trackId: string): Promise<Track> {
+    const trackApi = new TrackApi(this.configurationProvider.getApiConfiguration());
+
+    const track = await trackApi.getTrack({
+      id: trackId,
+    });
+
+    return Track.fromTrackReadDto(track);
   }
 }

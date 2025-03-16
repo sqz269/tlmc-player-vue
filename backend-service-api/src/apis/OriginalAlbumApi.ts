@@ -15,35 +15,35 @@
 
 import * as runtime from '../runtime';
 import type {
-  OriginalAlbumReadDto,
-  OriginalAlbumReadDtoActionResult,
-  OriginalAlbumWriteDto,
-  OriginalTrackReadDto,
-  OriginalTrackReadDtoActionResult,
-  OriginalTrackWriteDto,
+  ExtOriginalAlbumReadDto,
+  ExtOriginalAlbumReadDtoActionResult,
+  ExtOriginalAlbumWriteDto,
+  ExtOriginalTrackReadDto,
+  ExtOriginalTrackReadDtoActionResult,
+  ExtOriginalTrackWriteDto,
 } from '../models/index';
 import {
-    OriginalAlbumReadDtoFromJSON,
-    OriginalAlbumReadDtoToJSON,
-    OriginalAlbumReadDtoActionResultFromJSON,
-    OriginalAlbumReadDtoActionResultToJSON,
-    OriginalAlbumWriteDtoFromJSON,
-    OriginalAlbumWriteDtoToJSON,
-    OriginalTrackReadDtoFromJSON,
-    OriginalTrackReadDtoToJSON,
-    OriginalTrackReadDtoActionResultFromJSON,
-    OriginalTrackReadDtoActionResultToJSON,
-    OriginalTrackWriteDtoFromJSON,
-    OriginalTrackWriteDtoToJSON,
+    ExtOriginalAlbumReadDtoFromJSON,
+    ExtOriginalAlbumReadDtoToJSON,
+    ExtOriginalAlbumReadDtoActionResultFromJSON,
+    ExtOriginalAlbumReadDtoActionResultToJSON,
+    ExtOriginalAlbumWriteDtoFromJSON,
+    ExtOriginalAlbumWriteDtoToJSON,
+    ExtOriginalTrackReadDtoFromJSON,
+    ExtOriginalTrackReadDtoToJSON,
+    ExtOriginalTrackReadDtoActionResultFromJSON,
+    ExtOriginalTrackReadDtoActionResultToJSON,
+    ExtOriginalTrackWriteDtoFromJSON,
+    ExtOriginalTrackWriteDtoToJSON,
 } from '../models/index';
 
 export interface AddOriginalAlbumRequest {
-    originalAlbumWriteDto?: OriginalAlbumWriteDto;
+    extOriginalAlbumWriteDto?: ExtOriginalAlbumWriteDto;
 }
 
 export interface AddOriginalTrackRequest {
     albumId: string;
-    originalTrackWriteDto?: OriginalTrackWriteDto;
+    extOriginalTrackWriteDto?: ExtOriginalTrackWriteDto;
 }
 
 export interface GetOriginalAlbumRequest {
@@ -71,7 +71,7 @@ export class OriginalAlbumApi extends runtime.BaseAPI {
 
     /**
      */
-    async addOriginalAlbumRaw(requestParameters: AddOriginalAlbumRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<OriginalAlbumReadDtoActionResult>> {
+    async addOriginalAlbumRaw(requestParameters: AddOriginalAlbumRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ExtOriginalAlbumReadDtoActionResult>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -91,22 +91,22 @@ export class OriginalAlbumApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: OriginalAlbumWriteDtoToJSON(requestParameters['originalAlbumWriteDto']),
+            body: ExtOriginalAlbumWriteDtoToJSON(requestParameters['extOriginalAlbumWriteDto']),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => OriginalAlbumReadDtoActionResultFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ExtOriginalAlbumReadDtoActionResultFromJSON(jsonValue));
     }
 
     /**
      */
-    async addOriginalAlbum(requestParameters: AddOriginalAlbumRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<OriginalAlbumReadDtoActionResult> {
+    async addOriginalAlbum(requestParameters: AddOriginalAlbumRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ExtOriginalAlbumReadDtoActionResult> {
         const response = await this.addOriginalAlbumRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async addOriginalTrackRaw(requestParameters: AddOriginalTrackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<OriginalTrackReadDtoActionResult>> {
+    async addOriginalTrackRaw(requestParameters: AddOriginalTrackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ExtOriginalTrackReadDtoActionResult>> {
         if (requestParameters['albumId'] == null) {
             throw new runtime.RequiredError(
                 'albumId',
@@ -133,22 +133,22 @@ export class OriginalAlbumApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: OriginalTrackWriteDtoToJSON(requestParameters['originalTrackWriteDto']),
+            body: ExtOriginalTrackWriteDtoToJSON(requestParameters['extOriginalTrackWriteDto']),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => OriginalTrackReadDtoActionResultFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ExtOriginalTrackReadDtoActionResultFromJSON(jsonValue));
     }
 
     /**
      */
-    async addOriginalTrack(requestParameters: AddOriginalTrackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<OriginalTrackReadDtoActionResult> {
+    async addOriginalTrack(requestParameters: AddOriginalTrackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ExtOriginalTrackReadDtoActionResult> {
         const response = await this.addOriginalTrackRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async getOriginalAlbumRaw(requestParameters: GetOriginalAlbumRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<OriginalAlbumReadDto>> {
+    async getOriginalAlbumRaw(requestParameters: GetOriginalAlbumRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ExtOriginalAlbumReadDto>> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -175,19 +175,19 @@ export class OriginalAlbumApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => OriginalAlbumReadDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ExtOriginalAlbumReadDtoFromJSON(jsonValue));
     }
 
     /**
      */
-    async getOriginalAlbum(requestParameters: GetOriginalAlbumRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<OriginalAlbumReadDto> {
+    async getOriginalAlbum(requestParameters: GetOriginalAlbumRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ExtOriginalAlbumReadDto> {
         const response = await this.getOriginalAlbumRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async getOriginalAlbumsRaw(requestParameters: GetOriginalAlbumsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<OriginalAlbumReadDto>>> {
+    async getOriginalAlbumsRaw(requestParameters: GetOriginalAlbumsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ExtOriginalAlbumReadDto>>> {
         const queryParameters: any = {};
 
         if (requestParameters['start'] != null) {
@@ -215,19 +215,19 @@ export class OriginalAlbumApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(OriginalAlbumReadDtoFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ExtOriginalAlbumReadDtoFromJSON));
     }
 
     /**
      */
-    async getOriginalAlbums(requestParameters: GetOriginalAlbumsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<OriginalAlbumReadDto>> {
+    async getOriginalAlbums(requestParameters: GetOriginalAlbumsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ExtOriginalAlbumReadDto>> {
         const response = await this.getOriginalAlbumsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async getOriginalTrackRaw(requestParameters: GetOriginalTrackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<OriginalTrackReadDto>> {
+    async getOriginalTrackRaw(requestParameters: GetOriginalTrackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ExtOriginalTrackReadDto>> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
@@ -254,19 +254,19 @@ export class OriginalAlbumApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => OriginalTrackReadDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ExtOriginalTrackReadDtoFromJSON(jsonValue));
     }
 
     /**
      */
-    async getOriginalTrack(requestParameters: GetOriginalTrackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<OriginalTrackReadDto> {
+    async getOriginalTrack(requestParameters: GetOriginalTrackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ExtOriginalTrackReadDto> {
         const response = await this.getOriginalTrackRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async getOriginalTracksRaw(requestParameters: GetOriginalTracksRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<OriginalTrackReadDto>>> {
+    async getOriginalTracksRaw(requestParameters: GetOriginalTracksRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ExtOriginalTrackReadDto>>> {
         const queryParameters: any = {};
 
         if (requestParameters['start'] != null) {
@@ -294,12 +294,12 @@ export class OriginalAlbumApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(OriginalTrackReadDtoFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ExtOriginalTrackReadDtoFromJSON));
     }
 
     /**
      */
-    async getOriginalTracks(requestParameters: GetOriginalTracksRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<OriginalTrackReadDto>> {
+    async getOriginalTracks(requestParameters: GetOriginalTracksRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ExtOriginalTrackReadDto>> {
         const response = await this.getOriginalTracksRaw(requestParameters, initOverrides);
         return await response.value();
     }

@@ -1,4 +1,4 @@
-import { OriginalAlbumReadDto } from 'app/backend-service-api/src';
+import { ExtOriginalAlbumReadDto } from 'app/backend-service-api/src';
 import { LocalizedEntry } from './LocalizedEntry';
 
 export class OriginalAlbum {
@@ -20,7 +20,7 @@ export class OriginalAlbum {
   }
 
   public static fromOriginalAlbumReadDto(
-    originalAlbumReadDto: OriginalAlbumReadDto
+    originalAlbumReadDto: ExtOriginalAlbumReadDto
   ) {
     return new OriginalAlbum(
       originalAlbumReadDto.id!,

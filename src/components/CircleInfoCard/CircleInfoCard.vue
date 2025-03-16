@@ -56,6 +56,7 @@ import { UrlUtils } from 'src/utils/UrlUtils';
 import RadioService from 'src/services/domain/RadioService';
 import { inject } from 'vue';
 import DataSourceButton from 'src/components/DataSourceBtn/DataSourceButton.vue';
+import { useQuery } from '@tanstack/vue-query';
 
 const props = defineProps<{
   controller: CircleInfoCardController;
@@ -71,6 +72,11 @@ const startRadioForCircle = () => {
 
   radioService?.activate();
 }
+
+const queryResult = useQuery({
+  queryKey: ['circleInfo', props.controller.inputModel.value.circleId],
+  queryFn: () => props.controller.load(props.controller.inputModel.value),
+});
 </script>
 
 <style scoped lang="scss">

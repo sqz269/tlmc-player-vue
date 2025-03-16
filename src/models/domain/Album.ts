@@ -1,8 +1,19 @@
-import { AlbumReadDto } from 'app/backend-service-api/src';
+import { ExtAlbumReadDto } from 'app/backend-service-api/src';
 import { Circle } from './Circle';
 import { LocalizedEntry } from './LocalizedEntry';
 import { Track } from './Track';
 import { Thumbnail } from './Thumbnail';
+
+export enum AlbumOrderOptions {
+  Id = 'Id',
+  Date = 'Date',
+  Title = 'Title',
+}
+
+export enum SortOrder {
+  Ascending = 'Ascending',
+  Descending = 'Descending',
+}
 
 export class Album {
   public id: string;
@@ -76,7 +87,7 @@ export class Album {
     return null;
   }
 
-  public static fromAlbumReadDto(albumReadDto: AlbumReadDto): Album {
+  public static fromAlbumReadDto(albumReadDto: ExtAlbumReadDto): Album {
     return new Album(
       albumReadDto.id!,
       LocalizedEntry.fromLocalizedField(albumReadDto.name!),

@@ -15,93 +15,93 @@
 
 import * as runtime from '../runtime';
 import type {
-  AlbumWriteDto,
-  Asset,
-  CircleWriteDto,
-  HlsPlaylistWriteDto,
-  HlsSegmentWriteDto,
-  Lyrics,
-  Operation,
-  TrackUpdateDto,
-  TrackWriteDto,
+  ExtAlbumWriteDto,
+  ExtAsset,
+  ExtCircleWriteDto,
+  ExtHlsPlaylistWriteDto,
+  ExtHlsSegmentWriteDto,
+  ExtLyrics,
+  ExtOperation,
+  ExtTrackUpdateDto,
+  ExtTrackWriteDto,
 } from '../models/index';
 import {
-    AlbumWriteDtoFromJSON,
-    AlbumWriteDtoToJSON,
-    AssetFromJSON,
-    AssetToJSON,
-    CircleWriteDtoFromJSON,
-    CircleWriteDtoToJSON,
-    HlsPlaylistWriteDtoFromJSON,
-    HlsPlaylistWriteDtoToJSON,
-    HlsSegmentWriteDtoFromJSON,
-    HlsSegmentWriteDtoToJSON,
-    LyricsFromJSON,
-    LyricsToJSON,
-    OperationFromJSON,
-    OperationToJSON,
-    TrackUpdateDtoFromJSON,
-    TrackUpdateDtoToJSON,
-    TrackWriteDtoFromJSON,
-    TrackWriteDtoToJSON,
+    ExtAlbumWriteDtoFromJSON,
+    ExtAlbumWriteDtoToJSON,
+    ExtAssetFromJSON,
+    ExtAssetToJSON,
+    ExtCircleWriteDtoFromJSON,
+    ExtCircleWriteDtoToJSON,
+    ExtHlsPlaylistWriteDtoFromJSON,
+    ExtHlsPlaylistWriteDtoToJSON,
+    ExtHlsSegmentWriteDtoFromJSON,
+    ExtHlsSegmentWriteDtoToJSON,
+    ExtLyricsFromJSON,
+    ExtLyricsToJSON,
+    ExtOperationFromJSON,
+    ExtOperationToJSON,
+    ExtTrackUpdateDtoFromJSON,
+    ExtTrackUpdateDtoToJSON,
+    ExtTrackWriteDtoFromJSON,
+    ExtTrackWriteDtoToJSON,
 } from '../models/index';
 
 export interface INTERNALAddAlbumRequest {
     albumId: string;
     parentId?: string;
-    albumWriteDto?: AlbumWriteDto;
+    extAlbumWriteDto?: ExtAlbumWriteDto;
 }
 
 export interface INTERNALAddAssetUncheckedRequest {
-    asset?: Asset;
+    extAsset?: ExtAsset;
 }
 
 export interface INTERNALAddCircleRequest {
     id: string;
-    circleWriteDto?: CircleWriteDto;
+    extCircleWriteDto?: ExtCircleWriteDto;
 }
 
 export interface INTERNALAddHlsFilePlaylistRequest {
     trackId: string;
-    hlsPlaylistWriteDto?: HlsPlaylistWriteDto;
+    extHlsPlaylistWriteDto?: ExtHlsPlaylistWriteDto;
 }
 
 export interface INTERNALAddHlsFileSegmentRequest {
     trackId: string;
     quality?: number;
-    hlsSegmentWriteDto?: HlsSegmentWriteDto;
+    extHlsSegmentWriteDto?: ExtHlsSegmentWriteDto;
 }
 
 export interface INTERNALAddLyricsRequest {
     trackId: string;
     lyricsId: string;
-    lyrics?: Lyrics;
+    extLyrics?: ExtLyrics;
 }
 
 export interface INTERNALAddTrackRequest {
     albumId: string;
     trackId: string;
-    trackWriteDto?: TrackWriteDto;
+    extTrackWriteDto?: ExtTrackWriteDto;
 }
 
 export interface INTERNALPATCHUpdateTrackRequest {
     trackId: string;
-    operation?: Array<Operation>;
+    extOperation?: Array<ExtOperation>;
 }
 
 export interface INTERNALUpdateAlbumRequest {
     albumId: string;
-    operation?: Array<Operation>;
+    extOperation?: Array<ExtOperation>;
 }
 
 export interface INTERNALUpdateCircleRequest {
     id: string;
-    operation?: Array<Operation>;
+    extOperation?: Array<ExtOperation>;
 }
 
 export interface INTERNALUpdateTrackRequest {
     trackId: string;
-    trackUpdateDto?: TrackUpdateDto;
+    extTrackUpdateDto?: ExtTrackUpdateDto;
 }
 
 /**
@@ -142,7 +142,7 @@ export class InternalApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: AlbumWriteDtoToJSON(requestParameters['albumWriteDto']),
+            body: ExtAlbumWriteDtoToJSON(requestParameters['extAlbumWriteDto']),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
@@ -176,7 +176,7 @@ export class InternalApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: AssetToJSON(requestParameters['asset']),
+            body: ExtAssetToJSON(requestParameters['extAsset']),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
@@ -217,7 +217,7 @@ export class InternalApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: CircleWriteDtoToJSON(requestParameters['circleWriteDto']),
+            body: ExtCircleWriteDtoToJSON(requestParameters['extCircleWriteDto']),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
@@ -258,7 +258,7 @@ export class InternalApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: HlsPlaylistWriteDtoToJSON(requestParameters['hlsPlaylistWriteDto']),
+            body: ExtHlsPlaylistWriteDtoToJSON(requestParameters['extHlsPlaylistWriteDto']),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
@@ -303,7 +303,7 @@ export class InternalApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: HlsSegmentWriteDtoToJSON(requestParameters['hlsSegmentWriteDto']),
+            body: ExtHlsSegmentWriteDtoToJSON(requestParameters['extHlsSegmentWriteDto']),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
@@ -351,7 +351,7 @@ export class InternalApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: LyricsToJSON(requestParameters['lyrics']),
+            body: ExtLyricsToJSON(requestParameters['extLyrics']),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
@@ -399,7 +399,7 @@ export class InternalApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: TrackWriteDtoToJSON(requestParameters['trackWriteDto']),
+            body: ExtTrackWriteDtoToJSON(requestParameters['extTrackWriteDto']),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
@@ -440,7 +440,7 @@ export class InternalApi extends runtime.BaseAPI {
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters['operation']!.map(OperationToJSON),
+            body: requestParameters['extOperation']!.map(ExtOperationToJSON),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
@@ -481,7 +481,7 @@ export class InternalApi extends runtime.BaseAPI {
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters['operation']!.map(OperationToJSON),
+            body: requestParameters['extOperation']!.map(ExtOperationToJSON),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
@@ -522,7 +522,7 @@ export class InternalApi extends runtime.BaseAPI {
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters['operation']!.map(OperationToJSON),
+            body: requestParameters['extOperation']!.map(ExtOperationToJSON),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
@@ -563,7 +563,7 @@ export class InternalApi extends runtime.BaseAPI {
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: TrackUpdateDtoToJSON(requestParameters['trackUpdateDto']),
+            body: ExtTrackUpdateDtoToJSON(requestParameters['extTrackUpdateDto']),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);

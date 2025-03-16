@@ -1,4 +1,4 @@
-import { TrackReadDto } from 'app/backend-service-api/src';
+import { ExtTrackReadDto } from 'app/backend-service-api/src';
 import { Timespan } from '../Timespan';
 import { Album } from './Album';
 import { LocalizedEntry } from './LocalizedEntry';
@@ -66,7 +66,7 @@ export class Track {
     return GlobalConfiguration.TRACK_ASSET_BASE_URL.replace('{id}', this.id);
   }
 
-  public static fromTrackReadDto(trackReadDto: TrackReadDto) {
+  public static fromTrackReadDto(trackReadDto: ExtTrackReadDto) {
     return new Track(
       trackReadDto.id!,
       LocalizedEntry.fromLocalizedField(trackReadDto.name!),

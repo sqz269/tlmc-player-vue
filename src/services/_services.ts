@@ -10,6 +10,7 @@ import useNaiveQueueService from './external/NaiveQueueService';
 import useOpenApiConfigurationProvider from './external/OpenApiConfigurationProvider';
 import useSimpleRadioService from './external/SimpleRadioService';
 import useBasicUserHistoryTrackingService from './external/BasicUserHistoryTrackingService';
+import { APIDataSource } from './external/APIDataSource';
 
 const audioService: AudioService = useAudioServiceHls();
 const authService = useKeycloakAuthenticationService();
@@ -43,6 +44,8 @@ const globalStaticDataProvider = useApiGlobalStaticDataProvider(
 );
 
 const historyTrackingService = useBasicUserHistoryTrackingService();
+
+const apiDataSource = new APIDataSource(apiConfigurationProvider);
 
 const initialize = async () => {
   authService
@@ -104,6 +107,6 @@ export {
   radioService,
   mediaSessionService,
   globalStaticDataProvider as staticStatsProvider,
-
+  apiDataSource,
   initialize,
 }

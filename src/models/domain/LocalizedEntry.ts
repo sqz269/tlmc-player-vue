@@ -1,4 +1,4 @@
-import { LocalizedField } from 'app/backend-service-api/src';
+import { ExtLocalizedField } from 'app/backend-service-api/src';
 
 export class LocalizedEntry {
   private static globalDefaultLanguage = 'jp';
@@ -31,7 +31,7 @@ export class LocalizedEntry {
   }
 
   public static fromLocalizedField(
-    localizedField: LocalizedField,
+    localizedField: ExtLocalizedField,
     defaultLanguage?: string
   ) {
     const languages = new Map<string, string>();

@@ -11,9 +11,10 @@
     "test": "echo \"No test specified\" && exit 0",
     "dev": "quasar dev",
     "build": "quasar build",
-    "gen-client": "openapi-generator-cli.cmd generate -i https://staging-api.marisad.me/swagger/v1/swagger.json -o backend-service-api -g typescript-fetch --additional-properties=npmName=backend-api-client --additional-properties=npmVersion=1.0.0 --additional-properties=supportsES6=true"
+    "gen-client": "openapi-generator-cli.cmd generate -i https://staging-api.marisad.me/swagger/v1/swagger.json -o backend-service-api --model-name-prefix Ext -g typescript-fetch --additional-properties=npmName=backend-api-client --additional-properties=npmVersion=1.0.0 --additional-properties=supportsES6=true"
   },
   "dependencies": {
+    "@openapitools/openapi-generator-cli": "^2.4.19",
     "@quasar/extras": "^1.16.17",
     "@tanstack/vue-query": "^5.68.0",
     "@tanstack/vue-query-devtools": "^5.68.0",
