@@ -18,8 +18,8 @@
           :columns="tableColumns"
           class="bg-transparent"
           row-key="id"
+          :rows-per-page-options="[10, 20, 50, 100]"
           flat
-          hide-bottom
         >
           <template v-slot:body="props">
             <q-tr :props="props">
@@ -135,7 +135,11 @@ interface AlbumAssetsViewerDialogProps {
 const props = defineProps<AlbumAssetsViewerDialogProps>();
 
 const albumAssets = computed(() => {
-  return props.album.otherFiles!;
+  return props.album.otherFiles!.sort((a, b) => {
+    if (!a.name) return 1;
+    if (!b.name) return -1;
+    return a.name.localeCompare(b.name);
+  });
 });
 
 const previewAsset = (asset: AssetReadDto) => {
