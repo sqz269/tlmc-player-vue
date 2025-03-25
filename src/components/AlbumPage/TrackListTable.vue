@@ -52,8 +52,19 @@
         <template v-slot:body-cell-title="props">
           <q-td :props="props">
             <div class="flex row items-center text-subtitle1 text-bold">
-              <div class="underline-on-hover pointer-on-hover">
-                {{ props.value }}
+              <div class="col-12 underline-on-hover pointer-on-hover flex justify-between content-center">
+                {{ props.value.name._default }}
+                <q-btn
+                  v-if="props.value.hasLyrics"
+                  round
+                  flat
+                  dense
+                  size="13px"
+                  class="q-ml-sm"
+                  :icon="outlinedLyrics"
+                  color="primary"
+                  @click="showLyrics(props.key)"
+                ></q-btn>
               </div>
             </div>
           </q-td>
@@ -76,7 +87,7 @@
         <template v-slot:body-cell="props">
           <q-td :props="props">
             {{
-              props.value
+  props.value
             }}
           </q-td>
           <TrackMenu :options="trackMenuOptionsCreator(props.row, disc)"></TrackMenu>
@@ -89,20 +100,25 @@
 <script setup lang="ts">
 import { outlinedPlayArrow } from '@quasar/extras/material-icons-outlined';
 import { AlbumReadDto, TrackReadDto } from 'app/backend-service-api';
-import { QTable } from 'quasar';
+import { QTable, useQuasar } from 'quasar';
 import { Duration } from 'src/models/Duration';
 import QueueService from 'src/services/domain/QueueService';
-import { inject, ref, TrackOpTypes } from 'vue';
+import { inject, ref } from 'vue';
 import { QueueAddMode } from 'src/services/domain/QueueService';
 import { useRouter } from 'vue-router';
 import TrackMenu from '../MenuOptions/TrackMenuOptionsBuilder/TrackMenu.vue';
 import TrackMenuOptionsBuilder from '../MenuOptions/TrackMenuOptionsBuilder/TrackMenuOptionBuilder';
+import {
+  outlinedLyrics
+} from '@quasar/extras/material-icons-outlined';
+import LyricsViewDialog from '../Dialogs/LyricsViewDialog.vue';
 
 interface TrackListTableProps {
   tracks: Map<AlbumReadDto, TrackReadDto[]>;
 }
 
 // Injected services/data
+const $q = useQuasar();
 const $router = useRouter();
 const queueService = inject<QueueService>('queueService');
 
@@ -137,8 +153,7 @@ const columns = [
     required: true,
     label: 'TITLE',
     align: 'left',
-    field: (row: TrackReadDto) => row.name?._default,
-    format: (val: number) => `${val}`,
+    field: (row: TrackReadDto) => row,
     classes: 'text-h4',
     sortable: false,
   },
@@ -170,5 +185,17 @@ const goToOriginalTrackPage = (originalTrackId: string) => {
     name: 'OriginalTrack',
     params: { originalId: originalTrackId, page: 1 },
   });
+};
+
+const showLyrics = (trackId: string) => {
+  console.log(trackId);
+  $q.dialog(
+    {
+      component: LyricsViewDialog,
+      componentProps: {
+        trackId,
+      }
+    }
+  );
 };
 </script>

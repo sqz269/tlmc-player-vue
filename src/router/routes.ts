@@ -11,6 +11,11 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/QueuePage.vue'),
       },
       {
+        path: 'lyrics',
+        name: 'Lyrics',
+        component: () => import('pages/LyricsPage.vue'),
+      },
+      {
         path: '',
         redirect: () => {
           return { name: 'Home', params: { page: 1 } };
