@@ -4,7 +4,7 @@ import { LocalizedEntry } from './LocalizedEntry';
 import { Track } from './Track';
 import { Thumbnail } from './Thumbnail';
 
-export enum AlbumOrderOptions {
+export enum AlbumSortField {
   Id = 'Id',
   Date = 'Date',
   Title = 'Title',

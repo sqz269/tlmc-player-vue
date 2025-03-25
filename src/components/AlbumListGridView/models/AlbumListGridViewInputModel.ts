@@ -1,7 +1,6 @@
-import { AlbumOrderOptions, SortOrder } from 'app/backend-service-api';
-
+import { AlbumSortField, SortOrder } from 'src/models/domain/Album';
 export default interface AlbumListGridViewInputModel {
   page: number;
   sortOrder: SortOrder;
-  sortField: AlbumOrderOptions;
+  sortField: AlbumSortField;
 }
