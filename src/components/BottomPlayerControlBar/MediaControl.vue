@@ -98,6 +98,10 @@ const totalTimeString = computed(() => {
 });
 
 const bufferedTime = computed(() => {
+  if (isPanning.value) {
+    return totalTime.value;
+  }
+
   return audioService.bufferPosition?.value?.toSeconds() || 0;
 });
 

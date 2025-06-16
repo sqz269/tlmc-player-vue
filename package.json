@@ -14,7 +14,7 @@
     "gen-client": "openapi-generator-cli.cmd generate -i https://staging-api.marisad.me/swagger/v1/swagger.json -o backend-service-api -g typescript-fetch --additional-properties=npmName=backend-api-client --additional-properties=npmVersion=1.0.0 --additional-properties=supportsES6=true"
   },
   "dependencies": {
-    "@quasar/extras": "^1.16.15",
+    "@quasar/extras": "^1.17.0",
     "@types/lodash": "^4.17.0",
     "backend-api-client": "file:backend-service-api",
     "country-flag-icons": "^1.5.12",
@@ -25,7 +25,7 @@
     "lodash": "^4.17.21",
     "pinia": "^2.0.11",
     "pino": "^8.19.0",
-    "quasar": "^2.17.5",
+    "quasar": "^2.18.1",
     "vue": "^3.2.29",
     "vue-router": "^4.0.12"
   },
