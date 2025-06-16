@@ -32,7 +32,7 @@
 
 
 /*!
- * * Quasar Framework v2.17.5
+ * * Quasar Framework v2.18.1
  * * (c) 2015-present Razvan Stoenescu
  * * Released under the MIT License.
  * */
@@ -1078,15 +1078,18 @@ body.desktop .q-checkbox--dense:not(.disabled):focus .q-checkbox__inner:before, 
 .q-chip--colored .q-chip__icon, .q-chip--dark .q-chip__icon {
   color: inherit;
 }
-.q-chip--outline {
-  background: transparent !important;
-  border: 1px solid currentColor;
-}
 .q-chip .q-avatar {
   font-size: 2em;
   margin-left: -0.45em;
   margin-right: 0.2em;
   border-radius: 16px;
+}
+.q-chip--outline {
+  background: transparent !important;
+  border: 1px solid currentColor;
+}
+.q-chip--outline .q-avatar {
+  margin-left: calc(-0.45em - 1px);
 }
 .q-chip--selected .q-avatar {
   display: none;
@@ -3280,7 +3283,7 @@ body.desktop .q-radio--dense:not(.disabled):focus .q-radio__inner:before, body.d
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   position: relative;
   opacity: 0.4;
-  transition: transform 0.2s ease-in, opacity 0.2s ease-in;
+  transition: transform 0.2s ease-in, opacity 0.2s ease-in, color 0.2s ease-in;
 }
 .q-rating__icon--hovered {
   transform: scale(1.3);
