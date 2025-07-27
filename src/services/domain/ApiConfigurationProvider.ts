@@ -1,4 +1,4 @@
-import AuthenticationService from './AuthenticationService';
+import type AuthenticationService from './AuthenticationService';
 
 export default interface ApiConfigurationProvider<T> {
   initialize(

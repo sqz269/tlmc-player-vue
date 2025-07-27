@@ -160,14 +160,16 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ComputedRef, inject, onBeforeMount, ref, watch } from 'vue';
-import PlaylistService from 'src/services/domain/PlaylistService';
+import type { ComputedRef} from 'vue';
+import { computed, inject, onBeforeMount, ref, watch } from 'vue';
+import type PlaylistService from 'src/services/domain/PlaylistService';
 import { useRouter } from 'vue-router';
 import { TrackReadDto, PlaylistReadDto, Configuration, AlbumApi, PlaylistVisibility } from 'app/backend-service-api';
 import { useLoadableController } from 'src/utils/Loadable/LoadableController';
 import LoadableElement from 'src/utils/Loadable/LoadableElement.vue';
 import { formatDistanceToNow } from 'date-fns';
-import { PlaylistController as PlaylistPageController, usePlaylistPageController } from 'src/components/PlaylistPage/PlaylistPageController';
+import type { PlaylistController as PlaylistPageController} from 'src/components/PlaylistPage/PlaylistPageController';
+import { usePlaylistPageController } from 'src/components/PlaylistPage/PlaylistPageController';
 
 const playlistVisiblityDropdownOptions = [
   {

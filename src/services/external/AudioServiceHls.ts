@@ -1,7 +1,9 @@
-import { DeepReadonly, readonly, ref, Ref } from 'vue';
-import Hls, { ErrorData, Events } from 'hls.js';
+import type { DeepReadonly, Ref } from 'vue';
+import { readonly, ref } from 'vue';
+import type { ErrorData} from 'hls.js';
+import Hls, { Events } from 'hls.js';
 import { Duration } from 'src/models/Duration';
-import AudioService from '../domain/AudioService';
+import type AudioService from '../domain/AudioService';
 import Logger from 'src/utils/Logger';
 
 export default function useAudioServiceHls(): AudioService {
@@ -34,6 +36,7 @@ export default function useAudioServiceHls(): AudioService {
   const errorStream: DeepReadonly<Ref<string | null>> = readonly(_errorStream);
 
   const _onError = (event: Events.ERROR, data: ErrorData) => {
+    // TODO: Expoential Fallback recover
     if (data.fatal) {
       switch (data.type) {
         case Hls.ErrorTypes.NETWORK_ERROR:
@@ -50,10 +53,14 @@ export default function useAudioServiceHls(): AudioService {
           break;
         case Hls.ErrorTypes.MEDIA_ERROR:
           _logger.error(
-            'Fatal media error encountered, retrying to recover',
+            'Fatal media error encountered, retrying to recover (Backoff 1s)',
             data
           );
-          _hls?.recoverMediaError();
+          console.log(event, data);
+          // backoff and recovery
+          setTimeout(() => {
+            _hls?.recoverMediaError();
+          }, 1000);
           break;
         default:
           _logger.error(

@@ -1,5 +1,5 @@
-import { Duration } from 'src/models/Duration';
-import { DeepReadonly, Ref } from 'vue';
+import type { Duration } from 'src/models/Duration';
+import type { DeepReadonly, Ref } from 'vue';
 
 export enum PlaybackEvents { }
 

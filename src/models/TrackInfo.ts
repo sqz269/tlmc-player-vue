@@ -1,6 +1,6 @@
-import { CircleReadDto, TrackReadDto } from 'app/backend-service-api';
+import type { CircleReadDto, TrackReadDto } from 'app/backend-service-api';
 import { Duration } from './Duration';
-import { ThumbnailReadDto } from 'app/backend-service-api';
+import type { ThumbnailReadDto } from 'app/backend-service-api';
 import GlobalConfiguration from 'src/GlobalConfiguration';
 
 export class CircleInfo {
@@ -75,7 +75,7 @@ export class TrackInfo {
       dto.album!.id!,
       dto.album?.name?._default || '',
       Duration.fromTimespan(dto.duration!),
-      audioUrl!,
+      audioUrl,
       Thumbnails.fromThumbnailsDto(dto.album?.thumbnail)
     );
   }

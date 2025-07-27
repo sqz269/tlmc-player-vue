@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import { defineProps } from 'vue';
-import ITrackMenuOption from 'src/components/MenuOptions/TrackMenuOptionsBuilder/ITrackMenuOption';
+import type ITrackMenuOption from 'src/components/MenuOptions/TrackMenuOptionsBuilder/ITrackMenuOption';
 
 const props = defineProps<{
   option: ITrackMenuOption

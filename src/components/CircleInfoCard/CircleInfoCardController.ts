@@ -1,9 +1,12 @@
-import { CircleApi, CircleReadDto, Configuration } from 'app/backend-service-api';
+import type { CircleReadDto, Configuration } from 'app/backend-service-api';
+import { CircleApi } from 'app/backend-service-api';
 import getUnicodeFlagIcon from 'country-flag-icons/unicode';
 import { alpha3ToAlpha2, getName } from 'i18n-iso-countries';
-import { LoadableState, useLoadableController } from 'src/utils/Loadable/LoadableController';
+import type { LoadableState} from 'src/utils/Loadable/LoadableController';
+import { useLoadableController } from 'src/utils/Loadable/LoadableController';
 import { StringUtils } from 'src/utils/StringUtils';
-import { ref, Ref, watch } from 'vue';
+import type { Ref} from 'vue';
+import { ref, watch } from 'vue';
 
 export interface CircleInfoCardInputModel {
   circleId: string;

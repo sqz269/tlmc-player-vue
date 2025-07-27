@@ -34,7 +34,7 @@
 
 
 <script setup lang="ts">
-import { AssetReadDto } from 'app/backend-service-api/dist';
+import type { AssetReadDto } from 'app/backend-service-api/dist';
 import AssetUtils from 'src/utils/AssetUtils';
 
 const PREVIEWABLE_MIME_TYPES = [

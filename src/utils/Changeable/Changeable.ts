@@ -1,4 +1,5 @@
-import { watch, Ref, ref, WatchSource } from 'vue';
+import type { Ref, WatchSource } from 'vue';
+import { watch, ref } from 'vue';
 
 export default function useChangeableController<T, E>(
   watched: WatchSource<T>, // This can be a Ref<T>, a reactive object, or a getter function.

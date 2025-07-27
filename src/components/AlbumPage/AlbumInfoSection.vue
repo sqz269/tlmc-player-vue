@@ -60,7 +60,7 @@
 </template>
 
 <script setup lang="ts">
-import { AlbumReadDto } from 'backend-api-client';
+import type { AlbumReadDto } from 'backend-api-client';
 import { useRouter } from 'vue-router';
 import {
   outlinedInfo,

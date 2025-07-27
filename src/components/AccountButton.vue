@@ -60,7 +60,7 @@
 import { inject } from 'vue';
 import { QBtn } from 'quasar';
 import { outlinedAccountCircle } from '@quasar/extras/material-icons-outlined';
-import AuthenticationService from 'src/services/domain/AuthenticationService';
+import type AuthenticationService from 'src/services/domain/AuthenticationService';
 
 const authService = inject<AuthenticationService>('authService');
 

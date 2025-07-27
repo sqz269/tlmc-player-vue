@@ -120,7 +120,7 @@ import {
   matPreview,
   matOpenInNew
 } from '@quasar/extras/material-icons';
-import { AlbumReadDto, AssetReadDto } from 'app/backend-service-api/dist';
+import type { AlbumReadDto, AssetReadDto } from 'app/backend-service-api/dist';
 import { QDialog, useQuasar } from 'quasar';
 import { computed } from 'vue';
 import AssetPreviewDialog from './AssetPreviewDialog.vue';

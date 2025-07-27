@@ -1,17 +1,19 @@
-import {
+import type {
   Configuration,
-  PlaylistReadDto,
+  PlaylistReadDto} from 'app/backend-service-api';
+import {
   PlaylistType,
 } from 'app/backend-service-api';
-import ApiConfigurationProvider from '../domain/ApiConfigurationProvider';
-import PlaylistService from '../domain/PlaylistService';
+import type ApiConfigurationProvider from '../domain/ApiConfigurationProvider';
+import type PlaylistService from '../domain/PlaylistService';
 import { readonly, ref, watch } from 'vue';
-import AuthenticationService from '../domain/AuthenticationService';
+import type AuthenticationService from '../domain/AuthenticationService';
 import Logger from 'src/utils/Logger';
+import type {
+  PlaylistVisibility} from 'app/backend-service-api';
 import {
   PlaylistApi,
-  PlaylistItemsApi,
-  PlaylistVisibility,
+  PlaylistItemsApi
 } from 'app/backend-service-api';
 
 export default function useApiOndemandPlaylistService(

@@ -1,4 +1,4 @@
-import { AssetReadDto } from 'app/backend-service-api/dist';
+import type { AssetReadDto } from 'app/backend-service-api/dist';
 
 export default class AssetUtils {
   static downloadAsset(asset: AssetReadDto): void {

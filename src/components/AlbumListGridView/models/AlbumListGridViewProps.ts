@@ -1,5 +1,5 @@
-import AlbumListGridViewInputModel from './AlbumListGridViewInputModel';
-import AlbumListGridViewViewModel from './AlbumListGridViewViewModel';
+import type AlbumListGridViewInputModel from './AlbumListGridViewInputModel';
+import type AlbumListGridViewViewModel from './AlbumListGridViewViewModel';
 
 export interface AlbumListGridViewProps {
   transitionFunction: (

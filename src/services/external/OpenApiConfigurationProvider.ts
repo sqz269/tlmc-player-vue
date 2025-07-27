@@ -1,9 +1,10 @@
-import { Configuration, Middleware } from 'app/backend-service-api';
+import type { Middleware } from 'app/backend-service-api';
+import { Configuration } from 'app/backend-service-api';
 import Logger from 'src/utils/Logger';
-import ApiConfigurationProvider from '../domain/ApiConfigurationProvider';
-import AuthenticationService from '../domain/AuthenticationService';
-import { RequestContext } from 'app/backend-service-api';
-import { FetchParams } from 'app/backend-service-api';
+import type ApiConfigurationProvider from '../domain/ApiConfigurationProvider';
+import type AuthenticationService from '../domain/AuthenticationService';
+import type { RequestContext } from 'app/backend-service-api';
+import type { FetchParams } from 'app/backend-service-api';
 
 class OpenApiAuthenticationMiddleware implements Middleware {
   private _logger = Logger.getLogger('OpenApiAuthenticationMiddleware');

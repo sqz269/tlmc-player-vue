@@ -1,9 +1,12 @@
-import { GetTracksFilteredRequest, SortOrder, TrackApi, TrackOrderOptions } from 'app/backend-service-api';
-import { LoadableState, useLoadableController } from 'src/utils/Loadable/LoadableController';
-import { ComputedRef, ref, Ref, watch } from 'vue';
-import { TrackListViewInputModel } from './models/TrackListViewInputMode';
-import TrackListViewViewModel from './models/TrackListViewViewModel';
-import { TrackQueryFilters } from 'src/models/TrackQueryFilters';
+import type { GetTracksFilteredRequest, SortOrder, TrackOrderOptions } from 'app/backend-service-api';
+import { TrackApi } from 'app/backend-service-api';
+import type { LoadableState} from 'src/utils/Loadable/LoadableController';
+import { useLoadableController } from 'src/utils/Loadable/LoadableController';
+import type { ComputedRef, Ref} from 'vue';
+import { ref, watch } from 'vue';
+import type { TrackListViewInputModel } from './models/TrackListViewInputMode';
+import type TrackListViewViewModel from './models/TrackListViewViewModel';
+import type { TrackQueryFilters } from 'src/models/TrackQueryFilters';
 import { apiConfigurationProvider } from 'src/services/_services';
 
 export type TrackListViewController = {

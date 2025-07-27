@@ -35,8 +35,9 @@
 </template>
 
 <script setup lang="ts">
-import { OriginalAlbumApi, OriginalTrackReadDto, SortOrder, TrackOrderOptions } from 'app/backend-service-api';
-import { TrackListViewInputModel } from 'src/components/TrackListView/models/TrackListViewInputMode';
+import type { OriginalTrackReadDto} from 'app/backend-service-api';
+import { OriginalAlbumApi, SortOrder, TrackOrderOptions } from 'app/backend-service-api';
+import type { TrackListViewInputModel } from 'src/components/TrackListView/models/TrackListViewInputMode';
 import TrackListView from 'src/components/TrackListView/TrackListView.vue';
 import useTrackListViewController from 'src/components/TrackListView/TrackListViewController';
 import { apiConfigurationProvider, radioService } from 'src/services/_services';

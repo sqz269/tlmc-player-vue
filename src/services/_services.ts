@@ -1,5 +1,5 @@
 import GlobalConfiguration from 'src/GlobalConfiguration';
-import AudioService from './domain/AudioService';
+import type AudioService from './domain/AudioService';
 import useApiOndemandPlaylistService from './external/ApiOndemandPlaylistService';
 import useApiGlobalStaticDataProvider from './external/ApiStaticDataProvider';
 import useApiUserService from './external/ApiUserService';
@@ -10,8 +10,10 @@ import useNaiveQueueService from './external/NaiveQueueService';
 import useOpenApiConfigurationProvider from './external/OpenApiConfigurationProvider';
 import useSimpleRadioService from './external/SimpleRadioService';
 import useBasicUserHistoryTrackingService from './external/BasicUserHistoryTrackingService';
+import useAudioServiceDash from './external/AudioServiceDash';
 
-const audioService: AudioService = useAudioServiceHls();
+// const audioService: AudioService = useAudioServiceHls();
+const audioService: AudioService = useAudioServiceDash();
 const authService = useKeycloakAuthenticationService();
 const apiConfigurationProvider = useOpenApiConfigurationProvider();
 const playlistService = useApiOndemandPlaylistService(

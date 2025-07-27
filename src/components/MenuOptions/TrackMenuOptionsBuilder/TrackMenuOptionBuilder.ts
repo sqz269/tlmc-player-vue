@@ -1,5 +1,5 @@
-import { TrackReadDto, AlbumReadDto } from 'app/backend-service-api/dist';
-import ITrackMenuOption from './ITrackMenuOption';
+import type { TrackReadDto, AlbumReadDto } from 'app/backend-service-api/dist';
+import type ITrackMenuOption from './ITrackMenuOption';
 import { TrackMenuOptionAddToQueue, TrackMenuOptionPlayNext, TrackMenuOptionSearchOnYoutube, TrackMenuOptionViewAlbum, TrackMenuOptionViewCircle } from './TrackMenuOptions';
 
 export default class TrackMenuOptionsBuilder {

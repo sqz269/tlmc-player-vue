@@ -18,7 +18,8 @@
 
 <script setup lang="ts" generic="T">
 import { defineProps } from 'vue';
-import { LoadingStatus, LoadableState } from './LoadableController';
+import type { LoadableState } from './LoadableController';
+import { LoadingStatus } from './LoadableController';
 
 const props = defineProps<{
   stateController: LoadableState<T>;

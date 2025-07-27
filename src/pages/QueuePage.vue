@@ -37,9 +37,9 @@
 </template>
 
 <script setup lang="ts">
-import { TrackReadDto } from 'app/backend-service-api/dist';
+import type { TrackReadDto } from 'app/backend-service-api/dist';
 import { TrackInfo } from 'src/models/TrackInfo';
-import QueueService from 'src/services/domain/QueueService';
+import type QueueService from 'src/services/domain/QueueService';
 import { computed, inject } from 'vue';
 
 // Injected

@@ -1,4 +1,5 @@
-import { AlbumReadDto, TrackReadDto } from 'app/backend-service-api/dist';
+import type { AlbumReadDto} from 'app/backend-service-api/dist';
+import { TrackReadDto } from 'app/backend-service-api/dist';
 
 export default class AlbumMenuOptionsBuilder {
   albumData: AlbumReadDto;

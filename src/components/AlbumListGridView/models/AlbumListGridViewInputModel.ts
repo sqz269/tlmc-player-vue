@@ -1,4 +1,4 @@
-import { AlbumOrderOptions, SortOrder } from 'app/backend-service-api';
+import type { AlbumOrderOptions, SortOrder } from 'app/backend-service-api';
 
 export default interface AlbumListGridViewInputModel {
   page: number;

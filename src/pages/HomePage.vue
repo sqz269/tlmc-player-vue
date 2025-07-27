@@ -5,18 +5,20 @@
 </template>
 
 <script setup lang="ts">
+import type {
+  Configuration} from 'app/backend-service-api';
 import {
   AlbumApi,
-  Configuration,
   AlbumOrderOptions,
 } from 'app/backend-service-api';
 import AlbumListGridView from 'src/components/AlbumListGridView/AlbumListGridView.vue';
-import useAlbumListGridViewController, {
+import type {
   AlbumListGridViewController,
 } from 'src/components/AlbumListGridView/AlbumListGridViewController';
-import AlbumListGridViewInputModel from 'src/components/AlbumListGridView/models/AlbumListGridViewInputModel';
-import AlbumListGridViewViewModel from 'src/components/AlbumListGridView/models/AlbumListGridViewViewModel';
-import ApiConfigurationProvider from 'src/services/domain/ApiConfigurationProvider';
+import useAlbumListGridViewController from 'src/components/AlbumListGridView/AlbumListGridViewController';
+import type AlbumListGridViewInputModel from 'src/components/AlbumListGridView/models/AlbumListGridViewInputModel';
+import type AlbumListGridViewViewModel from 'src/components/AlbumListGridView/models/AlbumListGridViewViewModel';
+import type ApiConfigurationProvider from 'src/services/domain/ApiConfigurationProvider';
 import Logger from 'src/utils/Logger';
 import { computed, inject, onActivated, onBeforeMount, onDeactivated, ref, watch } from 'vue';
 import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';

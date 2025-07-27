@@ -69,13 +69,14 @@ import {
   outlinedFavoriteBorder,
 } from '@quasar/extras/material-icons-outlined';
 import { matFavorite } from '@quasar/extras/material-icons';
-import { TrackReadDto } from 'app/backend-service-api';
+import type { TrackReadDto } from 'app/backend-service-api';
 import { TrackInfo } from 'src/models/TrackInfo';
-import QueueService from 'src/services/domain/QueueService';
-import { computed, ComputedRef, inject, Ref } from 'vue';
-import PlaylistService from 'src/services/domain/PlaylistService';
+import type QueueService from 'src/services/domain/QueueService';
+import type { ComputedRef, Ref } from 'vue';
+import { computed, inject } from 'vue';
+import type PlaylistService from 'src/services/domain/PlaylistService';
 import useChangeableController from 'src/utils/Changeable/Changeable';
-import QueuedTrack from 'src/models/QueuedTrack';
+import type QueuedTrack from 'src/models/QueuedTrack';
 import { useRouter } from 'vue-router';
 
 // Injected services/data
@@ -100,7 +101,7 @@ const isCurrentTrackInFavoritePlaylistChangeableController =
       }
 
       const result = await playlistService!.isTrackInPlaylist(
-        playlistService!.favorite.value!.id!,
+        playlistService!.favorite.value.id!,
         track.track.id!
       );
 

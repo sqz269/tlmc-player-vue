@@ -6,21 +6,17 @@
 import { useQuasar } from 'quasar'
 import { onBeforeMount, provide } from 'vue';
 import * as services from 'src/services/_services';
-import AuthenticationService from './services/domain/AuthenticationService';
-import AudioService from './services/domain/AudioService';
-import ApiConfigurationProvider from './services/domain/ApiConfigurationProvider';
-import UserProfileService from './services/domain/UserProfileService';
-import QueueService from './services/domain/QueueService';
-import RadioService from './services/domain/RadioService';
-import PlaylistService from './services/domain/PlaylistService';
-import { Configuration } from 'app/backend-service-api';
-import GlobalStaticDataProvider from './services/domain/GlobalStaticDataProvider';
+import type AuthenticationService from './services/domain/AuthenticationService';
+import type AudioService from './services/domain/AudioService';
+import type ApiConfigurationProvider from './services/domain/ApiConfigurationProvider';
+import type UserProfileService from './services/domain/UserProfileService';
+import type QueueService from './services/domain/QueueService';
+import type RadioService from './services/domain/RadioService';
+import type PlaylistService from './services/domain/PlaylistService';
+import type { Configuration } from 'app/backend-service-api';
+import type GlobalStaticDataProvider from './services/domain/GlobalStaticDataProvider';
 import Logger from './utils/Logger';
 import GlobalConfiguration from './GlobalConfiguration';
-import enLocale from 'i18n-iso-countries/langs/en.json'
-import { registerLocale } from 'i18n-iso-countries';
-
-registerLocale(enLocale);
 
 Logger.setLevel(GlobalConfiguration.LOGGING_LEVEL);
 

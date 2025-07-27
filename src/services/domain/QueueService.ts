@@ -1,5 +1,5 @@
-import QueuedTrack from 'src/models/QueuedTrack';
-import { DeepReadonly, Ref } from 'vue';
+import type QueuedTrack from 'src/models/QueuedTrack';
+import type { DeepReadonly, Ref } from 'vue';
 
 export enum RepeatMode {
   OFF = 'off',

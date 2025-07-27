@@ -1,4 +1,4 @@
-import { TimeSpan } from 'app/backend-service-api/src';
+import type { TimeSpan } from 'app/backend-service-api/src';
 
 export class Duration {
   private _duration: number;
@@ -48,6 +48,6 @@ export class Duration {
   }
 
   public static fromTimespan(timespan: TimeSpan): Duration {
-    return new Duration(timespan.seconds!);
+    return new Duration(timespan.seconds);
   }
 }

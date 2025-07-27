@@ -1,4 +1,4 @@
-import { TrackReadDto } from 'app/backend-service-api';
+import type { TrackReadDto } from 'app/backend-service-api';
 
 export default class QueuedTrack {
   private _id: string;

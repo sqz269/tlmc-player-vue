@@ -41,11 +41,11 @@
 
 <script setup lang="ts">
 import { defineProps } from 'vue';
-import { TrackReadDto } from 'app/backend-service-api';
+import type { TrackReadDto } from 'app/backend-service-api';
 import { queueService } from 'src/services/_services';
 import { QueueAddMode } from 'src/services/domain/QueueService';
 import TrackMenuOptionsBuilder from '../MenuOptions/TrackMenuOptionsBuilder/TrackMenuOptionBuilder';
-import ITrackMenuOption from '../MenuOptions/TrackMenuOptionsBuilder/ITrackMenuOption';
+import type ITrackMenuOption from '../MenuOptions/TrackMenuOptionsBuilder/ITrackMenuOption';
 import TrackMenu from '../MenuOptions/TrackMenuOptionsBuilder/TrackMenu.vue';
 
 const props = defineProps<{

@@ -1,6 +1,6 @@
 import Keycloak from 'keycloak-js';
 import { ref } from 'vue';
-import AuthenticationService from '../domain/AuthenticationService';
+import type AuthenticationService from '../domain/AuthenticationService';
 import Logger from 'src/utils/Logger';
 
 export default function useKeycloakAuthenticationService(): AuthenticationService {

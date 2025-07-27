@@ -1,4 +1,4 @@
-import { TrackReadDto, AlbumReadDto } from 'app/backend-service-api/dist';
+import type { TrackReadDto, AlbumReadDto } from 'app/backend-service-api/dist';
 import ITrackMenuOption from './ITrackMenuOption';
 
 import {

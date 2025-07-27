@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { RadioConfigSLEntry } from 'src/models/RadioConfigSLEntry';
+import type { RadioConfigSLEntry } from 'src/models/RadioConfigSLEntry';
 
 const props = defineProps<{
   radioConfigEntry: RadioConfigSLEntry;

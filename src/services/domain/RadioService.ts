@@ -1,5 +1,5 @@
-import { TrackQueryFilters } from 'src/models/TrackQueryFilters';
-import { DeepReadonly, Ref } from 'vue';
+import type { TrackQueryFilters } from 'src/models/TrackQueryFilters';
+import type { DeepReadonly, Ref } from 'vue';
 
 export default interface RadioService {
   isActive: DeepReadonly<Ref<boolean>>;

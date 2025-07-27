@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import ITrackMenuOption from './ITrackMenuOption';
+import type ITrackMenuOption from './ITrackMenuOption';
 import TrackMenuOption from './TrackMenuOption.vue';
 
 const props = defineProps<{

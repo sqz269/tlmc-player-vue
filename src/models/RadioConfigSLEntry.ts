@@ -1,4 +1,4 @@
-import { TrackQueryFilters } from './TrackQueryFilters';
+import type { TrackQueryFilters } from './TrackQueryFilters';
 
 export class RadioConfigSLEntry {
   public readonly name: string;

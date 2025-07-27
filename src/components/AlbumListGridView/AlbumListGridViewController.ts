@@ -1,11 +1,13 @@
-import { ref, Ref, watch, onMounted, ComputedRef } from 'vue';
-import AlbumListGridViewInputModel from './models/AlbumListGridViewInputModel';
-import AlbumListGridViewViewModel from './models/AlbumListGridViewViewModel';
+import type { Ref, ComputedRef } from 'vue';
+import { ref, watch, onMounted } from 'vue';
+import type AlbumListGridViewInputModel from './models/AlbumListGridViewInputModel';
+import type AlbumListGridViewViewModel from './models/AlbumListGridViewViewModel';
+import type {
+  LoadableState} from 'src/utils/Loadable/LoadableController';
 import {
-  LoadableState,
   useLoadableController,
 } from 'src/utils/Loadable/LoadableController';
-import { AlbumOrderOptions, SortOrder } from 'app/backend-service-api';
+import type { AlbumOrderOptions, SortOrder } from 'app/backend-service-api';
 
 export type AlbumListGridViewController = {
   viewModelController: LoadableState<AlbumListGridViewViewModel>;

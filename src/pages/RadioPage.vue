@@ -255,14 +255,14 @@
 </template>
 
 <script setup lang="ts">
-import { CircleReadDto, OriginalAlbumReadDto, OriginalTrackReadDto } from 'app/backend-service-api/dist';
-import GlobalStaticDataProvider from 'src/services/domain/GlobalStaticDataProvider';
-import RadioService from 'src/services/domain/RadioService';
+import type { CircleReadDto, OriginalAlbumReadDto, OriginalTrackReadDto } from 'app/backend-service-api/dist';
+import type GlobalStaticDataProvider from 'src/services/domain/GlobalStaticDataProvider';
+import type RadioService from 'src/services/domain/RadioService';
 import { useCombinedLoadableAwaiter } from 'src/utils/Loadable/CombinedLoadableAwaiter';
 import { inject, reactive, ref, watch, toRaw, onMounted } from 'vue';
 import LoadableElement from 'src/utils/Loadable/LoadableElement.vue';
 import { LoadingStatus } from 'src/utils/Loadable/LoadableController';
-import { TrackQueryFilters } from 'src/models/TrackQueryFilters';
+import type { TrackQueryFilters } from 'src/models/TrackQueryFilters';
 import { TrackStratificationMode } from 'app/backend-service-api/src';
 import { useQuasar } from 'quasar';
 import StratificationModeHelpDialog from 'src/components/Dialogs/StratificationModeHelpDialog.vue';
@@ -388,7 +388,7 @@ const originalTracksDtoToSelectOptions = (dtos: OriginalTrackReadDto[]): TrackSe
     const key = dto.title!.en!;
     if (map.has(key)) {
       const option = map.get(key)!;
-      option.aliasPks!.push(dto.id!);
+      option.aliasPks.push(dto.id!);
     } else {
       map.set(key, {
         key: dto.id!,
@@ -414,16 +414,16 @@ const restoreCurrentFilters = () => {
 };
 
 const initializeOptions = () => {
-  circleOptions.value = staticData!.circles.state!.value!.map(
+  circleOptions.value = staticData!.circles.state.value!.map(
     (dto) => circleDtoToSelectOption(dto)
   );
 
-  originalAlbumsOptions.value = staticData!.originalAlbums.state!.value!.map(
+  originalAlbumsOptions.value = staticData!.originalAlbums.state.value!.map(
     (dto) => originalAlbumsDtoToSelectOption(dto)
   );
 
   originalTracksOptions.value = originalTracksDtoToSelectOptions(
-    staticData!.originalTracks.state!.value!
+    staticData!.originalTracks.state.value!
   );
 }
 
@@ -437,7 +437,7 @@ watch(staticDataAwaiter.status, (status) => {
 const circleFilterFn = (val: string, update: (callback: () => void) => void) => {
   update(() => {
     const needle = val.toLowerCase();
-    circleOptions.value = staticData!.circles.state!.value!.filter((dto) => {
+    circleOptions.value = staticData!.circles.state.value!.filter((dto) => {
       return dto.name!.toLowerCase().includes(needle);
     }).map(circleDtoToSelectOption);
   });
@@ -446,7 +446,7 @@ const circleFilterFn = (val: string, update: (callback: () => void) => void) => 
 const originalAlbumsFilterFn = (val: string, update: (callback: () => void) => void) => {
   update(() => {
     const needle = val.toLowerCase();
-    originalAlbumsOptions.value = staticData!.originalAlbums.state!.value!.filter((dto) => {
+    originalAlbumsOptions.value = staticData!.originalAlbums.state.value!.filter((dto) => {
       return dto.fullName!.en!.toLowerCase().includes(needle);
     }).map(originalAlbumsDtoToSelectOption);
   });
@@ -456,7 +456,7 @@ const originalTracksFilterFn = (val: string, update: (callback: () => void) => v
   update(() => {
     const needle = val.toLowerCase();
     originalTracksOptions.value = originalTracksDtoToSelectOptions(
-      staticData!.originalTracks.state!.value!.filter((dto) => {
+      staticData!.originalTracks.state.value!.filter((dto) => {
         return dto.title!.en!.toLowerCase().includes(needle);
       })
     );

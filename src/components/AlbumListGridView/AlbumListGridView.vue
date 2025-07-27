@@ -70,7 +70,7 @@
 import { SortOrder, AlbumOrderOptions } from 'backend-api-client';
 import AlbumCard from 'src/components/AlbumCard/AlbumCard.vue';
 import LoadableElement from 'src/utils/Loadable/LoadableElement.vue';
-import { AlbumListGridViewController } from 'src/components/AlbumListGridView/AlbumListGridViewController';
+import type { AlbumListGridViewController } from 'src/components/AlbumListGridView/AlbumListGridViewController';
 import { QCard } from 'quasar';
 
 // Const fields for ui components

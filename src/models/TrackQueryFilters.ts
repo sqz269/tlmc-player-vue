@@ -1,4 +1,4 @@
-import { TrackStratificationMode } from 'app/backend-service-api/src';
+import type { TrackStratificationMode } from 'app/backend-service-api/src';
 
 export interface TrackQueryFilters {
   releaseDateBegin?: Date;

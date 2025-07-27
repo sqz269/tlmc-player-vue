@@ -1,9 +1,9 @@
 import { Duration } from 'src/models/Duration';
-import AudioService from '../domain/AudioService';
-import MediaSessionService from '../domain/MediaSessionService';
-import QueueService from '../domain/QueueService';
+import type AudioService from '../domain/AudioService';
+import type MediaSessionService from '../domain/MediaSessionService';
+import type QueueService from '../domain/QueueService';
 import Logger from 'src/utils/Logger';
-import { TrackReadDto } from 'app/backend-service-api';
+import type { TrackReadDto } from 'app/backend-service-api';
 import { TrackInfo } from 'src/models/TrackInfo';
 import { watch } from 'vue';
 

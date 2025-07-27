@@ -1,4 +1,4 @@
-import { TrackReadDto } from 'app/backend-service-api/src';
+import type { TrackReadDto } from 'app/backend-service-api/src';
 
 export default abstract class ITrackMenuOption {
   abstract readonly label: string;

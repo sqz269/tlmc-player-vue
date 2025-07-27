@@ -100,8 +100,8 @@ import {
   outlinedPlaylistPlay,
 } from '@quasar/extras/material-icons-outlined';
 import { useQuasar } from 'quasar';
-import AuthenticationService from 'src/services/domain/AuthenticationService';
-import PlaylistService from 'src/services/domain/PlaylistService';
+import type AuthenticationService from 'src/services/domain/AuthenticationService';
+import type PlaylistService from 'src/services/domain/PlaylistService';
 import { inject } from 'vue';
 import { useRouter } from 'vue-router';
 import PlaylistCreateDialog from '../Dialogs/PlaylistCreateDialog.vue';

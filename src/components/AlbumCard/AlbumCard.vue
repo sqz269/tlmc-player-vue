@@ -30,9 +30,10 @@
 </template>
 
 <script setup lang="ts">
-import { AlbumReadDto } from 'backend-api-client';
+import type { AlbumReadDto } from 'backend-api-client';
 import { QCard } from 'quasar';
-import { computed, ComputedRef } from 'vue';
+import type { ComputedRef } from 'vue';
+import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 // View Models

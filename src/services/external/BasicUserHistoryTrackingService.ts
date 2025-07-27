@@ -1,6 +1,6 @@
 import { watch } from 'vue';
 import { authService, playlistService, queueService } from '../_services';
-import HistoryTrackingService from '../domain/HistoryTrackingService';
+import type HistoryTrackingService from '../domain/HistoryTrackingService';
 
 export default function useBasicUserHistoryTrackingService(): HistoryTrackingService {
   const initialize = async () => {

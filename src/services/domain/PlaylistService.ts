@@ -1,6 +1,6 @@
-import { PlaylistVisibility } from 'app/backend-service-api';
-import { PlaylistReadDto } from 'app/backend-service-api';
-import { DeepReadonly, Ref } from 'vue';
+import type { PlaylistVisibility } from 'app/backend-service-api';
+import type { PlaylistReadDto } from 'app/backend-service-api';
+import type { DeepReadonly, Ref } from 'vue';
 
 export default interface PlaylistService {
   isReady: DeepReadonly<Ref<boolean>>;

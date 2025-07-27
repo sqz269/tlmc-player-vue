@@ -1,13 +1,16 @@
 import QueuedTrack from 'src/models/QueuedTrack';
-import AudioService from '../domain/AudioService';
-import QueueService, { QueueAddMode, RepeatMode } from '../domain/QueueService';
-import { computed, DeepReadonly, readonly, Ref, ref, watch } from 'vue';
+import type AudioService from '../domain/AudioService';
+import type QueueService from '../domain/QueueService';
+import { QueueAddMode, RepeatMode } from '../domain/QueueService';
+import type { DeepReadonly, Ref} from 'vue';
+import { computed, readonly, ref, watch } from 'vue';
 import Logger from 'src/utils/Logger';
-import ApiConfigurationProvider from '../domain/ApiConfigurationProvider';
-import { Configuration, TrackApi } from 'app/backend-service-api';
+import type ApiConfigurationProvider from '../domain/ApiConfigurationProvider';
+import type { Configuration} from 'app/backend-service-api';
+import { TrackApi } from 'app/backend-service-api';
 import { AlbumApi } from 'app/backend-service-api';
-import { TrackGetMultipleResp } from 'app/backend-service-api';
-import PlaylistService from '../domain/PlaylistService';
+import type { TrackGetMultipleResp } from 'app/backend-service-api';
+import type PlaylistService from '../domain/PlaylistService';
 import GlobalConfiguration from 'src/GlobalConfiguration';
 
 export default function useNaiveQueueService(
@@ -305,7 +308,7 @@ export default function useNaiveQueueService(
     _currentTrack.value = _queue.value[index];
     // // FIXME: trackFile?.url is deprecated, Use asset endpoint instead
     // // /api/asset/track/{trackId}
-    const url = `${GlobalConfiguration.API_BASE_URL}/api/asset/track/${_currentTrack.value.track.id}`;
+    const url = `${GlobalConfiguration.API_BASE_URL}/api/asset/track/${_currentTrack.value.track.id}/dash/manifest.mpd`;
     if (url) {
       await _audioService.play(url);
     } else {

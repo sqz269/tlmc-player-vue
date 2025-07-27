@@ -1,5 +1,5 @@
-import { SortOrder, TrackOrderOptions } from 'app/backend-service-api';
-import { TrackQueryFilters } from 'src/models/TrackQueryFilters';
+import type { SortOrder, TrackOrderOptions } from 'app/backend-service-api';
+import type { TrackQueryFilters } from 'src/models/TrackQueryFilters';
 
 export interface TrackListViewInputModel {
   filters?: TrackQueryFilters;

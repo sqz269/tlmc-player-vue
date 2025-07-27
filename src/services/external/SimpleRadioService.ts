@@ -1,11 +1,13 @@
 import { readonly, ref, watch } from 'vue';
-import QueueService, { QueueAddMode } from '../domain/QueueService';
-import RadioService from '../domain/RadioService';
+import type QueueService from '../domain/QueueService';
+import { QueueAddMode } from '../domain/QueueService';
+import type RadioService from '../domain/RadioService';
 import Logger from 'src/utils/Logger';
-import ApiConfigurationProvider from '../domain/ApiConfigurationProvider';
-import { Configuration, TrackApi, TrackRandomResult, TrackReadDto } from 'app/backend-service-api';
+import type ApiConfigurationProvider from '../domain/ApiConfigurationProvider';
+import type { Configuration, TrackRandomResult} from 'app/backend-service-api';
+import { TrackApi, TrackReadDto } from 'app/backend-service-api';
 import { AlbumApi } from 'app/backend-service-api';
-import { TrackQueryFilters } from 'src/models/TrackQueryFilters';
+import type { TrackQueryFilters } from 'src/models/TrackQueryFilters';
 
 export default function useSimpleRadioService(
   queueService: QueueService,

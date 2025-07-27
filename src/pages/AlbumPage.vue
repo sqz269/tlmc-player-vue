@@ -129,20 +129,22 @@ import {
   outlinedDescription,
   outlinedEditNote
 } from '@quasar/extras/material-icons-outlined';
-import { AlbumReadDto, AlbumApi } from 'app/backend-service-api';
-import { Configuration } from 'app/backend-service-api';
-import ApiConfigurationProvider from 'src/services/domain/ApiConfigurationProvider';
-import { computed, ComputedRef, inject, onMounted, watch } from 'vue';
+import type { AlbumReadDto} from 'app/backend-service-api';
+import { AlbumApi } from 'app/backend-service-api';
+import type { Configuration } from 'app/backend-service-api';
+import type ApiConfigurationProvider from 'src/services/domain/ApiConfigurationProvider';
+import type { ComputedRef} from 'vue';
+import { computed, inject, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useLoadableController } from 'src/utils/Loadable/LoadableController';
 import LoadableElement from 'src/utils/Loadable/LoadableElement.vue';
-import { TrackReadDto } from 'app/backend-service-api';
+import type { TrackReadDto } from 'app/backend-service-api';
 import AlbumInfoSection from 'src/components/AlbumPage/AlbumInfoSection.vue';
 import TrackListTable from 'src/components/AlbumPage/TrackListTable.vue';
 import { QCard, useQuasar, } from 'quasar';
 import AlbumAssetsViewerDialog from 'src/components/Dialogs/AlbumAssetsViewerDialog.vue';
-import QueueService, { QueueAddMode } from 'src/services/domain/QueueService';
-import LyricsViewDialog from 'src/components/Dialogs/LyricsViewDialog.vue';
+import type QueueService from 'src/services/domain/QueueService';
+import { QueueAddMode } from 'src/services/domain/QueueService';
 
 // View Models
 interface AlbumPageRouteParameters {

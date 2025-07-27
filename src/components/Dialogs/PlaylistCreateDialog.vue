@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import PlaylistService from 'src/services/domain/PlaylistService';
+import type PlaylistService from 'src/services/domain/PlaylistService';
 import { PlaylistVisibility } from 'app/backend-service-api';
 import { useQuasar } from 'quasar';
 import { ref } from 'vue';

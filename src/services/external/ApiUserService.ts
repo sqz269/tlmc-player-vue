@@ -1,8 +1,8 @@
-import { Configuration, UserProfileReadDto } from 'app/backend-service-api';
+import type { Configuration, UserProfileReadDto } from 'app/backend-service-api';
 import { UserProfileApi } from 'app/backend-service-api';
-import ApiConfigurationProvider from 'src/services/domain/ApiConfigurationProvider';
-import AuthenticationService from 'src/services/domain/AuthenticationService';
-import UserProfileService from 'src/services/domain/UserProfileService';
+import type ApiConfigurationProvider from 'src/services/domain/ApiConfigurationProvider';
+import type AuthenticationService from 'src/services/domain/AuthenticationService';
+import type UserProfileService from 'src/services/domain/UserProfileService';
 import Logger from 'src/utils/Logger';
 import { readonly, ref, watch } from 'vue';
 

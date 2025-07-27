@@ -1,5 +1,5 @@
-import { UserProfileReadDto } from 'app/backend-service-api/src';
-import { DeepReadonly, Ref } from 'vue';
+import type { UserProfileReadDto } from 'app/backend-service-api/src';
+import type { DeepReadonly, Ref } from 'vue';
 
 export default interface UserProfileService {
   isReady: DeepReadonly<Ref<boolean>>;

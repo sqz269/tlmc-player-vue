@@ -1,9 +1,12 @@
 import { TrackInfo } from 'src/models/TrackInfo';
-import { PlaylistPageInputModel } from './models/PlaylistPageInputModel';
-import { LoadableState, useLoadableController } from 'src/utils/Loadable/LoadableController';
-import { PlaylistPageViewModel } from './models/PlaylistPageViewModel';
-import { Ref, ref, watch } from 'vue';
-import { TrackApi, PlaylistApi, PlaylistVisibility, TrackReadDto } from 'app/backend-service-api';
+import type { PlaylistPageInputModel } from './models/PlaylistPageInputModel';
+import type { LoadableState} from 'src/utils/Loadable/LoadableController';
+import { useLoadableController } from 'src/utils/Loadable/LoadableController';
+import type { PlaylistPageViewModel } from './models/PlaylistPageViewModel';
+import type { Ref} from 'vue';
+import { ref, watch } from 'vue';
+import type { PlaylistVisibility, TrackReadDto } from 'app/backend-service-api';
+import { TrackApi, PlaylistApi } from 'app/backend-service-api';
 import * as services from 'src/services/_services';
 import { playlistService } from 'src/services/_services';
 

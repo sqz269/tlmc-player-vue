@@ -50,10 +50,10 @@
 </template>
 
 <script setup lang="ts">
-import { CircleInfoCardController } from './CircleInfoCardController';
+import type { CircleInfoCardController } from './CircleInfoCardController';
 import LoadableElement from 'src/utils/Loadable/LoadableElement.vue';
 import { UrlUtils } from 'src/utils/UrlUtils';
-import RadioService from 'src/services/domain/RadioService';
+import type RadioService from 'src/services/domain/RadioService';
 import { inject } from 'vue';
 import DataSourceButton from 'src/components/DataSourceBtn/DataSourceButton.vue';
 

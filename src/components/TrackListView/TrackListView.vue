@@ -59,7 +59,7 @@
 
 <script setup lang="ts">
 import { SortOrder, TrackOrderOptions } from 'app/backend-service-api';
-import { TrackListViewController } from './TrackListViewController';
+import type { TrackListViewController } from './TrackListViewController';
 import LoadableElement from 'src/utils/Loadable/LoadableElement.vue';
 import TrackItem from '../TrackItem/TrackItem.vue';
 

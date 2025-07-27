@@ -1,5 +1,6 @@
 import { ref, watch } from 'vue';
-import { LoadableState, LoadingStatus } from './LoadableController';
+import type { LoadableState} from './LoadableController';
+import { LoadingStatus } from './LoadableController';
 
 export type CombinedAwaiter = {
   onSuccess: () => void;

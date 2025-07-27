@@ -1,4 +1,4 @@
-import { SortOrder, TrackOrderOptions, TrackReadDto } from 'app/backend-service-api';
+import type { SortOrder, TrackOrderOptions, TrackReadDto } from 'app/backend-service-api';
 
 export default interface TrackListViewViewModel {
   currentPage: number;

@@ -72,8 +72,8 @@ import {
 } from '@quasar/extras/material-icons-outlined';
 import { Duration } from 'src/models/Duration';
 
-import AudioService from 'src/services/domain/AudioService';
-import QueueService from 'src/services/domain/QueueService';
+import type AudioService from 'src/services/domain/AudioService';
+import type QueueService from 'src/services/domain/QueueService';
 import { computed, inject, onBeforeMount, ref, watch } from 'vue';
 
 // Injected services/data
@@ -98,10 +98,6 @@ const totalTimeString = computed(() => {
 });
 
 const bufferedTime = computed(() => {
-  if (isPanning.value) {
-    return totalTime.value;
-  }
-
   return audioService.bufferPosition?.value?.toSeconds() || 0;
 });
 

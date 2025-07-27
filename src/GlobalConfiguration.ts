@@ -1,4 +1,4 @@
-import { Level } from 'pino';
+import type { Level } from 'pino';
 
 export default class GlobalConfiguration {
   public static WEB_HOST_PUBLIC_PATH = '';
