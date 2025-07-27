@@ -132,7 +132,7 @@ const collectionNavigations = [
 ];
 
 const gotoPlaylist = (playlistId: string) => {
-  $router.push({ name: 'Playlist', params: { playlistId } });
+  void $router.push({ name: 'Playlist', params: { playlistId } });
 };
 
 const showCreatePlaylistDialog = () => {

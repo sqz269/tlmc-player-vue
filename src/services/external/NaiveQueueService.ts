@@ -247,7 +247,7 @@ export default function useNaiveQueueService(
     const removedTracks: QueuedTrack[] = [];
 
     for (let i = _queue.value.length - 1; i >= 0; i--) {
-      if (_queue.value[i].group === group) {
+      if (_queue.value[i]!.group === group) {
         removedTracks.push(removeTrackByIndex(i)!);
       }
     }
@@ -273,7 +273,7 @@ export default function useNaiveQueueService(
     }
 
     const [removed] = _queue.value.splice(fromIndex, 1);
-    _queue.value.splice(toIndex, 0, removed);
+    _queue.value.splice(toIndex, 0, removed!);
 
     if (_currentIndex.value === fromIndex) {
       _currentIndex.value = toIndex;
@@ -305,7 +305,7 @@ export default function useNaiveQueueService(
     }
 
     _currentIndex.value = index;
-    _currentTrack.value = _queue.value[index];
+    _currentTrack.value = _queue.value[index]!;
     // // FIXME: trackFile?.url is deprecated, Use asset endpoint instead
     // // /api/asset/track/{trackId}
     const url = `${GlobalConfiguration.API_BASE_URL}/api/asset/track/${_currentTrack.value.track.id}/dash/manifest.mpd`;
@@ -355,7 +355,9 @@ export default function useNaiveQueueService(
     initialize,
     remainingTracksCount,
     addTracksByIds,
-    addTrackById,
+    addTrackById: (trackId: string, addMode?: QueueAddMode, group?: string, position?: number) => {
+      return addTrackById(trackId, addMode, position, group);
+    },
     removeTrackByIndex,
     removeTrackByItemId,
     removeTracksByGroup,
@@ -366,5 +368,5 @@ export default function useNaiveQueueService(
     skipTo,
     playNext,
     playPrevious,
-  } as QueueService;
+  };
 }

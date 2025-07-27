@@ -55,7 +55,7 @@ const props = defineProps<{
 
 // services
 const playTrack = () => {
-  queueService.addTrackById(props.track.id!, QueueAddMode.PLAY_IMMEDIATELY);
+  void queueService.addTrackById(props.track.id!, QueueAddMode.PLAY_IMMEDIATELY);
 };
 
 // Menu options

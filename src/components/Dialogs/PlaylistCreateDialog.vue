@@ -75,7 +75,7 @@ const playlistName = ref('');
 const playlistVisibility = ref<PlaylistVisibility>(PlaylistVisibility.Private);
 
 const createPlaylist = () => {
-  props.playlistService?.createPlaylist(playlistName.value, playlistVisibility.value).then(() => {
+  void props.playlistService?.createPlaylist(playlistName.value, playlistVisibility.value).then(() => {
     $q.notify({
       position: 'top',
       message: 'Playlist created successfully',

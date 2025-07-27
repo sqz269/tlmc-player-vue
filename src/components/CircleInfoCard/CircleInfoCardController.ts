@@ -155,7 +155,7 @@ export default function useCircleInfoCardController(
     }, { deep: true }
   )
 
-  load(inputModel.value);
+  void load(inputModel.value);
 
   return {
     viewModelController,

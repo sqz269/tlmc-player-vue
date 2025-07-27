@@ -65,14 +65,14 @@ const props = defineProps<{
 const radioService = inject<RadioService>('radioService');
 
 const startRadioForCircle = () => {
-  radioService?.setFilters({
+  void radioService?.setFilters({
     circles: [props.controller.inputModel.value.circleId],
   });
 
-  radioService?.activate();
+  void radioService?.activate();
 }
 
-props.controller.load(props.controller.inputModel.value)
+void props.controller.load(props.controller.inputModel.value)
 </script>
 
 <style scoped lang="scss">

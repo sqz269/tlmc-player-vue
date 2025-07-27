@@ -37,13 +37,13 @@ export default function useBrowserMediaSessionService(
     watch(audioService.position, (position) => {
       if (position) {
         navigator.mediaSession.setPositionState({
-          duration: audioService.duration.value?.toSeconds(),
+          duration: audioService.duration.value?.toSeconds() ?? 0,
           playbackRate: 1,
           position: position.toSeconds(),
         });
       } else {
         navigator.mediaSession.setPositionState({
-          duration: audioService.duration.value?.toSeconds(),
+          duration: audioService.duration.value?.toSeconds() ?? 0,
           playbackRate: 1,
           position: 0,
         });

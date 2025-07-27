@@ -43,7 +43,6 @@ import { ref, watch } from 'vue';
 
 const $q = useQuasar();
 
-const ignoreAlbumsWithoutDate = ref(false);
 
 const darkMode = ref($q.dark.isActive);
 

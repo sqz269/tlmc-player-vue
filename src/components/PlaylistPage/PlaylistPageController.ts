@@ -126,7 +126,7 @@ export const usePlaylistPageController = (
     }
   );
 
-  load(initialState);
+  void load(initialState);
 
   return {
     controller,

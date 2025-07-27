@@ -110,7 +110,7 @@ export class TrackMenuOptionViewAlbum extends ITrackMenuOption {
   }
 
   public onClick() {
-    this.$router.push({
+    void this.$router.push({
       name: 'Album',
       params: {
         albumId: this.albumData.id
@@ -140,9 +140,9 @@ export class TrackMenuOptionViewCircle extends ITrackMenuOption {
   }
 
   public onClick() {
-    const circleId = this.albumData.albumArtist![0].id;
+    const circleId = this.albumData.albumArtist![0]!.id;
 
-    this.$router.push({
+    void this.$router.push({
       name: 'CircleAlbums',
       params: {
         circleId: circleId,

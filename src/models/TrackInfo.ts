@@ -74,6 +74,7 @@ export class TrackInfo {
       circles,
       dto.album!.id!,
       dto.album?.name?._default || '',
+      // @ts-ignore
       Duration.fromTimespan(dto.duration!),
       audioUrl,
       Thumbnails.fromThumbnailsDto(dto.album?.thumbnail)

@@ -122,6 +122,7 @@ import {
 } from '@quasar/extras/material-icons';
 import type { AlbumReadDto, AssetReadDto } from 'app/backend-service-api/dist';
 import { QDialog, useQuasar } from 'quasar';
+import type { QTableColumn } from "quasar";
 import { computed } from 'vue';
 import AssetPreviewDialog from './AssetPreviewDialog.vue';
 import AssetUtils from 'src/utils/AssetUtils';
@@ -151,7 +152,7 @@ const previewAsset = (asset: AssetReadDto) => {
   });
 };
 
-const tableColumns = [
+const tableColumns: QTableColumn[] = [
   {
     name: 'id',
     label: 'Asset ID',

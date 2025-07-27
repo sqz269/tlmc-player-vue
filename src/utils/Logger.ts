@@ -1,5 +1,4 @@
-import pino, { transport } from 'pino';
-import pinoPretty from 'pino';
+import pino from 'pino';
 
 class _Logger {
   private _logger: pino.Logger;

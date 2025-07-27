@@ -9,7 +9,7 @@ import type PlaylistService from '../domain/PlaylistService';
 import { readonly, ref, watch } from 'vue';
 import type AuthenticationService from '../domain/AuthenticationService';
 import Logger from 'src/utils/Logger';
-import type {
+import {
   PlaylistVisibility} from 'app/backend-service-api';
 import {
   PlaylistApi,
@@ -150,8 +150,8 @@ export default function useApiOndemandPlaylistService(
     );
     await playlistApi.addPlaylist({
       playlistInfo: {
-        name: name,
-        visibility: visibility,
+        name: name ?? '',
+        visibility: visibility ?? PlaylistVisibility.Private,
       },
     });
 
@@ -174,8 +174,8 @@ export default function useApiOndemandPlaylistService(
     await playlistApi.updatePlaylistInfo({
       playlistId: playlistId,
       playlistInfo: {
-        name: name,
-        visibility: visibility,
+        name: name ?? '',
+        visibility: visibility ?? PlaylistVisibility.Private,
       },
     });
 

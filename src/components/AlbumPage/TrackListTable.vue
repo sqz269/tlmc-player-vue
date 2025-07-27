@@ -89,7 +89,7 @@
 <script setup lang="ts">
 import { outlinedPlayArrow } from '@quasar/extras/material-icons-outlined';
 import type { AlbumReadDto, TrackReadDto } from 'app/backend-service-api';
-import { QTable } from 'quasar';
+import { QTable, QTableColumn } from 'quasar';
 import { Duration } from 'src/models/Duration';
 import type QueueService from 'src/services/domain/QueueService';
 import { inject, ref, TrackOpTypes } from 'vue';
@@ -121,7 +121,7 @@ const pagination = {
   descending: true,
 };
 
-const columns = [
+const columns: QTableColumn[] = [
   {
     name: 'index',
     required: true,

@@ -1,7 +1,7 @@
 export class StringUtils {
   public static constructGrammaticalListJoin(list: string[], logicalConjunction: 'and' | 'or' = 'or'): string {
     if (list.length === 1) {
-      return list[0];
+      return list[0]!;
     }
 
     if (list.length === 2) {
