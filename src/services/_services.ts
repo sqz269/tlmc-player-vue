@@ -65,31 +65,29 @@ const initialize = async () => {
 
   audioService
     .initialize()
-    .catch((error) => alert(`Error initializing audio service: ${error}`));
+    .then(() => {
+      radioService
+        .initialize()
+        .catch((error) => alert(`Error initializing radio service: ${error}`));
 
-  queueService
-    .initialize()
-    .catch((error) => alert(`Error initializing queue service: ${error}`));
+      queueService
+        .initialize()
+        .catch((error) => alert(`Error initializing queue service: ${error}`));
 
-  mediaSessionService
-    .initialize()
-    .catch((error) =>
-      alert(`Error initializing media session service: ${error}`)
-    );
+      mediaSessionService
+        .initialize()
+        .catch((error) => alert(`Error initializing media session service: ${error}`));
 
-  radioService
-    .initialize()
-    .catch((error) => alert(`Error initializing radio service: ${error}`));
+      historyTrackingService
+        .initialize()
+        .catch((error) =>
+          alert(`Error initializing history tracking service: ${error}`)
+        );
+    })
 
   playlistService
     .initialize()
     .catch((error) => alert(`Error initializing playlist service: ${error}`));
-
-  historyTrackingService
-    .initialize()
-    .catch((error) =>
-      alert(`Error initializing history tracking service: ${error}`)
-    );
 
   globalStaticDataProvider
     .initialize()

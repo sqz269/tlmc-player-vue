@@ -34,6 +34,16 @@ export default function useAudioServiceDash(): AudioService {
   const _initializeEventStreams = () => {
     if (!_dash || !_audioPlayer) return;
 
+    _dash.updateSettings({
+      streaming: {
+
+        buffer: {
+          bufferTimeDefault: 30,
+          bufferTimeAtTopQuality: 90
+        }
+      }
+    });
+
     const events = dashjs.MediaPlayer.events;
 
     // DASH.js error handling
@@ -51,13 +61,21 @@ export default function useAudioServiceDash(): AudioService {
       _logger.debug(`DASH manifest loaded: ${e} period(s)`);
     });
 
+    _dash.on(dashjs.MediaPlayer.events.PLAYBACK_ENDED, () => {
+      _playbackCompletedEvent.value = true;
+    });
+
     // Native audio element events
     _audioPlayer.onplay = () => {
       _isPlaying.value = true;
       if (_playbackCompletedEvent.value) _playbackCompletedEvent.value = false;
     };
     _audioPlayer.onpause = () => { _isPlaying.value = false; };
-    _audioPlayer.onended = () => { _playbackCompletedEvent.value = true; };
+    // _audioPlayer.onended = () => {
+    //   console.log('onended');
+    //   _playbackCompletedEvent.value = true;
+    // };
+
     _audioPlayer.ontimeupdate = () => {
       _position.value = Duration.fromSeconds(_audioPlayer!.currentTime);
     };

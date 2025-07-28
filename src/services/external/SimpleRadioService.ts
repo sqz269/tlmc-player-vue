@@ -29,7 +29,7 @@ export default function useSimpleRadioService(
   // Internal tracker for offset
   const _offset = ref(0);
 
-  const initialize = () => {
+  const initialize = async () => {
     _logger.debug('Initializing SimpleRadioService');
     watch(_queueService.currentIndex, _onCurrentlyPlayingChanged);
     _logger.debug('SimpleRadioService initialized');
